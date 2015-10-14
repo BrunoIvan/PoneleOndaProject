@@ -24,14 +24,14 @@ class Rubro(models.Model):
 	nombre	 = 	models.CharField(max_length = 200)
 	def __unicode__(self):return self.nombre
 
-class Calificacion(models.Model)
+class Calificacion(models.Model):
 	puntaje	 		= 	models.IntegerField()
 	comentario 		=	models.CharField(max_length = 200)
 	establecimiento = 	models.ForeignKey("Establecimiento")
 	usuario			=	models.ForeignKey("Usuario")
 	def __unicode__(self):return self.puntaje
 
-class Usuario(models.Model)
+class Usuario(models.Model):
 	fb_id		=	models.CharField(max_length = 200)
 	tw_id		=	models.CharField(max_length = 200)
 	google_id	=	models.CharField(max_length = 200)
