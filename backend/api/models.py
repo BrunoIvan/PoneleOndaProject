@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.db.models import Sum
+from django.db.models import Count
 
 class Establecimiento(models.Model):
 	nombre		=	models.CharField(max_length = 200)
@@ -12,6 +14,12 @@ class Establecimiento(models.Model):
 	
 	def __unicode__(self):
 		return self.nombre
+
+	def promedio_calificaciones(self):
+		calificaciones 	= 	Calificacion.objects.filter(establecimiento = self)
+		suma 			= 	calificaciones.aggregate(Sum('puntaje'))
+		cantidad 		= 	calificaciones.aggregate(Count('puntaje'))
+		return suma['puntaje__sum'] / float(cantidad['puntaje__count'])
 
 class Ciudad(models.Model):
 	nombre			=	models.CharField(max_length = 200)
@@ -37,13 +45,15 @@ class Calificacion(models.Model):
 	puntaje	 		= 	models.IntegerField()
 	comentario 		=	models.CharField(max_length = 200)
 	establecimiento = 	models.ForeignKey("Establecimiento")
-	usuario			=	models.ForeignKey("Usuario")
+	usuario			=	models.OneToOneField("Usuario")
 	
 	def __unicode__(self):
-		return self.puntaje
+		return "%i" % self.puntaje
 
 class Usuario(models.Model):
-	fb_id		=	models.CharField(max_length = 200, null = True)
-	tw_id		=	models.CharField(max_length = 200, null = True)
-	google_id	=	models.CharField(max_length = 200, null = True)
-	
+	fb_id		=	models.CharField(max_length = 200, null = True, unique = True)
+	tw_id		=	models.CharField(max_length = 200, null = True, unique = True)
+	google_id	=	models.CharField(max_length = 200, null = True, unique = True)
+
+	def __unicode__(self):
+		return " ID Usuaro %i" % self.id
