@@ -44,17 +44,10 @@ class Rubro(models.Model):
 class Calificacion(models.Model):
 	puntaje	 		= 	models.IntegerField()
 	comentario 		=	models.CharField(max_length = 200)
-<<<<<<< HEAD
 	establecimiento = 	models.ForeignKey("Establecimiento", related_name = "calificaciones")
 	usuario			=	models.ForeignKey("Usuario")
-	def __unicode__(self):return self.puntaje
-=======
-	establecimiento = 	models.ForeignKey("Establecimiento")
-	usuario			=	models.OneToOneField("Usuario")
-	
 	def __unicode__(self):
 		return "%i" % self.puntaje
->>>>>>> 1aea29d4f4006b50c9537c2a6b898aaa82fb54bb
 
 class Usuario(models.Model):
 	fb_id		=	models.CharField(max_length = 200, null = True, unique = True)
