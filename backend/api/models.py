@@ -46,6 +46,10 @@ class Calificacion(models.Model):
 	comentario 		=	models.CharField(max_length = 200)
 	establecimiento = 	models.ForeignKey("Establecimiento", related_name = "calificaciones")
 	usuario			=	models.ForeignKey("Usuario")
+
+	class Meta:
+		unique_together = 	("establecimiento", "usuario")
+	
 	def __unicode__(self):
 		return "%i" % self.puntaje
 
