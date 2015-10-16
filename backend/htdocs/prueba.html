@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+	<title>Prueba para Laboratorio 2015</title>
+	<meta charset="utf-8" />
+</head>
+<body>   
+	<script type="text/javascript">
+		var req = new XMLHttpRequest();
+		req.open('GET', 'http://127.0.0.1:8000/alumnos/2/cursos');
+		req.onreadystatechange = function (aEvt) {
+		  if (req.readyState == 4) {
+		     if(req.status == 200)
+		      dump(req.responseText);
+		     else
+		      dump("Error loading page\n");
+		  }
+		};
+		req.send(null);
+1	</script>
+</body>
+</html> 

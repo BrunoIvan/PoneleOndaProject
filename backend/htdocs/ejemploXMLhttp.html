@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function loadCursos(url){
+	var xmlhttp;
+	var txt,x,xx,i;
+	xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function(){
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			var resp =  JSON.parse(xmlhttp.responseText);
+			var out = "<table>";
+			for(i = 0; i < resp.length; i++) {
+				out += "<tr><td>" +
+				resp[i].name +
+				"</td><td>" +
+				resp[i].url +
+				"</td></tr>";
+			}
+			out += "</table>";
+			document.getElementById("cursos").innerHTML = out;
+		}
+		
+	}
+	xmlhttp.open("GET",url,true);
+	xmlhttp.send();
+}
+</script>
+</head>
+<body>
+
+<div id="cursos">
+<button onclick="loadCursos('http://localhost:8000/cursos/?format=json')">Cursos</button>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<script>
+function loadAlumnos(){
+	var xmlhttp;
+	var dicc_alumnos = new Object;
+	xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function(){
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			var resp =  JSON.parse(xmlhttp.responseText);
+			for(i = 0; i < resp.length; i++) {
+				dicc_alumnos[resp[i].url] = resp[i].name + ' ' + resp[i].surname;
+			}
+		}
+	}
+	 	
+	xmlhttp.open("GET","http://localhost:8000/alumnos?format=json",false);
+	xmlhttp.send();
+	return dicc_alumnos;
+}
+
+function loadProfesores(){
+	var xmlhttp;
+	var dicc_profesores = new Object;
+	xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function(){
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			var resp =  JSON.parse(xmlhttp.responseText);
+			for(i = 0; i < resp.length; i++) {
+				dicc_profesores[resp[i].url] = resp[i].name + ' ' + resp[i].surname;
+			}
+		}
+	}
+	 	
+	xmlhttp.open("GET","http://localhost:8000/profesores?format=json",false);
+	xmlhttp.send();
+	return dicc_profesores;
+}
+
+function loadCursos(url, alumnos, profesores){
+	var xmlhttp;
+	var i,j;
+	xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function(){
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			var resp =  JSON.parse(xmlhttp.responseText);
+			var out = "<table><tr><th>nombre</th><th>año</th><th>profesores</th><th>alumnos</th>";
+			for(i = 0; i < resp.length; i++) {
+				var lista_profesores_nombre = "";
+				var lista_profesores = (resp[i].profesores + '').split(",");
+				var longitud_lista = lista_profesores.length;
+				for (var j = 0; j < longitud_lista; j++){
+					lista_profesores_nombre += profesores[lista_profesores[j]];
+				}
+				var lista_alumnos_nombre = "";
+				var lista_alumnos = (resp[i].alumnos + '').split(",");
+				var longitud_lista = lista_alumnos.length;
+				for (var j = 0; j < longitud_lista; j++){
+					lista_alumnos_nombre += alumnos[lista_alumnos[j]];
+				}    
+				out += "<tr><td>" +
+				resp[i].name +
+				"</td><td>" +
+				resp[i].year +
+				"</td><td>"+
+				lista_profesores_nombre +
+				"</td><td>" +
+				lista_alumnos_nombre +
+				"</td><td>" +
+				"<button onclick=\"borrarCurso('" + resp[i].url + "')\">Borrar</button>" +
+			    "</td><td>" +
+				"<button onclick=\"modificarCurso('" + resp[i].url + "','" + resp[i].name + "','" + resp[i].year + "','" + resp[i].profesores + "','" + resp[i].alumnos + "')\">Modif</button>" +
+				"</td></tr>";
+			}
+		    out += "</td><td colspan=6>" +
+				"<button onclick=\"agregarCurso()\">Agregar Curso</button>" +
+			    "</table>";
+			document.getElementById("cursos").innerHTML = out;
+		}
+		
+	}
+	xmlhttp.open("GET",url,true);
+//	xmlhttp.setRequestHeader('Authorization','Token '.concat(token));	
+	xmlhttp.send();
+}
+function borrarCurso(url){
+	xmlhttp=new XMLHttpRequest();
+	var x = confirm("Seguro que borramos?");
+  	if (x){
+		xmlhttp.onreadystatechange=function(){
+		  if (xmlhttp.readyState==4 && xmlhttp.status==204){
+			loadCursos('http://localhost:8000/cursos?format=json', dicc_alumnos, dicc_profesores);
+		  }
+		} 
+		xmlhttp.open("DELETE",url,true);
+		xmlhttp.send();
+	} else
+    	return false;
+}
+
+function llenaAlumnos(){
+	var select = document.getElementById("alumnos");
+	for (var i in dicc_alumnos){
+		var opt = document.createElement('option');
+    	opt.id = i;
+    	opt.value = i;
+    	opt.innerHTML = dicc_alumnos[i];
+    	select.appendChild(opt);
+	}
+}
+
+function llenaProfesores(){
+	var select = document.getElementById("profesores");
+	for (var i in dicc_profesores){
+		var opt = document.createElement('option');
+    	opt.id = i;
+    	opt.value = i;
+    	opt.innerHTML = dicc_profesores[i];
+    	select.appendChild(opt);
+	}
+
+}
+
+function modificarCurso(url, nombre, ano, profesores, alumnos){
+	dibujarFormulario();
+	document.getElementById("nombre").value = nombre;
+	document.getElementById("ano").value = ano;
+	llenaAlumnos();
+	var lista_alumnos = alumnos.split(",");
+	var longitud_lista = lista_alumnos.length;
+	for (var i = 0; i < longitud_lista; i++){
+		document.getElementById(lista_alumnos[i]).selected = true;
+	}	
+	llenaProfesores();
+	var lista_profesores = profesores.split(",");
+	var longitud_lista = lista_profesores.length;
+	for (var i = 0; i < longitud_lista; i++){
+		document.getElementById(lista_profesores[i]).selected = true;
+	}	
+	document.getElementById("modificar").innerHTML = "Cambiar";
+	document.getElementById("modificar").onclick = function () { modificarCursoReal(url) };
+}
+
+function modificarCursoReal(url){
+	xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function(){
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		loadCursos('http://localhost:8000/cursos?format=json', dicc_alumnos, dicc_profesores);
+	  }
+	} 
+	//var urlparam = url + "&name=" + document.getElementById("nombre").value + "&surname=" + document.getElementById("apellido").value;
+	var formElement = document.getElementById("formcursos");
+	xmlhttp.open("PUT",url,true);
+	xmlhttp.send(new FormData(formElement));
+
+}
+
+function agregarCursoReal(){
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function(){
+	  if (xmlhttp.readyState==4 && xmlhttp.status==201){
+		loadCursos('http://localhost:8000/cursos?format=json', dicc_alumnos, dicc_profesores);
+	  }
+	} 
+	var formElement = document.getElementById("formcursos");
+	xmlhttp.open("POST","http://localhost:8000/cursos/",true);
+	xmlhttp.send(new FormData(formElement));
+}
+
+function agregarCurso(){
+	dibujarFormulario();
+	llenaAlumnos();
+	llenaProfesores();
+	document.getElementById("modificar").innerHTML = "Agregar";
+	document.getElementById("modificar").onclick = function () { agregarCursoReal() };
+}
+
+function dibujarFormulario(){
+	var out = "<form id=\"formcursos\">"
+	out +=	"Nombre: <input id=\"nombre\" type=\"text\" name=\"name\" required/><br>"
+    out +=	"Año: <input id=\"ano\" type=\"text\" name=\"year\" required/><br>"
+   out +=	"Profesores: <select multiple id=\"profesores\" size=\"5\" name =\"profesores\"/></select><br>"
+     out +=	"Alumnos: <select multiple id=\"alumnos\" size=\"5\" name =\"alumnos\"/></select><br>"
+    out +=	"<button id=\"modificar\" type=\"button\">Modificar</button>"
+    out +=	"<button id=\"cancelar\" onclick=\"loadCursos('http://localhost:8000/cursos?format=json', dicc_alumnos, dicc_profesores);\" type=\"button\">Cancelar</button>"
+	out +=	"</form>" 
+	document.getElementById("cursos").innerHTML = out;
+}
+
+token = localStorage.getItem('token');
+var dicc_alumnos
+dicc_alumnos = loadAlumnos();
+var dicc_profesores
+dicc_profesores = loadProfesores();
+loadCursos('http://localhost:8000/cursos?format=json', dicc_alumnos, dicc_profesores);
+</script>
+</head>
+<body>
+
+<div id="cursos">
+</div>
+
+</body>
+</html>

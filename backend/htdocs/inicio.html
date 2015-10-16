@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<script>
+function armaFormulario(){
+	var out = "<form id=\"formlogin\">" +
+			"Usuario: <input type=\"text\" name=\"username\" required/><br>" +
+			"Clave: <input type=\"password\" name=\"password\" required/><br>" + 
+			"<button id=\"botonlogin\" onclick=\"loginAuth()\" type=\"button\">Ingresar</button>" +
+			"</form>"
+	document.getElementById("content").innerHTML = out;		
+}
+
+function armaListadodeLinks(){
+	var out ="<ul>" +
+	"<li><a href=\"profesores.html\">Profesores</a>" +
+	"<li><a href=\"alumnos.html\">Alumnos</a>" +
+	"<li><a href=\"cursos.html\">Cursos</a>" +
+	"</ul>"
+    document.getElementById("mensaje").innerHTML = "<button id=\"botonlogout\" onclick=\"logOut()\" type=\"button\">Log Out</button>";
+	document.getElementById("content").innerHTML = out;		
+
+}
+
+function logOut(){
+	xmlhttp=new XMLHttpRequest();
+	xmlhttp.open("GET","http://localhost:8000/api-auth/logout/",false);
+	xmlhttp.send();
+	alert (1 + " " + xmlhttp.readyState + " " + xmlhttp.status);
+	xmlhttp.onreadystatechange=function(){
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		alert (12);
+		armaFormulario();
+	  }
+	}
+}
+
+function loginAuth(){
+	var xmlhttp;
+	xmlhttp=new XMLHttpRequest();
+	xmlhttp.open("POST","http://localhost:8000/api-token-auth/",true);
+	var formElement = document.getElementById("formlogin");
+	xmlhttp.send(new FormData(formElement));
+	xmlhttp.onreadystatechange=function(){
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		var resp =  JSON.parse(xmlhttp.response);
+		token = resp.token;
+		localStorage.setItem('token', token);
+		alert(localStorage.getItem('token'));
+		armaListadodeLinks();
+	  }
+	  if (xmlhttp.readyState==4 && xmlhttp.status==400){
+	  	document.getElementById("mensaje").innerHTML = "Ingreso indebido";
+	  	armaFormulario();
+	  }	
+	} 
+
+}
+
+
+</script>
+</head>
+<body>
+<h1>Bienvenido al sistema</h1>
+<h3 id="mensaje"></h3>
+<div id="content">
+</div>
+
+<script>
+	armaFormulario();
+</script>
+
+</body>
+</html>

@@ -1,5 +1,10 @@
 #serializers.py
-from models import Establecimiento, Ciudad, Provincia, Rubro, Calificacion, Usuario
+from models import Establecimiento
+from models import Ciudad
+from models import Provincia
+from models import Rubro
+from models import Calificacion
+from models import Usuario
 from rest_framework.serializers import HyperlinkedModelSerializer
 
 
