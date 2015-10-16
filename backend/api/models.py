@@ -42,10 +42,10 @@ class Rubro(models.Model):
 		return self.nombre
 
 class Calificacion(models.Model):
-	puntaje	 		= 	models.IntegerField()
-	comentario 		=	models.CharField(max_length = 200)
-	establecimiento = 	models.ForeignKey("Establecimiento", related_name = "calificaciones")
-	usuario			=	models.ForeignKey("Usuario")
+	puntaje 			= 	models.IntegerField()
+	comentario 			= 	models.CharField(max_length = 200)
+	establecimiento 	= 	models.ForeignKey("Establecimiento", related_name = "calificaciones")
+	usuario 			= 	models.ForeignKey("Usuario")
 
 	class Meta:
 		unique_together = 	("establecimiento", "usuario")

@@ -19,18 +19,16 @@ from rest_framework.routers import SimpleRouter
 from rest_framework.authtoken import views
 
 router = SimpleRouter()
-router.register(r'establecimientos',EstablecimientoViewSet)
-router.register(r'ciudades',CiudadViewSet)
-router.register(r'provincias',ProvinciaViewSet)
-router.register(r'rubros',RubroViewSet)
-router.register(r'calificaciones',CalificacionViewSet)
-router.register(r'usuarios',UsuarioViewSet)
+router.register(r'establecimientos', 	EstablecimientoViewSet)
+router.register(r'ciudades', 			CiudadViewSet)
+router.register(r'provincias', 			ProvinciaViewSet)
+router.register(r'rubros', 				RubroViewSet)
+router.register(r'calificaciones', 		CalificacionViewSet)
+router.register(r'usuarios', 			UsuarioViewSet)
 
 
 urlpatterns = [
  	url(r'^admin/', include(admin.site.urls)),
- #   url(r'^alumnos/(?P<pk>[0-9]+)/cursos/$', cursos),
     url(r'^',include(router.urls)),	
- #   url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
  #   url(r'^api-token-auth/', views.obtain_auth_token),
  ]
