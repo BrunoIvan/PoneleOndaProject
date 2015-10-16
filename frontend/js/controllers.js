@@ -5,7 +5,7 @@ function mainController(){
 function altaEstablecimientoController(){
 	manageFormEstablecimientoTemplate();
 	escondeCiudad();
-	document.getElementById("provincia").onchange = function () { muestraCiudad() };
+	document.getElementById("provincia").onchange = function () {llenaCiudadesProv(document.getElementById("provincia").value); muestraCiudad() };
 	llenaProvincias();
 //	var formElement = document.getElementById("formprofesores");
 //	document.getElementById("dni_legajo").name = "dni";
@@ -26,8 +26,26 @@ function llenaProvincias(){
      	select.appendChild(opt);
 		for(i = 0; i < provincias.length; i++) {
 			var opt = document.createElement('option');
-	   		opt.value = provincias[i].url;
+	   		opt.value = provincias[i].id;
     		opt.innerHTML = provincias[i].nombre;
+    		select.appendChild(opt);
+		}
+	});	
+}	
+
+function llenaCiudadesProv(provincia){
+	getCiudadesxProvinciaModel(provincia, function (ciudades){   
+		var select = document.getElementById("ciudad");
+		var opt = document.createElement('option');
+	   	opt.value = "";
+    	opt.innerHTML = "Elegir una ciudad ...";
+    	opt.selected = true;
+ 	  	opt.disabled = true;
+     	select.appendChild(opt);
+		for(i = 0; i < ciudades.length; i++) {
+			var opt = document.createElement('option');
+	   		opt.value = ciudades[i].url;
+    		opt.innerHTML = ciudades[i].nombre;
     		select.appendChild(opt);
 		}
 	});	

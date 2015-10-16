@@ -12,7 +12,19 @@ function getObjetoModel(objeto, funcion){
 //	return resp;
 }
 
-
+function getCiudadesxProvinciaModel(provincia_pk, funcion){
+	var xmlhttp, resp;
+	xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function(){
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			resp = JSON.parse(xmlhttp.responseText);
+			funcion(resp)
+		}
+	}	
+	xmlhttp.open("GET","http://localhost:8000/provincias/" + provincia_pk + "/ciudades?format=json",true);
+	xmlhttp.send();
+//	return resp;
+}
 /*
 function getCursosDiccModel(funcion){
 	var xmlhttp;

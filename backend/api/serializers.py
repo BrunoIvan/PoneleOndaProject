@@ -20,6 +20,7 @@ class CiudadSerializer(HyperlinkedModelSerializer):
 class ProvinciaSerializer(HyperlinkedModelSerializer):
 	class Meta:
 		model = Provincia
+		fields = ('id', 'url', 'nombre')
 
 class RubroSerializer(HyperlinkedModelSerializer):
 	class Meta:
