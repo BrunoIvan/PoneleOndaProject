@@ -27,7 +27,7 @@ class Rubro(models.Model):
 class Calificacion(models.Model):
 	puntaje	 		= 	models.IntegerField()
 	comentario 		=	models.CharField(max_length = 200)
-	establecimiento = 	models.ForeignKey("Establecimiento")
+	establecimiento = 	models.ForeignKey("Establecimiento", related_name = "calificaciones")
 	usuario			=	models.ForeignKey("Usuario")
 	def __unicode__(self):return self.puntaje
 

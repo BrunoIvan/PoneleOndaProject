@@ -6,7 +6,7 @@ from rest_framework.serializers import HyperlinkedModelSerializer
 class EstablecimientoSerializer(HyperlinkedModelSerializer):
 	class Meta:
 		model = Establecimiento
-#		fields = ('url', 'name', 'surname', 'dni', 'cursos')
+		fields = ('url', 'nombre', 'direccion', 'ciudad', 'rubro', 'calificaciones')
 
 class CiudadSerializer(HyperlinkedModelSerializer):
 	class Meta:
