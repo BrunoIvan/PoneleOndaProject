@@ -1,9 +1,12 @@
 <form id="formestablecimiento">
 Provincia: <select  id="provincia" size="1" name ="provincia"></select><br>
-<label id="lbl_ciudad">Ciudad: </label><select  id="ciudad" size="1" name ="ciudad"></select><button id="nuevaciudad" type="button">Nueva</button><br>
+<div id="elegirciudad"><label id="lbl_ciudad">Ciudad: </label><select id="ciudad" size="1" name ="ciudad"></select><button id="nuevaciudad" type="button">Nueva</button></div>
+<div id="agregarciudad"><label id="lbl_ciudad">Ciudad: </label><input id="txt_ciudad" type="text" name ="ciudad"/><label id="lbl_codigo">C.Postal: </label><input id="codigo" type="text" name ="codigo"/><button id="btn_nuevaciudad" type="button">Agregar</button><button id="cancelaraltaciudad"  type="button">Cancelar</button></div>
 Nombre: <input id="nombre" type="text" name="nombre" required><br>
 Direccion: <input id="direccion" type="text" name="direccion" required><br>
 Rubro: <select  id="rubro" size="1" name ="rubro"></select><br>
-<button id="modificar" type="button">Agregar</button>
+Latitud: <input id="latitud" type="text" name="latitud" required>
+Longitud: <input id="longitud" type="text" name="longitud" required>
+<button id="agregar" type="button">Agregar</button>
 <button id="cancelar"  type="button">Cancelar</button>
 </form>

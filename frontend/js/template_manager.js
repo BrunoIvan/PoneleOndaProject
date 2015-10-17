@@ -1,18 +1,126 @@
 function manageFormEstablecimientoTemplate(){
 	html = getTemplate("templates/form_establecimiento.html");
 	printTemplate(html);
+	document.getElementById("btn_nuevaciudad").onclick = function () {
+		var prov = document.getElementById("provincia");
+		agregarCiudadController(document.getElementById("txt_ciudad").value, document.getElementById("codigo").value, prov.options[prov.selectedIndex].id, prov.options[prov.selectedIndex].value);
+		document.getElementById("nombre").focus();
+	}
+	document.getElementById("cancelaraltaciudad").onclick = function(){
+		muestraListaCiudades();
+	}
+	document.getElementById("agregar").onclick = function () {
+		var ciud = document.getElementById("ciudad");
+		var rubr = document.getElementById("rubro");
+		agregarEstablecimientoController(document.getElementById("nombre").value, document.getElementById("direccion").value, document.getElementById("latitud").value, document.getElementById("longitud").value, ciud.options[ciud.selectedIndex].value, rubr.options[rubr.selectedIndex].value);
+	}
+	deshabilitaGeolocalizacion();
+	listaRubrosController();
+	listaProvinciasController();
+	muestraListaCiudades();
+	deshabilitaCiudad();
+	document.getElementById("provincia").onchange = function () {
+		muestraListaCiudades();
+		listaCiudadesProvController(document.getElementById("provincia").value);
+		habilitaCiudad();
+		document.getElementById("nuevaciudad").onclick = function () {
+			muestraAgregarCiudades();
+	 	}
+	}
 }
 
-function escondeCiudad(){
-	document.getElementById("ciudad").style.visibility = 'hidden';
-	document.getElementById("lbl_ciudad").style.visibility = 'hidden';
-	document.getElementById("nuevaciudad").style.visibility = 'hidden';
+function muestraPostAltaCiudad(){
+	muestraListaCiudades();
+	marcaCiudad(document.getElementById("txt_ciudad").value);
 }
 
-function muestraCiudad(){
-	document.getElementById("ciudad").style.visibility = 'visible';
-	document.getElementById("lbl_ciudad").style.visibility = 'visible';
-	document.getElementById("nuevaciudad").style.visibility = 'visible';
+function marcaCiudad(ciudad){
+	var select = document.getElementById("ciudad");
+    for (var i = 0; i < select.options.length; ++i) {
+        if (select.options[i].text == ciudad){
+        	select.options[i].selected = true;
+        }
+    }
+}
+
+function llenaListaCiudades(ciudades){
+	var select = document.getElementById("ciudad");
+	select.innerHTML = "";
+	var opt = document.createElement('option');
+	opt.value = "";
+    opt.innerHTML = "Elegir una ciudad ...";
+    opt.selected = true;
+ 	opt.disabled = true;
+    select.appendChild(opt);
+	for(i = 0; i < ciudades.length; i++) {
+		var opt = document.createElement('option');
+		opt.value = ciudades[i].url;
+    	opt.innerHTML = ciudades[i].nombre;
+    	select.appendChild(opt);
+    }	
+}
+
+function llenaListaRubros(rubros){
+	var select = document.getElementById("rubro");
+	select.innerHTML = "";
+	var opt = document.createElement('option');
+	opt.value = "";
+    opt.innerHTML = "Elegir un rubro ...";
+    opt.selected = true;
+ 	opt.disabled = true;
+    select.appendChild(opt);
+	for(i = 0; i < rubros.length; i++) {
+		var opt = document.createElement('option');
+		opt.value = rubros[i].url;
+    	opt.innerHTML = rubros[i].nombre;
+    	select.appendChild(opt);
+    }	
+}
+
+function llenaListaProvincias(provincias){
+	var select = document.getElementById("provincia");
+	var opt = document.createElement('option');
+	opt.value = "";
+    opt.innerHTML = "Elegir una provincia ...";
+    opt.selected = true;
+ 	opt.disabled = true;
+    select.appendChild(opt);
+	for(i = 0; i < provincias.length; i++) {
+		var opt = document.createElement('option');
+		opt.id = provincias[i].url;
+    	opt.value = provincias[i].id;
+    	opt.innerHTML = provincias[i].nombre;
+    	select.appendChild(opt);
+	}
+}
+
+function muestraListaCiudades(){
+	document.getElementById("agregarciudad").style.display = "none"
+	document.getElementById("elegirciudad").style.display = "block";
+}
+
+function muestraAgregarCiudades(){
+	document.getElementById("txt_ciudad").value = "";
+	document.getElementById("codigo").value = "";
+	document.getElementById("elegirciudad").style.display = "none";
+	document.getElementById("agregarciudad").style.display = "block"
+}
+
+function deshabilitaGeolocalizacion(){
+	document.getElementById("latitud").value = 0.0;
+	document.getElementById("latitud").disabled = true;
+	document.getElementById("longitud").value = 0.0;
+	document.getElementById("longitud").disabled = true;
+}
+
+function deshabilitaCiudad(){
+	document.getElementById("ciudad").readOnly = true;
+	document.getElementById("nuevaciudad").disabled = true;
+}
+
+function habilitaCiudad(){
+	document.getElementById("ciudad").readOnly = false;
+	document.getElementById("nuevaciudad").disabled = false;
 }
 
 /*

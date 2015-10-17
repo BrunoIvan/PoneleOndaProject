@@ -4,53 +4,53 @@ function mainController(){
 
 function altaEstablecimientoController(){
 	manageFormEstablecimientoTemplate();
-	escondeCiudad();
-	document.getElementById("provincia").onchange = function () {llenaCiudadesProv(document.getElementById("provincia").value); muestraCiudad() };
-	llenaProvincias();
-//	var formElement = document.getElementById("formprofesores");
-//	document.getElementById("dni_legajo").name = "dni";
-//	document.getElementById("modificar").innerHTML = "Agregar";
-//	document.getElementById("modificar").type = "submit";
-//	document.getElementById("cancelar").onclick = function () { profesoresController() };
+ }
 
+function agregarEstablecimientoController(nombre, direccion, latitud, longitud, ciudad, rubro){
+	var formData = new FormData();
+	formData.append("nombre", nombre);
+	formData.append("direccion", direccion);
+	formData.append("latitud", latitud);
+	formData.append("longitud", longitud);
+	formData.append("ciudad", ciudad);
+	formData.append("rubro", rubro);
+	//var formElement = document.getElementById("formestablecimiento");
+	agregarObjetoModel("establecimientos", formData, function(){
+		alert('Establecimiento dado de alta con éxito');
+	});	
 }
 
-function llenaProvincias(){
-	getObjetoModel("provincias", function (provincias){   
-		var select = document.getElementById("provincia");
-		var opt = document.createElement('option');
-	   	opt.value = "";
-    	opt.innerHTML = "Elegir una provincia ...";
-    	opt.selected = true;
- 	  	opt.disabled = true;
-     	select.appendChild(opt);
-		for(i = 0; i < provincias.length; i++) {
-			var opt = document.createElement('option');
-	   		opt.value = provincias[i].id;
-    		opt.innerHTML = provincias[i].nombre;
-    		select.appendChild(opt);
-		}
+function agregarCiudadController(ciudad, codigo, provincia_url, provincia_id){
+	var formData = new FormData();
+	formData.append("nombre", ciudad);
+	formData.append("codigo_postal", codigo);
+	formData.append("provincia", provincia_url);
+	agregarObjetoModel("ciudades", formData, function(){
+		getCiudadesxProvinciaModel(provincia_id, function (ciudades){   
+			llenaListaCiudades(ciudades);
+			muestraPostAltaCiudad();
+		});	
+	}); 
+}
+
+function listaProvinciasController(){
+	getObjetoModel("provincias", function (provincias){
+		llenaListaProvincias(provincias);   
 	});	
 }	
 
-function llenaCiudadesProv(provincia){
+function listaCiudadesProvController(provincia){
 	getCiudadesxProvinciaModel(provincia, function (ciudades){   
-		var select = document.getElementById("ciudad");
-		var opt = document.createElement('option');
-	   	opt.value = "";
-    	opt.innerHTML = "Elegir una ciudad ...";
-    	opt.selected = true;
- 	  	opt.disabled = true;
-     	select.appendChild(opt);
-		for(i = 0; i < ciudades.length; i++) {
-			var opt = document.createElement('option');
-	   		opt.value = ciudades[i].url;
-    		opt.innerHTML = ciudades[i].nombre;
-    		select.appendChild(opt);
-		}
+		llenaListaCiudades(ciudades);
 	});	
 }	
 
+function listaRubrosController(){
+	getObjetoModel("rubros", function (rubros){
+		llenaListaRubros(rubros);   
+	});	
+
+}
 /*
 function manejoResultadoConsultaCursos(cursos) {
 	manageListaCursosTemplate(cursos);

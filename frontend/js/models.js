@@ -25,6 +25,19 @@ function getCiudadesxProvinciaModel(provincia_pk, funcion){
 	xmlhttp.send();
 //	return resp;
 }
+
+function agregarObjetoModel(objeto, formData, funcion){
+	var xmlhttp = new XMLHttpRequest();
+	var resp = false;
+	xmlhttp.onreadystatechange=function(){
+	  if (xmlhttp.readyState==4 && xmlhttp.status==201){
+		funcion(resp);
+	  }
+	} 
+	xmlhttp.open("POST","http://localhost:8000/" + objeto + "/",true);
+	xmlhttp.send(formData);
+}
+
 /*
 function getCursosDiccModel(funcion){
 	var xmlhttp;
