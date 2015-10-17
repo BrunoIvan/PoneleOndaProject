@@ -4,15 +4,21 @@ function manageFormEstablecimientoTemplate(){
 }
 
 function escondeCiudad(){
-	document.getElementById("ciudad").style.visibility = 'hidden';
-	document.getElementById("lbl_ciudad").style.visibility = 'hidden';
-	document.getElementById("nuevaciudad").style.visibility = 'hidden';
+	document.getElementById("campo_ciudad").style.visibility = 'hidden';
+	document.getElementById("label_ciudad").style.visibility = 'hidden';
+	document.getElementById("group_ciudad").style.visibility = 'hidden';
+	document.getElementById("id_ciudad").style.visibility = 'hidden';
+	document.getElementById("span_ciudad").style.visibility = 'hidden';
+	document.getElementById("nueva_ciudad").style.visibility = 'hidden';
 }
 
 function muestraCiudad(){
-	document.getElementById("ciudad").style.visibility = 'visible';
-	document.getElementById("lbl_ciudad").style.visibility = 'visible';
-	document.getElementById("nuevaciudad").style.visibility = 'visible';
+	document.getElementById("campo_ciudad").style.visibility = 'visible';
+	document.getElementById("label_ciudad").style.visibility = 'visible';
+	document.getElementById("group_ciudad").style.visibility = 'visible';
+	document.getElementById("id_ciudad").style.visibility = 'visible';
+	document.getElementById("span_ciudad").style.visibility = 'visible';
+	document.getElementById("nueva_ciudad").style.visibility = 'visible';
 }
 
 /*

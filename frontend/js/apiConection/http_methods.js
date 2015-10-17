@@ -1,29 +1,50 @@
-function put_recurso(url, json){
+function put_recurso(url, json, funcion){
     var recurso = new XMLHttpRequest();
+    recurso.onreadystatechange = function(){
+        if (recurso.readyState == 4 && recurso.status == 200){
+            var respuesta = JSON.parse(recurso.responseText);
+            funcion(respuesta)
+        }
+    }
     recurso.open('PUT', url, false);
     recurso.setRequestHeader('Content-type', 'application/json');
     recurso.send(json);
-    return recurso;
 };
 
-function delete_recurso(url){
+function delete_recurso(url, funcion){
     var recurso = new XMLHttpRequest();
+    recurso.onreadystatechange = function(){
+        if (recurso.readyState == 4 && recurso.status == 200){
+            var respuesta = JSON.parse(recurso.responseText);
+            funcion(respuesta)
+        }
+    }
     recurso.open('DELETE', url, false);
     recurso.send();
-    return recurso;
 }
 
-function post_recurso(url, json){
+function post_recurso(url, json, funcion){
     var recurso = new XMLHttpRequest();
+    recurso.onreadystatechange = function(){
+        if (recurso.readyState == 4 && recurso.status == 201){
+            var respuesta = JSON.parse(recurso.responseText);
+            funcion(respuesta)
+        }
+    }
     recurso.open('POST', url, false);
     recurso.setRequestHeader('Content-type', 'application/json');
     recurso.send(json);
-    return recurso;
+    return recurso
 };
 
-function get_recurso(url){
+function get_recurso(url, funcion){
 	var recurso = new XMLHttpRequest();
+    recurso.onreadystatechange = function(){
+        if (recurso.readyState == 4 && recurso.status == 200){
+            var respuesta = JSON.parse(recurso.responseText);
+            funcion(respuesta)
+        }
+    }
 	recurso.open('GET', url, false);
     recurso.send();
-    return recurso;
 };
