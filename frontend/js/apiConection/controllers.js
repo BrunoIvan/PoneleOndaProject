@@ -1,5 +1,6 @@
 function mainController(){
-	printTemplateMenu(getTemplate("templates/menu.html"));
+	printTemplate(getTemplate("js/apiConection/templates/altaEstablecimiento.html"));
+	llenaProvincias();
 }
 
 function altaEstablecimientoController(){
@@ -16,19 +17,31 @@ function altaEstablecimientoController(){
 }
 
 function llenaProvincias(){
+	provincias 	= 	get_recurso('http://127.0.0.1:8000/provincias/?format=json');
+	provincias 	= 	JSON.parse(provincias.response);
+	opciones 	= 	document.getElementById('id_provincia');
+	for(i = 0; i < provincias.length; i++) {
+		var opcion 		= 	document.createElement('option');
+		opcion.value 	= 	provincias[i].id;
+		opcion.text 	= 	provincias[i].nombre;
+		opciones.appendChild(opcion);
+	}
+}
+
+function llenaProvinciasfer(){
 	getObjetoModel("provincias", function (provincias){   
 		var select = document.getElementById("provincia");
 		var opt = document.createElement('option');
-	   	opt.value = "";
-    	opt.innerHTML = "Elegir una provincia ...";
-    	opt.selected = true;
- 	  	opt.disabled = true;
-     	select.appendChild(opt);
+		opt.value = "";
+		opt.innerHTML = "Elegir una provincia ...";
+		opt.selected = true;
+		opt.disabled = true;
+		select.appendChild(opt);
 		for(i = 0; i < provincias.length; i++) {
 			var opt = document.createElement('option');
-	   		opt.value = provincias[i].id;
-    		opt.innerHTML = provincias[i].nombre;
-    		select.appendChild(opt);
+			opt.value = provincias[i].id;
+			opt.innerHTML = provincias[i].nombre;
+			select.appendChild(opt);
 		}
 	});	
 }	
@@ -37,16 +50,16 @@ function llenaCiudadesProv(provincia){
 	getCiudadesxProvinciaModel(provincia, function (ciudades){   
 		var select = document.getElementById("ciudad");
 		var opt = document.createElement('option');
-	   	opt.value = "";
-    	opt.innerHTML = "Elegir una ciudad ...";
-    	opt.selected = true;
- 	  	opt.disabled = true;
-     	select.appendChild(opt);
+		opt.value = "";
+		opt.innerHTML = "Elegir una ciudad ...";
+		opt.selected = true;
+		opt.disabled = true;
+		select.appendChild(opt);
 		for(i = 0; i < ciudades.length; i++) {
 			var opt = document.createElement('option');
-	   		opt.value = ciudades[i].url;
-    		opt.innerHTML = ciudades[i].nombre;
-    		select.appendChild(opt);
+			opt.value = ciudades[i].url;
+			opt.innerHTML = ciudades[i].nombre;
+			select.appendChild(opt);
 		}
 	});	
 }	
@@ -83,29 +96,29 @@ function cursosController(){
 
 function borrarProfesorController(url){
 	var x = confirm("Seguro que borramos?");
-  	if (x){
-  		borrarObjetoModel(url);
+	if (x){
+		borrarObjetoModel(url);
 		profesoresController();
 	} else
-    	return false;
+		return false;
 }
 
 function borrarAlumnoController(url){
 	var x = confirm("Seguro que borramos?");
-  	if (x){
-  		borrarObjetoModel(url);
+	if (x){
+		borrarObjetoModel(url);
 		alumnosController();
 	} else
-    	return false;
+		return false;
 }
 
 function borrarCursoController(url){
 	var x = confirm("Seguro que borramos?");
-  	if (x){
-  		borrarObjetoModel(url);
+	if (x){
+		borrarObjetoModel(url);
 		cursosController();
 	} else
-    	return false;
+		return false;
 }
 
 function llenaCursos(){
@@ -113,10 +126,10 @@ function llenaCursos(){
 	var select = document.getElementById("cursos");
 	for (var i in dicc_cursos){
 		var opt = document.createElement('option');
-    	opt.id = i;
-    	opt.value = i;
-    	opt.innerHTML = dicc_cursos[i];
-    	select.appendChild(opt);
+		opt.id = i;
+		opt.value = i;
+		opt.innerHTML = dicc_cursos[i];
+		select.appendChild(opt);
 	}
 }	
 
@@ -125,10 +138,10 @@ function llenaPersonas(persona){
 	var select = document.getElementById(persona);
 	for (var i in dicc_personas){
 		var opt = document.createElement('option');
-    	opt.id = i;
-    	opt.value = i;
-    	opt.innerHTML = dicc_personas[i];
-    	select.appendChild(opt);
+		opt.id = i;
+		opt.value = i;
+		opt.innerHTML = dicc_personas[i];
+		select.appendChild(opt);
 	}
 }	
 

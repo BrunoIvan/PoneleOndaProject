@@ -1,8 +1,9 @@
-from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.db import models
 from django.db.models import Sum
 from django.db.models import Count
+
 
 class Establecimiento(models.Model):
 	nombre		=	models.CharField(max_length = 200)
@@ -21,6 +22,7 @@ class Establecimiento(models.Model):
 		cantidad 		= 	calificaciones.aggregate(Count('puntaje'))
 		return suma['puntaje__sum'] / float(cantidad['puntaje__count'])
 
+
 class Ciudad(models.Model):
 	nombre			=	models.CharField(max_length = 200)
 	codigo_postal	=	models.CharField(max_length = 8)
@@ -29,17 +31,20 @@ class Ciudad(models.Model):
 	def __unicode__(self):
 		return self.nombre
 
+
 class Provincia(models.Model):
 	nombre	 = 	models.CharField(max_length = 50)
 	
 	def __unicode__(self):
 		return self.nombre
 
+
 class Rubro(models.Model):
 	nombre	 = 	models.CharField(max_length = 200)
 	
 	def __unicode__(self):
 		return self.nombre
+
 
 class Calificacion(models.Model):
 	puntaje 			= 	models.IntegerField()
@@ -52,6 +57,7 @@ class Calificacion(models.Model):
 	
 	def __unicode__(self):
 		return "%i" % self.puntaje
+
 
 class Usuario(models.Model):
 	fb_id		=	models.CharField(max_length = 200, null = True, unique = True)
