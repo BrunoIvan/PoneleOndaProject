@@ -74,6 +74,61 @@ function altaCiudadTemplate(resultado){
 	}
 }
 
+function EstablecimientosTemplate(establecimientos){
+	document.getElementById('content').innerHTML = '';
+	for (var i = 0; i < establecimientos.results.length; i++) {
+		var html = getTemplate("js/apiConection/templates/establecimiento.html");
+		document.getElementById('content').innerHTML += html;
+		nombre = establecimientos.results[i].nombre;
+		document.getElementById('nombre').innerHTML = nombre;
+		id = establecimientos.results[i].id;
+		document.getElementById('nombre').id = id;
+	}
+	var html = getTemplate("js/apiConection/templates/paginacion.html");
+	document.getElementById('content').innerHTML += html;
+	var prev = establecimientos.previous;
+	if (prev == null) {
+		var actual = 1;
+		document.getElementById('paginasAnteriores').remove();
+	} else {
+		if (prev[prev.length-1] > 1) {
+			var prev_n = parseInt(prev[prev.length-1]);
+		} else {
+			var prev_n = 1;
+		}
+		var actual = prev_n+1;
+		var primera = 1;
+		document.getElementById('paginaAnterior').value = actual-1;
+		document.getElementById('paginaAnterior').onclick = function () {
+			EstablecimientosView(actual-1);
+		}
+		document.getElementById('paginaPrimera').value = 1;
+		document.getElementById('paginaPrimera').onclick = function () {
+			EstablecimientosView(primera);
+		} 
+	}
+	var next = establecimientos.next;
+	if (next == null){
+		var ultima = actual;
+		document.getElementById('paginasSiguientes').remove();
+	} else {
+		var next_n = parseInt(next[next.length-1]);
+		var count = establecimientos.count;
+		var pagsxpag = establecimientos.results.length;
+		var ultima = (count/pagsxpag);
+		document.getElementById('paginaSiguiente').value = actual+1;
+		document.getElementById('paginaSiguiente').onclick = function () {
+			EstablecimientosView(actual+1);
+		}
+		document.getElementById('paginaUltima').value = ultima;
+		document.getElementById('paginaUltima').onclick = function () {
+			EstablecimientosView(ultima);
+		}
+	}
+	document.getElementById('paginaActual').innerHTML = 'Página '+actual+' de '+ultima;
+	document.getElementsByTagName('title')[0].text = "Metele Onda - Listado de establecimientos";
+};
+
 /*
 function manageListaCursosTemplate(cursos){
 	var partial = "";
