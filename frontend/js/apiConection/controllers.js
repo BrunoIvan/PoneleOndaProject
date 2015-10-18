@@ -1,5 +1,6 @@
 function mainController(){
-	printTemplateMenu(getTemplate("templates/menu.html"));
+	printTemplate(getTemplate("js/apiConection/templates/altaEstablecimiento.html"));
+	llenaProvincias();
 }
 
 function altaEstablecimientoController(){
@@ -83,29 +84,29 @@ function cursosController(){
 
 function borrarProfesorController(url){
 	var x = confirm("Seguro que borramos?");
-  	if (x){
-  		borrarObjetoModel(url);
+	if (x){
+		borrarObjetoModel(url);
 		profesoresController();
 	} else
-    	return false;
+		return false;
 }
 
 function borrarAlumnoController(url){
 	var x = confirm("Seguro que borramos?");
-  	if (x){
-  		borrarObjetoModel(url);
+	if (x){
+		borrarObjetoModel(url);
 		alumnosController();
 	} else
-    	return false;
+		return false;
 }
 
 function borrarCursoController(url){
 	var x = confirm("Seguro que borramos?");
-  	if (x){
-  		borrarObjetoModel(url);
+	if (x){
+		borrarObjetoModel(url);
 		cursosController();
 	} else
-    	return false;
+		return false;
 }
 
 function llenaCursos(){
@@ -113,10 +114,10 @@ function llenaCursos(){
 	var select = document.getElementById("cursos");
 	for (var i in dicc_cursos){
 		var opt = document.createElement('option');
-    	opt.id = i;
-    	opt.value = i;
-    	opt.innerHTML = dicc_cursos[i];
-    	select.appendChild(opt);
+		opt.id = i;
+		opt.value = i;
+		opt.innerHTML = dicc_cursos[i];
+		select.appendChild(opt);
 	}
 }	
 
@@ -125,10 +126,10 @@ function llenaPersonas(persona){
 	var select = document.getElementById(persona);
 	for (var i in dicc_personas){
 		var opt = document.createElement('option');
-    	opt.id = i;
-    	opt.value = i;
-    	opt.innerHTML = dicc_personas[i];
-    	select.appendChild(opt);
+		opt.id = i;
+		opt.value = i;
+		opt.innerHTML = dicc_personas[i];
+		select.appendChild(opt);
 	}
 }	
 

@@ -1,5 +1,5 @@
 function manageFormEstablecimientoTemplate(){
-	html = getTemplate("templates/form_establecimiento.html");
+	html = getTemplate("templates/altaEstablecimiento.html");
 	printTemplate(html);
 	document.getElementById("btn_nuevaciudad").onclick = function () {
 		var prov = document.getElementById("provincia");
