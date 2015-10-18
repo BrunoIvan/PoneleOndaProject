@@ -30,6 +30,8 @@ class Ciudad(models.Model):
 
 	class Meta:
 		unique_together = 	("nombre", "provincia")
+		ordering = ('nombre',)
+
 
 	def __unicode__(self):
 		return self.nombre
@@ -44,7 +46,10 @@ class Provincia(models.Model):
 
 class Rubro(models.Model):
 	nombre	 = 	models.CharField(max_length = 200)
-	
+
+	class Meta:
+		ordering = ('nombre',)
+
 	def __unicode__(self):
 		return self.nombre
 
