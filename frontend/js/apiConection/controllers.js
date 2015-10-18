@@ -25,6 +25,11 @@ function altaEstablecimientoController(){
 	)
 };
 
+function EstablecimientosView(){
+	printTemplate(getTemplate("js/apiConection/templates/establecimiento.html"));
+	document.getElementsByTagName('title')[0].text = "Metele Onda - Listado de establecimientos";
+};
+
 function altaCiudadView(){
 	var provincia = document.getElementById('id_provincia').selectedOptions[0];
 	var index = document.getElementById('id_provincia').selectedIndex;
