@@ -3,45 +3,7 @@ function altaEstablecimientoView(){
 	document.getElementsByTagName('title')[0].text = "Metele Onda - Crear establecimiento";
 	escondeCiudad();
 	llenaProvincias();
-	var opciones 	  = document.getElementById('id_provincia');
-	opciones.onchange = refrescaCiudades;
 	llenaRubros();
-};
-
-function altaCiudadView(){
-	var provincia = document.getElementById('id_provincia').selectedOptions[0];
-	var index = document.getElementById('id_provincia').selectedIndex;
-	printTemplate(getTemplate("js/apiConection/templates/altaCiudad.html"));
-	document.getElementsByTagName('title')[0].text 		= "Metele Onda - Crear ciudad";
-	document.getElementById('provincia').textContent 	= provincia.text;
-	document.getElementById('provincia').value 			= provincia.value;
-	document.getElementById('provincia').index 			= index;
-	document.getElementById('desistCiudad').onclick 	= altaEstablecimientoView;
-};
-
-function altaCiudadController(){
-	var json = {};
-	form = document.getElementById('formCiudad');
-	json['nombre'] 		= 	form.nombre.value;
-	json['codigo_postal'] 	= 	form.codigo_postal.value;
-	json['provincia'] 		= 	document.getElementById('provincia').value;
-	return post_recurso('http://127.0.0.1:8000/ciudades/?format=json',
-		JSON.stringify(json),
-		function (resultado){
-			var index = document.getElementById('provincia').index;
-			var ciudad = document.getElementById('id_nombre').value;
-			altaEstablecimientoView();
-			document.getElementById('id_provincia').selectedIndex = index;
-			refrescaCiudades();
-			ciudades = document.getElementById('id_ciudad');
-			for (var i = 0; i < ciudades.length; i++) {
-				if (ciudades[i].text === ciudad){
-					ciudades.selectedIndex = i;
-					break;
-				}
-			}
-		}
-	)
 };
 
 function altaEstablecimientoController(){
@@ -63,26 +25,36 @@ function altaEstablecimientoController(){
 	)
 };
 
+function altaCiudadView(){
+	var provincia = document.getElementById('id_provincia').selectedOptions[0];
+	var index = document.getElementById('id_provincia').selectedIndex;
+	printTemplate(getTemplate("js/apiConection/templates/altaCiudad.html"));
+	document.getElementsByTagName('title')[0].text 		= "Metele Onda - Crear ciudad";
+	document.getElementById('provincia').textContent 	= provincia.text;
+	document.getElementById('provincia').value 			= provincia.value;
+	document.getElementById('provincia').index 			= index;
+	document.getElementById('desistCiudad').onclick 	= altaEstablecimientoView;
+};
+
+function altaCiudadController(){
+	var json = {};
+	form = document.getElementById('formCiudad');
+	json['nombre'] 		= 	form.nombre.value;
+	json['codigo_postal'] 	= 	form.codigo_postal.value;
+	json['provincia'] 		= 	document.getElementById('provincia').value;
+	post_recurso('http://127.0.0.1:8000/ciudades/?format=json',
+		JSON.stringify(json),
+		altaCiudadTemplate
+	)
+};
+
 function refrescaCiudades(){
 	var index 	= 	document.getElementById('id_provincia').selectedIndex;
 	if (index > 0){
 		muestraCiudad();
 		var id 		= 	document.getElementById('id_provincia').options[index].id;
 		get_recurso('http://127.0.0.1:8000/provincias/'+id+'/ciudades/?format=json', 
-			function (ciudades){
-				var ciudades_x 	= document.getElementById('id_ciudad').options;
-				while(ciudades_x.length > 1){
-					ciudades_x[1].remove();
-				}
-				var opciones 	= 	document.getElementById('id_ciudad');
-				for(i = 0; i < ciudades.length; i++) {
-					var opcion 	= 	document.createElement('option');
-					opcion.value= 	ciudades[i].url;
-					opcion.id 	= 	ciudades[i].id;
-					opcion.text = 	ciudades[i].nombre;
-					opciones.appendChild(opcion);
-				}
-			}
+		refrescaCiudadesTemplate
 		)
 	} else {
 		escondeCiudad();
@@ -91,31 +63,13 @@ function refrescaCiudades(){
 
 function llenaProvincias(){
 	get_recurso('http://127.0.0.1:8000/provincias/?format=json', 
-		function (provincias){
-			var opciones 		= document.getElementById('id_provincia');
-			for(i = 0; i < provincias.length; i++) {
-				var opcion 		= 	document.createElement('option');
-				opcion.value 	= 	provincias[i].url;
-				opcion.id 		= 	provincias[i].id;
-				opcion.text 	= 	provincias[i].nombre;
-				opciones.appendChild(opcion);
-			}
-		}
+	llenaProvinciasTemplate
 	)
 };
 
 function llenaRubros(){
 	get_recurso('http://127.0.0.1:8000/rubros/?format=json', 
-		function (rubros){
-			var opciones 	= 	document.getElementById('id_rubro');
-			for(i = 0; i < rubros.length; i++) {
-				var opcion 		= 	document.createElement('option');
-				opcion.value 	= 	rubros[i].url;
-				opcion.id 		= 	rubros[i].id;
-				opcion.text 	= 	rubros[i].nombre;
-				opciones.appendChild(opcion);
-			}
-		}
+	llenaRubrosTemplate
 	)
 };
 

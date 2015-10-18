@@ -21,6 +21,59 @@ function muestraCiudad(){
 	document.getElementById("nueva_ciudad").style.visibility = 'visible';
 }
 
+function llenaRubrosTemplate(rubros){
+	var opciones 	= 	document.getElementById('id_rubro');
+	for(i = 0; i < rubros.length; i++) {
+		var opcion 		= 	document.createElement('option');
+		opcion.value 	= 	rubros[i].url;
+		opcion.id 		= 	rubros[i].id;
+		opcion.text 	= 	rubros[i].nombre;
+		opciones.appendChild(opcion);
+	}
+}
+
+function llenaProvinciasTemplate(provincias){
+	var opciones 		= document.getElementById('id_provincia');
+	opciones.onchange = refrescaCiudades;
+	for(i = 0; i < provincias.length; i++) {
+		var opcion 		= 	document.createElement('option');
+		opcion.value 	= 	provincias[i].url;
+		opcion.id 		= 	provincias[i].id;
+		opcion.text 	= 	provincias[i].nombre;
+		opciones.appendChild(opcion);
+	}
+}
+
+function refrescaCiudadesTemplate(ciudades){
+	var ciudades_x 	= document.getElementById('id_ciudad').options;
+	while(ciudades_x.length > 1){
+		ciudades_x[1].remove();
+	}
+	var opciones 	= 	document.getElementById('id_ciudad');
+	for(i = 0; i < ciudades.length; i++) {
+		var opcion 	= 	document.createElement('option');
+		opcion.value= 	ciudades[i].url;
+		opcion.id 	= 	ciudades[i].id;
+		opcion.text = 	ciudades[i].nombre;
+		opciones.appendChild(opcion);
+	}
+}
+
+function altaCiudadTemplate(resultado){
+	var index = document.getElementById('provincia').index;
+	var ciudad = document.getElementById('id_nombre').value;
+	altaEstablecimientoView();
+	document.getElementById('id_provincia').selectedIndex = index;
+	refrescaCiudades();
+	ciudades = document.getElementById('id_ciudad');
+	for (var i = 0; i < ciudades.length; i++) {
+		if (ciudades[i].text === ciudad){
+			ciudades.selectedIndex = i;
+			break;
+		}
+	}
+}
+
 /*
 function manageListaCursosTemplate(cursos){
 	var partial = "";
