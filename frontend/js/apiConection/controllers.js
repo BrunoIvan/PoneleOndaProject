@@ -9,10 +9,14 @@ function altaEstablecimientoView(){
 };
 
 function altaCiudadView(){
+	var provincia = document.getElementById('id_provincia').selectedOptions[0];
+	var index = document.getElementById('id_provincia').selectedIndex;
 	printTemplate(getTemplate("js/apiConection/templates/altaCiudad.html"));
-	document.getElementsByTagName('title')[0].text = "Metele Onda - Crear ciudad";
-	llenaProvincias();
-	document.getElementById('volverAtras').onclick = altaEstablecimientoView;
+	document.getElementsByTagName('title')[0].text 		= "Metele Onda - Crear ciudad";
+	document.getElementById('provincia').textContent 	= provincia.text;
+	document.getElementById('provincia').value 			= provincia.value;
+	document.getElementById('provincia').index 			= index;
+	document.getElementById('desistCiudad').onclick 	= altaEstablecimientoView;
 };
 
 function altaCiudadController(){
@@ -20,12 +24,22 @@ function altaCiudadController(){
 	form = document.getElementById('formCiudad');
 	json['nombre'] 		= 	form.nombre.value;
 	json['codigo_postal'] 	= 	form.codigo_postal.value;
-	json['provincia'] 		= 	form.provincia.selectedOptions[0].value;
+	json['provincia'] 		= 	document.getElementById('provincia').value;
 	return post_recurso('http://127.0.0.1:8000/ciudades/?format=json',
 		JSON.stringify(json),
 		function (resultado){
-			printTemplate(getTemplate("js/apiConection/templates/altaCiudadOk.html"));
-			document.getElementsByTagName('title')[0].text = "Metele Onda - Ciudad creada"
+			var index = document.getElementById('provincia').index;
+			var ciudad = document.getElementById('id_nombre').value;
+			altaEstablecimientoView();
+			document.getElementById('id_provincia').selectedIndex = index;
+			refrescaCiudades();
+			ciudades = document.getElementById('id_ciudad');
+			for (var i = 0; i < ciudades.length; i++) {
+				if (ciudades[i].text === ciudad){
+					ciudades.selectedIndex = i;
+					break;
+				}
+			}
 		}
 	)
 };
