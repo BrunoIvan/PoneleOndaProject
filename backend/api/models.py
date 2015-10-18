@@ -27,7 +27,10 @@ class Ciudad(models.Model):
 	nombre			=	models.CharField(max_length = 200)
 	codigo_postal	=	models.CharField(max_length = 8)
 	provincia		= 	models.ForeignKey("Provincia")
-	
+
+	class Meta:
+		unique_together = 	("nombre", "provincia")
+
 	def __unicode__(self):
 		return self.nombre
 

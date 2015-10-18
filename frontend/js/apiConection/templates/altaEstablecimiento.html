@@ -1,0 +1,39 @@
+<div class="panel panel-info">
+	<div class="text-center panel-heading">Crear establecimiento</div>
+	<div class="panel-body" id="cuerpo-logueo">
+		<form method="POST" id="formEstablecimiento">
+			<div id="campo_nombre" class="form-group has-default">
+				<label id="label_provincia" for="id_nombre">Nombre</label>
+				<input required id="id_nombre" name="nombre" class="form-control" placeholder="Nombre" type="text">
+			</div>
+			<div id="campo_provincia" class="form-group has-default">
+				<label id="label_provincia" for="id_provincia">Elija una provincia</label>
+				<select required id="id_provincia" name="provincia" class="form-control">
+					<option>Seleccionar provincia</option>
+				</select>
+			</div>
+			<div id="campo_ciudad" class="form-group has-default">
+				<label id="label_ciudad" for="id_ciudad">Elija una ciudad</label>
+				<div id="group_ciudad" class="input-group">
+					<select required id="id_ciudad" name="ciudad" class="form-control">
+						<option>Seleccionar ciudad</option>
+					</select>
+					<span id="span_ciudad" class="input-group-btn">
+						<button id="nueva_ciudad" onclick="altaCiudadView()" type="button" class="btn btn-default">Nueva</button>
+					</span>
+				</div>
+			</div>
+			<div id="campo_direccion" class="form-group has-default">
+				<label id="label_direccion" for="id_direccion">Dirección</label>
+				<input required id="id_direccion" name="direccion" class="form-control" placeholder="Direccion" type="text">
+			</div>
+			<div id="campo_rubro" class="form-group has-default">
+				<label id="label_rubro" for="id_rubro">Elija un rubro</label>
+				<select required id="id_rubro" name="rubro" class="form-control">
+					<option>Seleccionar rubro</option>
+				</select>
+			</div>
+			<input id="submitEstablecimiento" type="button" class="btn btn-info pull-right" onclick="altaEstablecimientoController()" value="Crear establecimiento">
+		</form>
+	</div>
+</div>

@@ -16,7 +16,7 @@ class EstablecimientoSerializer(HyperlinkedModelSerializer):
 class CiudadSerializer(HyperlinkedModelSerializer):
 	class Meta:
 		model = Ciudad
-		fields = ('id', 'url', 'nombre')
+		fields = ('id', 'url', 'nombre', 'provincia', 'codigo_postal')
 
 class ProvinciaSerializer(HyperlinkedModelSerializer):
 	class Meta:
