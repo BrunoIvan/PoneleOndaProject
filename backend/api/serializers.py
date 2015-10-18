@@ -5,6 +5,7 @@ from models import Provincia
 from models import Rubro
 from models import Calificacion
 from models import Usuario
+
 from rest_framework.serializers import HyperlinkedModelSerializer
 
 
@@ -15,7 +16,7 @@ class EstablecimientoSerializer(HyperlinkedModelSerializer):
 class CiudadSerializer(HyperlinkedModelSerializer):
 	class Meta:
 		model = Ciudad
-#		fields = ('url', 'name', 'surname', 'legajo', 'cursos')
+		fields = ('id', 'url', 'nombre')
 
 class ProvinciaSerializer(HyperlinkedModelSerializer):
 	class Meta:
