@@ -77,13 +77,17 @@ function altaCiudadTemplate(resultado){
 function EstablecimientosTemplate(establecimientos){
 	document.getElementById('content').innerHTML = '';
 	for (var i = 0; i < establecimientos.results.length; i++) {
+		establecimiento = establecimientos.results[i];
 		var html = getTemplate("js/apiConection/templates/establecimiento.html");
 		document.getElementById('content').innerHTML += html;
-		nombre = establecimientos.results[i].nombre;
+		nombre = establecimiento.nombre;
 		document.getElementById('nombre').innerHTML = nombre;
-		id = establecimientos.results[i].id;
+		id = establecimiento.id;
 		document.getElementById('nombre').id = id;
+		var direccion = establecimiento.direccion;
+		direccion += ', ';
 	}
+	// Paginación
 	var html = getTemplate("js/apiConection/templates/paginacion.html");
 	document.getElementById('content').innerHTML += html;
 	var prev = establecimientos.previous;

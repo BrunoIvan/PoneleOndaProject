@@ -7,7 +7,7 @@ function altaEstablecimientoView(){
 };
 
 function altaEstablecimientoController(){
-	var json = {};
+	json = {};
 	form = document.getElementById('formEstablecimiento');
 	json['nombre'] 		= 	form.nombre.value;
 	json['ciudad'] 		= 	form.ciudad.selectedOptions[0].value;
