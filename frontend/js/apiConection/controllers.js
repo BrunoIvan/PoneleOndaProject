@@ -25,9 +25,36 @@ function altaEstablecimientoController(){
 	)
 };
 
+function getCiudad(url){
+	get_recurso(url,
+		function (ciudad){
+			return ciudad;
+		}
+	)
+};
+
+function getProvincia(url){
+	get_recurso(url,
+		function (provincia){
+			return provincia;
+		}
+	)
+};
+
 function EstablecimientosView(pag){
 	get_recurso('http://127.0.0.1:8000/establecimientos/?format=json&page='+pag, 
-	EstablecimientosTemplate
+		function (establecimientos){
+			for (var i = 0; i < establecimientos.results.length; i++) {
+				establecimiento = establecimientos.results[i];
+				ciudad = getCiudad(establecimiento.ciudad);
+				ciudadNombre = ciudad.nombre;
+				provincia = getProvincia(ciudad.provincia);
+				provinciaNombre = provincia.nombre;
+				establecimiento.ciudad = ciudadNombre;
+				establecimiento.provincia = provinciaNombre;
+			}
+			EstablecimientosTemplate(establecimientos);		
+		}
 	)
 };
 

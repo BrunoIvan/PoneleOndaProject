@@ -3,7 +3,7 @@ function put_recurso(url, json, funcion){
     recurso.onreadystatechange = function(){
         if (recurso.readyState == 4 && recurso.status == 200){
             var respuesta = JSON.parse(recurso.responseText);
-            funcion(respuesta)
+            return funcion(respuesta);
         }
     }
     recurso.open('PUT', url, false);
@@ -16,7 +16,7 @@ function delete_recurso(url, funcion){
     recurso.onreadystatechange = function(){
         if (recurso.readyState == 4 && recurso.status == 200){
             var respuesta = JSON.parse(recurso.responseText);
-            funcion(respuesta)
+            return funcion(respuesta);
         }
     }
     recurso.open('DELETE', url, false);
@@ -28,13 +28,12 @@ function post_recurso(url, json, funcion){
     recurso.onreadystatechange = function(){
         if (recurso.readyState == 4 && recurso.status == 201){
             var respuesta = JSON.parse(recurso.responseText);
-            funcion(respuesta)
+            return funcion(respuesta);
         }
     }
     recurso.open('POST', url, false);
     recurso.setRequestHeader('Content-type', 'application/json');
     recurso.send(json);
-    return recurso
 };
 
 function get_recurso(url, funcion){
@@ -42,7 +41,7 @@ function get_recurso(url, funcion){
     recurso.onreadystatechange = function(){
         if (recurso.readyState == 4 && recurso.status == 200){
             var respuesta = JSON.parse(recurso.responseText);
-            funcion(respuesta)
+            return funcion(respuesta);
         }
     }
 	recurso.open('GET', url, false);

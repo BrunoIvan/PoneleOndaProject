@@ -86,6 +86,9 @@ function EstablecimientosTemplate(establecimientos){
 		document.getElementById('nombre').id = id;
 		var direccion = establecimiento.direccion;
 		direccion += ', ';
+		direccion += establecimiento.ciudad;
+		document.getElementById('direccion').textContent = direccion;
+		document.getElementById('direccion').id = id;
 	}
 	// Paginación
 	var html = getTemplate("js/apiConection/templates/paginacion.html");
