@@ -25,7 +25,6 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
-
 class EstablecimientoViewSet(ModelViewSet):
 	queryset 			= 	Establecimiento.objects.all()
 	serializer_class 	= 	EstablecimientoSerializer

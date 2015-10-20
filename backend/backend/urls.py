@@ -12,9 +12,16 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
+
+from api.views import EstablecimientoViewSet
+from api.views import CiudadViewSet
+from api.views import ProvinciaViewSet
+from api.views import RubroViewSet
+from api.views import CalificacionViewSet
+from api.views import UsuarioViewSet
+
 from django.conf.urls import include, url
 from django.contrib import admin
-from api.views import EstablecimientoViewSet, CiudadViewSet, ProvinciaViewSet, RubroViewSet, CalificacionViewSet, UsuarioViewSet
 from rest_framework.routers import SimpleRouter
 from rest_framework.authtoken import views
 
