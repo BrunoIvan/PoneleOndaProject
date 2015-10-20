@@ -1,7 +1,7 @@
 function manageFormEstablecimientoTemplate(){
 	html = getTemplate("templates/altaEstablecimiento.html");
 	printTemplate(html);
-}
+};
 
 function escondeCiudad(){
 	document.getElementById("campo_ciudad").style.visibility = 'hidden';
@@ -10,7 +10,7 @@ function escondeCiudad(){
 	document.getElementById("id_ciudad").style.visibility = 'hidden';
 	document.getElementById("span_ciudad").style.visibility = 'hidden';
 	document.getElementById("nueva_ciudad").style.visibility = 'hidden';
-}
+};
 
 function muestraCiudad(){
 	document.getElementById("campo_ciudad").style.visibility = 'visible';
@@ -19,7 +19,7 @@ function muestraCiudad(){
 	document.getElementById("id_ciudad").style.visibility = 'visible';
 	document.getElementById("span_ciudad").style.visibility = 'visible';
 	document.getElementById("nueva_ciudad").style.visibility = 'visible';
-}
+};
 
 function llenaRubrosTemplate(rubros){
 	var opciones 	= 	document.getElementById('id_rubro');
@@ -30,7 +30,7 @@ function llenaRubrosTemplate(rubros){
 		opcion.text 	= 	rubros[i].nombre;
 		opciones.appendChild(opcion);
 	}
-}
+};
 
 function llenaProvinciasTemplate(provincias){
 	var opciones 		= document.getElementById('id_provincia');
@@ -42,7 +42,7 @@ function llenaProvinciasTemplate(provincias){
 		opcion.text 	= 	provincias[i].nombre;
 		opciones.appendChild(opcion);
 	}
-}
+};
 
 function refrescaCiudadesTemplate(ciudades){
 	var ciudades_x 	= document.getElementById('id_ciudad').options;
@@ -57,7 +57,7 @@ function refrescaCiudadesTemplate(ciudades){
 		opcion.text = 	ciudades[i].nombre;
 		opciones.appendChild(opcion);
 	}
-}
+};
 
 function altaCiudadTemplate(resultado){
 	var index = document.getElementById('provincia').index;
@@ -72,7 +72,7 @@ function altaCiudadTemplate(resultado){
 			break;
 		}
 	}
-}
+};
 
 function EstablecimientosTemplate(establecimientos){
 	document.getElementById('content').innerHTML = '';
@@ -81,14 +81,23 @@ function EstablecimientosTemplate(establecimientos){
 		var html = getTemplate("js/apiConection/templates/establecimiento.html");
 		document.getElementById('content').innerHTML += html;
 		nombre = establecimiento.nombre;
-		document.getElementById('nombre').innerHTML = nombre;
 		id = establecimiento.id;
+		document.getElementById('nombre').textContent = nombre;
 		document.getElementById('nombre').id = id;
 		var direccion = establecimiento.direccion;
 		direccion += ', ';
 		direccion += establecimiento.ciudad;
+		direccion += ', ';
+		direccion += establecimiento.provincia;
+		direccion += '.'
 		document.getElementById('direccion').textContent = direccion;
 		document.getElementById('direccion').id = id;
+		document.getElementById('rubro').textContent = establecimiento.rubro;
+		document.getElementById('rubro').id = id;
+		document.getElementById('total').textContent = establecimiento.total;
+		document.getElementById('total').id = id;
+		document.getElementById('promedio').textContent = establecimiento.promedio;
+		document.getElementById('promedio').id = id;
 	}
 	// Paginación
 	var html = getTemplate("js/apiConection/templates/paginacion.html");

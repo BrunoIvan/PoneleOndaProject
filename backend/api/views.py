@@ -15,6 +15,7 @@ from api.serializers import UsuarioSerializer
 from api.asjson import EstablecimientoJson
 from api.asjson import CiudadJson
 from api.asjson import CalificacionJson
+from api.asjson import StatsJson
 
 from api.paginations import EstablecimientosPagination
 from api.paginations import CalificacionesPagination
@@ -30,11 +31,18 @@ class EstablecimientoViewSet(ModelViewSet):
 	serializer_class 	= 	EstablecimientoSerializer
 	pagination_class 	= 	EstablecimientosPagination
 
-	@detail_route(pagination_class = CalificacionesPagination)
+	@detail_route()
 	def calificaciones(self, request, pk):
 		establecimiento = 	Establecimiento.objects.get(pk = pk)
 		calificaciones 	= 	Calificacion.objects.filter(establecimiento = establecimiento)
 		return Response([CalificacionJson(calificacion) for calificacion in calificaciones])
+
+	@detail_route()
+	def estadisticas(self, request, pk):
+		establecimiento = 	Establecimiento.objects.get(pk = pk)
+		promedio 		= 	establecimiento.promedio_calificaciones()
+		total 			= 	establecimiento.total_calificaciones()
+		return Response(StatsJson(total, promedio))
 
 
 class CiudadViewSet(ModelViewSet):

@@ -12,17 +12,29 @@ from rest_framework.serializers import HyperlinkedModelSerializer
 class EstablecimientoSerializer(HyperlinkedModelSerializer):
 	class Meta:
 		model = Establecimiento
-		fields = ('id', 'nombre', 'direccion', 'ciudad', 'rubro', 'latitud', 'longitud')
+		fields = ('id', 
+			'nombre', 
+			'direccion', 
+			'ciudad', 
+			'rubro', 
+			'latitud', 
+			'longitud')
 
 class CiudadSerializer(HyperlinkedModelSerializer):
 	class Meta:
 		model = Ciudad
-		fields = ('id', 'url', 'nombre', 'provincia', 'codigo_postal')
+		fields = ('id', 
+			'url', 
+			'nombre', 
+			'provincia', 
+			'codigo_postal')
 
 class ProvinciaSerializer(HyperlinkedModelSerializer):
 	class Meta:
 		model = Provincia
-		fields = ('id', 'url', 'nombre')
+		fields = ('id', 
+			'url', 
+			'nombre')
 
 class RubroSerializer(HyperlinkedModelSerializer):
 	class Meta:

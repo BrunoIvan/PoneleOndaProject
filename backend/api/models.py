@@ -19,9 +19,16 @@ class Establecimiento(models.Model):
 	def promedio_calificaciones(self):
 		calificaciones 	= 	Calificacion.objects.filter(establecimiento = self)
 		suma 			= 	calificaciones.aggregate(Sum('puntaje'))
-		cantidad 		= 	calificaciones.aggregate(Count('puntaje'))
-		return suma['puntaje__sum'] / float(cantidad['puntaje__count'])
+		if suma['puntaje__sum'] == None:
+			return 0
+		else:
+			cantidad 	= 	calificaciones.aggregate(Count('puntaje'))
+			return suma['puntaje__sum'] / float(cantidad['puntaje__count'])
 
+	def total_calificaciones(self):
+		calificaciones 	= 	Calificacion.objects.filter(establecimiento = self)
+		cantidad 		= 	calificaciones.aggregate(Count('puntaje'))
+		return cantidad['puntaje__count']
 
 class Ciudad(models.Model):
 	nombre			=	models.CharField(max_length = 200)

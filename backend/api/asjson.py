@@ -25,3 +25,9 @@ def EstablecimientoJson(establecimiento):
 	json['ciudad'] 		= "http://127.0.0.1:8000/ciudades/%i/" % establecimiento.ciudad.id
 	json['rubro'] 		= "http://127.0.0.1:8000/rubros/%i/" % establecimiento.rubro.id
 	return json
+
+def StatsJson(total, promedio):
+	json 				= {}
+	json['promedio'] 	= promedio
+	json['total'] 		= total
+	return json

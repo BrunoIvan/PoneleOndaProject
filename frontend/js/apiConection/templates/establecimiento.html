@@ -1,8 +1,38 @@
-<div class="panel panel-info">
-	<div id="nombre" class="text-center panel-heading">Establecimiento X</div>
-	<div class="panel-body" id="cuerpo-logueo">
-		<p id="direccion"></p>
-		<hr>
-		Algo
-	</div>
+<div class="panel panel-default">
+	<ul class="list-group">
+		<li class="list-group-item">
+			<h2 class="text-center"><strong id="nombre"></strong></h2>
+		</li>
+		<li class="list-group-item">
+			<div class="row">
+				<dl class="dl-horizontal">
+					<dt>Dirección</dt>
+					<dd id="direccion"></dd>
+					<dt>Rubro</dt>
+					<dd id="rubro">un rubro</dd>
+				</dl>
+			</div>
+		</li>
+		<li class="list-group-item">
+			<div class="row">
+				<div class="col-md-6">
+					<dl class="dl-horizontal">
+						<dt>Calificación promedio</dt>
+						<dd id="promedio">promedio</dd>
+					</dl>
+					<button class="btn btn-block btn-info">Ver calificacines</button>
+				</div>
+				<div class="col-md-6">
+					<dl class="dl-horizontal">
+						<dt>Total de calificaciones</dt>
+						<dd id="total">total</dd>
+					</dl>
+					<button class="btn btn-block btn-info">Calificar</button>
+				</div>
+			</div>
+		</li>
+		<li class="list-group-item">
+			<button class="btn btn-block btn-info">Ver detalle</button>
+		</li>
+	</ul>
 </div>

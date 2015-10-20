@@ -25,33 +25,21 @@ function altaEstablecimientoController(){
 	)
 };
 
-function getCiudad(url){
-	get_recurso(url,
-		function (ciudad){
-			return ciudad;
-		}
-	)
-};
-
-function getProvincia(url){
-	get_recurso(url,
-		function (provincia){
-			return provincia;
-		}
-	)
-};
-
 function EstablecimientosView(pag){
 	get_recurso('http://127.0.0.1:8000/establecimientos/?format=json&page='+pag, 
 		function (establecimientos){
 			for (var i = 0; i < establecimientos.results.length; i++) {
-				establecimiento = establecimientos.results[i];
-				ciudad = getCiudad(establecimiento.ciudad);
-				ciudadNombre = ciudad.nombre;
-				provincia = getProvincia(ciudad.provincia);
-				provinciaNombre = provincia.nombre;
-				establecimiento.ciudad = ciudadNombre;
-				establecimiento.provincia = provinciaNombre;
+				establecimiento 			= establecimientos.results[i];
+				id 							= establecimiento.id;
+				ciudad 						= get_recurso_s(establecimiento.ciudad);
+				provincia 					= get_recurso_s(ciudad.provincia);
+				establecimiento.ciudad 		= ciudad.nombre;
+				establecimiento.provincia 	= provincia.nombre;
+				rubro 						= get_recurso_s(establecimiento.rubro);
+				establecimiento.rubro 		= rubro.nombre;
+				estadisticas 				= get_recurso_s('http://127.0.0.1:8000/establecimientos/'+id+'/estadisticas/?format=json');
+				establecimiento.total 		= estadisticas.total;
+				establecimiento.promedio 	= estadisticas.promedio;
 			}
 			EstablecimientosTemplate(establecimientos);		
 		}
