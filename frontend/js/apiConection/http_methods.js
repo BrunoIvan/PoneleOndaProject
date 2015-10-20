@@ -34,6 +34,7 @@ function post_recurso(url, json, funcion){
     recurso.open('POST', url, false);
     recurso.setRequestHeader('Content-type', 'application/json');
     recurso.send(json);
+    return recurso
 };
 
 function get_recurso(url, funcion){
