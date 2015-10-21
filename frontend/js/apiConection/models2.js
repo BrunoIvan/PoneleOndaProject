@@ -1,4 +1,4 @@
-function getObjetoModel(objeto, funcion){
+function getObjetoModel(objeto, funcion, pagina){
 	var xmlhttp, resp;
 	xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function(){
@@ -6,8 +6,12 @@ function getObjetoModel(objeto, funcion){
 			resp = JSON.parse(xmlhttp.responseText);
 			funcion(resp)
 		}
+	}
+	var url = "http://localhost:8000/" + objeto + "?format=json";
+	if (typeof pagina !== 'undefined') {
+		url += "&page=" + pagina;
 	}	
-	xmlhttp.open("GET","http://localhost:8000/" + objeto + "?format=json",true);
+	xmlhttp.open("GET", url, true);
 	xmlhttp.send();
 //	return resp;
 }
@@ -38,6 +42,13 @@ function agregarObjetoModel(objeto, formData, funcion){
 	xmlhttp.send(formData);
 }
 
+function get_recurso_s(url, funcion){
+	var recurso = new XMLHttpRequest();
+	recurso.open('GET', url, false);
+	recurso.send();
+	var respuesta = JSON.parse(recurso.responseText);
+	return respuesta;
+};
 /*
 function getCursosDiccModel(funcion){
 	var xmlhttp;
@@ -75,52 +86,3 @@ function getPersonasDiccModel(persona){
 	return dicc_personas;
 }
 
-
-function getObjetoModel(objeto, funcion){
-	var xmlhttp, resp;
-	xmlhttp=new XMLHttpRequest();
-	xmlhttp.onreadystatechange=function(){
-		if (xmlhttp.readyState==4 && xmlhttp.status==200){
-			resp = JSON.parse(xmlhttp.responseText);
-			funcion(resp)
-		}
-	}	
-	xmlhttp.open("GET","http://localhost:8000/" + objeto + "?format=json",true);
-	xmlhttp.send();
-//	return resp;
-}
-
-function borrarObjetoModel(url){
-	var xmlhttp;
-	xmlhttp=new XMLHttpRequest();
-	xmlhttp.open("DELETE",url,false);
-	xmlhttp.send();
-   	return true;
-}
-
-function modificarObjetoModel(url, formData){
-	var xmlhttp; 
-	var resp = false;
-	xmlhttp=new XMLHttpRequest();
-	xmlhttp.onreadystatechange=function(){
-	  if (xmlhttp.readyState==4 && xmlhttp.status==200){
-		resp = true;
-	  }
-	} 
-	xmlhttp.open("PUT",url,false);
-	xmlhttp.send(formData);
-	return resp;
-}
-function agregarObjetoModel(objeto, formData){
-	var xmlhttp = new XMLHttpRequest();
-	var resp = false;
-	xmlhttp.onreadystatechange=function(){
-	  if (xmlhttp.readyState==4 && xmlhttp.status==201){
-		resp = true;
-	  }
-	} 
-	xmlhttp.open("POST","http://localhost:8000/" + objeto + "/",false);
-	xmlhttp.send(formData);
-	return resp;
-}
-*/

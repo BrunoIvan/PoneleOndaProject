@@ -3,6 +3,134 @@ function manageFormEstablecimientoTemplate(){
 	printTemplate(html);
 };
 
+function menuView(){
+	printTemplate("navbar",getTemplate("js/apiConection/templates/menu2.html"));
+};
+
+function altaEstablecimientoOKView(){
+		printTemplate("content", getTemplate("js/apiConection/templates/altaEstablecimientoOk.html"));
+		document.getElementsByTagName('title')[0].text = "Metele Onda - Establecimiento creado";
+}
+
+function altaEstablecimientoView(){
+	printTemplate("content", getTemplate("js/apiConection/templates/altaEstablecimiento2.html"));
+	document.getElementsByTagName('title')[0].text = "Metele Onda - Crear establecimiento";
+	//Funcionalidad de los botones
+	document.getElementById("agregar_ciudad").onclick = function () {
+		var prov = document.getElementById("id_provincia");
+		agregarCiudadController(document.getElementById("txt_ciudad").value, document.getElementById("txt_codigo").value, prov.options[prov.selectedIndex].id, prov.options[prov.selectedIndex].value);
+		document.getElementById("id_direccion").focus();
+	}
+	document.getElementById("cancelar_altaciudad").onclick = function(){
+		muestraListaCiudades();
+	}
+	document.getElementById("submitEstablecimiento").onclick = function () {
+		var ciud = document.getElementById("id_ciudad");
+		var rubr = document.getElementById("id_rubro");
+		agregarEstablecimientoController(document.getElementById("id_nombre").value, document.getElementById("id_direccion").value, document.getElementById("id_latitud").value, document.getElementById("id_longitud").value, ciud.options[ciud.selectedIndex].value, rubr.options[rubr.selectedIndex].value);
+	}
+	listaRubrosController();
+	listaProvinciasController();
+	muestraListaCiudades();
+	deshabilitaCiudad();
+	document.getElementById("id_provincia").onchange = function () {
+		muestraListaCiudades();
+		listaCiudadesProvController(document.getElementById("id_provincia").value);
+		habilitaCiudad();
+		document.getElementById("nueva_ciudad").onclick = function () {
+			muestraAgregarCiudades();
+	 	}
+	}	
+};
+
+function muestraListaCiudades(){
+	document.getElementById("campo_ciudad_agregar").style.display = "none"
+	document.getElementById("campo_ciudad_elegir").style.display = "block";
+}
+
+function muestraAgregarCiudades(){
+	document.getElementById("txt_ciudad").value = "";
+	document.getElementById("txt_codigo").value = "";
+	document.getElementById("campo_ciudad_elegir").style.display = "none";
+	document.getElementById("campo_ciudad_agregar").style.display = "block"
+}
+
+function deshabilitaCiudad(){
+	document.getElementById("id_ciudad").readOnly = true;
+	document.getElementById("nueva_ciudad").disabled = true;
+}
+
+function habilitaCiudad(){
+	document.getElementById("id_ciudad").readOnly = false;
+	document.getElementById("nueva_ciudad").disabled = false;
+}
+
+function muestraPostAltaCiudad(){
+	muestraListaCiudades();
+	marcaCiudad(document.getElementById("txt_ciudad").value);
+}
+
+function marcaCiudad(ciudad){
+	var select = document.getElementById("id_ciudad");
+    for (var i = 0; i < select.options.length; ++i) {
+        if (select.options[i].text == ciudad){
+        	select.options[i].selected = true;
+        }
+    }
+}
+
+function llenaListaCiudades(ciudades){
+	var select = document.getElementById("id_ciudad");
+	select.innerHTML = "";
+	var opt = document.createElement('option');
+	opt.value = "";
+    opt.innerHTML = "Elegir una ciudad ...";
+    opt.selected = true;
+ 	opt.disabled = true;
+    select.appendChild(opt);
+	for(i = 0; i < ciudades.length; i++) {
+		var opt = document.createElement('option');
+		opt.value = ciudades[i].url;
+    	opt.innerHTML = ciudades[i].nombre;
+    	select.appendChild(opt);
+    }	
+}
+
+function llenaListaRubros(rubros){
+	var select = document.getElementById("id_rubro");
+	select.innerHTML = "";
+	var opt = document.createElement('option');
+	opt.value = "";
+    opt.innerHTML = "Elegir un rubro ...";
+    opt.selected = true;
+ 	opt.disabled = true;
+    select.appendChild(opt);
+	for(i = 0; i < rubros.length; i++) {
+		var opt = document.createElement('option');
+		opt.value = rubros[i].url;
+    	opt.innerHTML = rubros[i].nombre;
+    	select.appendChild(opt);
+    }	
+}
+
+function llenaListaProvincias(provincias){
+	var select = document.getElementById("id_provincia");
+	var opt = document.createElement('option');
+	opt.value = "";
+    opt.innerHTML = "Elegir una provincia ...";
+    opt.selected = true;
+ 	opt.disabled = true;
+    select.appendChild(opt);
+	for(i = 0; i < provincias.length; i++) {
+		var opt = document.createElement('option');
+		opt.id = provincias[i].url;
+    	opt.value = provincias[i].id;
+    	opt.innerHTML = provincias[i].nombre;
+    	select.appendChild(opt);
+	}
+}
+
+/*
 function escondeCiudad(){
 	document.getElementById("campo_ciudad").style.visibility = 'hidden';
 	document.getElementById("label_ciudad").style.visibility = 'hidden';
@@ -59,6 +187,7 @@ function refrescaCiudadesTemplate(ciudades){
 	}
 };
 
+
 function altaCiudadTemplate(resultado){
 	var index = document.getElementById('provincia').index;
 	var ciudad = document.getElementById('id_nombre').value;
@@ -73,6 +202,7 @@ function altaCiudadTemplate(resultado){
 		}
 	}
 };
+*/
 
 function EstablecimientosTemplate(establecimientos){
 	document.getElementById('content').innerHTML = '';
