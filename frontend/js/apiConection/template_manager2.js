@@ -10,7 +10,7 @@ function menuView(){
 function altaEstablecimientoOKView(){
 		printTemplate("content", getTemplate("js/apiConection/templates/altaEstablecimientoOk.html"));
 		document.getElementsByTagName('title')[0].text = "Metele Onda - Establecimiento creado";
-}
+};
 
 function altaEstablecimientoView(){
 	printTemplate("content", getTemplate("js/apiConection/templates/altaEstablecimiento2.html"));
@@ -22,6 +22,11 @@ function altaEstablecimientoView(){
 		document.getElementById("id_direccion").focus();
 	}
 	document.getElementById("cancelar_altaciudad").onclick = function(){
+		/*
+		document.getElementById('id_nombre').disabled = false;
+		document.getElementById('id_direccion').disabled = false;
+		document.getElementById('id_rubro').disabled = false;
+		*/
 		muestraListaCiudades();
 	}
 	document.getElementById("submitEstablecimiento").onclick = function () {
@@ -46,29 +51,34 @@ function altaEstablecimientoView(){
 function muestraListaCiudades(){
 	document.getElementById("campo_ciudad_agregar").style.display = "none"
 	document.getElementById("campo_ciudad_elegir").style.display = "block";
-}
+};
 
 function muestraAgregarCiudades(){
+	/*
+	document.getElementById('id_nombre').disabled = true;
+	document.getElementById('id_direccion').disabled = true;
+	document.getElementById('id_rubro').disabled = true;
+	*/
 	document.getElementById("txt_ciudad").value = "";
 	document.getElementById("txt_codigo").value = "";
 	document.getElementById("campo_ciudad_elegir").style.display = "none";
 	document.getElementById("campo_ciudad_agregar").style.display = "block"
-}
+};
 
 function deshabilitaCiudad(){
 	document.getElementById("id_ciudad").readOnly = true;
 	document.getElementById("nueva_ciudad").disabled = true;
-}
+};
 
 function habilitaCiudad(){
 	document.getElementById("id_ciudad").readOnly = false;
 	document.getElementById("nueva_ciudad").disabled = false;
-}
+};
 
 function muestraPostAltaCiudad(){
 	muestraListaCiudades();
 	marcaCiudad(document.getElementById("txt_ciudad").value);
-}
+};
 
 function marcaCiudad(ciudad){
 	var select = document.getElementById("id_ciudad");
@@ -76,8 +86,8 @@ function marcaCiudad(ciudad){
         if (select.options[i].text == ciudad){
         	select.options[i].selected = true;
         }
-    }
-}
+    };
+};
 
 function llenaListaCiudades(ciudades){
 	var select = document.getElementById("id_ciudad");
@@ -94,7 +104,7 @@ function llenaListaCiudades(ciudades){
     	opt.innerHTML = ciudades[i].nombre;
     	select.appendChild(opt);
     }	
-}
+};
 
 function llenaListaRubros(rubros){
 	var select = document.getElementById("id_rubro");
@@ -111,7 +121,7 @@ function llenaListaRubros(rubros){
     	opt.innerHTML = rubros[i].nombre;
     	select.appendChild(opt);
     }	
-}
+};
 
 function llenaListaProvincias(provincias){
 	var select = document.getElementById("id_provincia");
@@ -128,7 +138,7 @@ function llenaListaProvincias(provincias){
     	opt.innerHTML = provincias[i].nombre;
     	select.appendChild(opt);
 	}
-}
+};
 
 /*
 function escondeCiudad(){

@@ -24,18 +24,19 @@
 				</div>
 			</div>
 			<div id="campo_ciudad_agregar" class="form-group has-default">
-				<label id="label_ciudad" for="id_ciudad">Agregar una ciudad</label>
-				<div id="group_ciudad" class="input-group">
-					<input id="txt_ciudad" name ="ciudad" class="form-control" placeholder="Ciudad" type="text">
+				<div id="campo_nombre" class="form-group has-default">
+					<label id="label_ciudad" for="txt_ciudad">Agregar una ciudad</label>
+					<input required id="txt_ciudad" name="nombre" class="form-control" placeholder="Nombre" type="text">
+				</div>
+				<div id="campo_codigo_postal" class="form-group has-default">
 					<label id="label_codigo">C.Postal: </label>
-					<input id="txt_codigo" name ="codigo" class="form-control" placeholder="Codigo" type="text">
-					<span id="span_ciudad" class="input-group-btn">
-						<button id="agregar_ciudad" type="button" class="btn btn-default">Agregar</button>
-						<button id="cancelar_altaciudad" type="button" class="btn btn-default">Cancelar</button>
-					</span>
+					<input id="txt_codigo" name ="codigo" class="form-control" placeholder="Codigo" type="number">
+				</div>
+				<div class="btn-group" role="group">
+					<button id="agregar_ciudad" type="button" class="btn btn-info">Agregar</button>
+					<button id="cancelar_altaciudad" type="button" class="btn btn-default">Cancelar</button>
 				</div>
 			</div>
-
 			<div id="campo_direccion" class="form-group has-default">
 				<label id="label_direccion" for="id_direccion">Dirección</label>
 				<input required id="id_direccion" name="direccion" class="form-control" placeholder="Direccion" type="text">

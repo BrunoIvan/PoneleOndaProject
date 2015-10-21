@@ -1,7 +1,7 @@
 function mainController(){
 	menuView();
 	altaEstablecimientoView();
-}
+};
 
 
 /*
@@ -25,7 +25,6 @@ function altaEstablecimientoController(){
 };
 */
 function EstablecimientosView(pag){
-
 	getObjetoModel("establecimientos", 
 		function (establecimientos){
 			for (var i = 0; i < establecimientos.results.length; i++) {
@@ -43,7 +42,8 @@ function EstablecimientosView(pag){
 			}
 			EstablecimientosTemplate(establecimientos);		
 		},
-	pag)
+		pag
+	)
 };
 
 /*
@@ -96,7 +96,7 @@ function agregarEstablecimientoController(nombre, direccion, latitud, longitud, 
 	agregarObjetoModel("establecimientos", formData, function(){
 		altaEstablecimientoOKView()
 	});	
-}
+};
 
 function agregarCiudadController(ciudad, codigo, provincia_url, provincia_id){
 	var formData = new FormData();
@@ -107,27 +107,32 @@ function agregarCiudadController(ciudad, codigo, provincia_url, provincia_id){
 		getCiudadesxProvinciaModel(provincia_id, function (ciudades){   
 			llenaListaCiudades(ciudades);
 			muestraPostAltaCiudad();
-		});	
+		});
+		/*
+		document.getElementById('id_nombre').disabled = false;
+		document.getElementById('id_direccion').disabled = false;
+		document.getElementById('id_rubro').disabled = false;
+		*/
 	}); 
-}
+};
 
 function listaProvinciasController(){
 	getObjetoModel("provincias", function (provincias){
 		llenaListaProvincias(provincias);   
 	});	
-}	
+};
 
 function listaCiudadesProvController(provincia){
 	getCiudadesxProvinciaModel(provincia, function (ciudades){   
 		llenaListaCiudades(ciudades);
 	});	
-}	
+};
 
 function listaRubrosController(){
 	getObjetoModel("rubros", function (rubros){
 		llenaListaRubros(rubros);   
 	});	
-}
+};
 
 /*
 function llenaProvinciasfer(){
