@@ -22,11 +22,9 @@ function altaEstablecimientoView(){
 		document.getElementById("id_direccion").focus();
 	}
 	document.getElementById("cancelar_altaciudad").onclick = function(){
-		/*
 		document.getElementById('id_nombre').disabled = false;
 		document.getElementById('id_direccion').disabled = false;
 		document.getElementById('id_rubro').disabled = false;
-		*/
 		muestraListaCiudades();
 	}
 	document.getElementById("submitEstablecimiento").onclick = function () {
@@ -54,11 +52,9 @@ function muestraListaCiudades(){
 };
 
 function muestraAgregarCiudades(){
-	/*
 	document.getElementById('id_nombre').disabled = true;
 	document.getElementById('id_direccion').disabled = true;
 	document.getElementById('id_rubro').disabled = true;
-	*/
 	document.getElementById("txt_ciudad").value = "";
 	document.getElementById("txt_codigo").value = "";
 	document.getElementById("campo_ciudad_elegir").style.display = "none";

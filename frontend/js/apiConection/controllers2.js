@@ -94,7 +94,7 @@ function agregarEstablecimientoController(nombre, direccion, latitud, longitud, 
 	formData.append("rubro", rubro);
 	//var formElement = document.getElementById("formestablecimiento");
 	agregarObjetoModel("establecimientos", formData, function(){
-		altaEstablecimientoOKView()
+		altaEstablecimientoOKView();
 	});	
 };
 
@@ -108,11 +108,9 @@ function agregarCiudadController(ciudad, codigo, provincia_url, provincia_id){
 			llenaListaCiudades(ciudades);
 			muestraPostAltaCiudad();
 		});
-		/*
 		document.getElementById('id_nombre').disabled = false;
 		document.getElementById('id_direccion').disabled = false;
 		document.getElementById('id_rubro').disabled = false;
-		*/
 	}); 
 };
 
