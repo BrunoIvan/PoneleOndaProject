@@ -39,8 +39,7 @@ class EstablecimientoViewSet(ModelViewSet):
 	@detail_route()
 	def estadisticas(self, request, pk):
 		establecimiento = 	Establecimiento.objects.get(pk = pk)
-		promedio 		= 	establecimiento.promedio_calificaciones()
-		total 			= 	establecimiento.total_calificaciones()
+		total, promedio = 	establecimiento.estadisticas()
 		return Response(StatsJson(total, promedio))
 
 
