@@ -85,4 +85,4 @@ function getPersonasDiccModel(persona){
 	xmlhttp.send();
 	return dicc_personas;
 }
-
+*/
