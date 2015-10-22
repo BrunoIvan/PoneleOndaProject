@@ -6,7 +6,7 @@ from django.db.models import Count
 
 
 class Establecimiento(models.Model):
-	nombre		=	models.CharField(max_length = 200)
+	nombre		=	models.CharField(max_length = 200, unique = True)
 	direccion	=	models.CharField(max_length = 200)
 	ciudad		=	models.ForeignKey("Ciudad")
 	latitud		= 	models.FloatField()

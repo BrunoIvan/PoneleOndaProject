@@ -12,25 +12,80 @@ function altaEstablecimientoOKView(){
 		document.getElementsByTagName('title')[0].text = "Metele Onda - Establecimiento creado";
 };
 
+function altaEstablecimientoBADView(){
+		printTemplate("content", getTemplate("js/apiConection/templates/altaEstablecimientoBad.html"));
+		document.getElementsByTagName('title')[0].text = "Metele Onda - Nombre duplicado";
+};
+
+function valid_form_simple(id, mensaje){
+	if (document.getElementById(id).value === ''){
+		alert(mensaje);
+		return false;
+	} else {
+		return true;
+	}
+};
+
+function valid_alta_establecimiento(id, mensaje){
+		if (valid_form_simple('id_nombre', 
+				'Ingrese un nombre') == false){
+			return false;
+		} else if (valid_form_simple('id_provincia', 
+			'Ingrese una provincia') == false){
+			return false;
+		} else if (valid_form_simple('id_ciudad', 
+			'Ingrese una ciudad') == false){
+			return false;
+		} else if (valid_form_simple('id_direccion', 
+			'Ingrese una dirección') == false){
+			return false;
+		} else if (valid_form_simple('id_rubro', 
+			'Ingrese un rubro') == false){
+			return false;
+		} else {
+			return true;
+		}
+};
+
+function valid_alta_ciudad(id, mensaje){
+	if (valid_form_simple('txt_ciudad', 
+			'Ingrese un nombre') == false){
+		return false;
+	} else if (valid_form_simple('txt_codigo', 
+		'Ingrese un código postal') == false){
+		return false;
+	} else {
+		return true;
+	}
+};
+
 function altaEstablecimientoView(){
 	printTemplate("content", getTemplate("js/apiConection/templates/altaEstablecimiento2.html"));
 	document.getElementsByTagName('title')[0].text = "Metele Onda - Crear establecimiento";
 	//Funcionalidad de los botones
 	document.getElementById("agregar_ciudad").onclick = function () {
-		var prov = document.getElementById("id_provincia");
-		agregarCiudadController(document.getElementById("txt_ciudad").value, document.getElementById("txt_codigo").value, prov.options[prov.selectedIndex].id, prov.options[prov.selectedIndex].value);
-		document.getElementById("id_direccion").focus();
+		if (valid_alta_ciudad()){
+			var prov = document.getElementById("id_provincia");
+			agregarCiudadController(document.getElementById("txt_ciudad").value, document.getElementById("txt_codigo").value, prov.options[prov.selectedIndex].id, prov.options[prov.selectedIndex].value);
+			document.getElementById("id_direccion").focus();
+		}
 	}
 	document.getElementById("cancelar_altaciudad").onclick = function(){
-		document.getElementById('id_nombre').disabled = false;
-		document.getElementById('id_direccion').disabled = false;
-		document.getElementById('id_rubro').disabled = false;
+		set_disable('id_nombre', false);
+		set_disable('id_direccion', false);
+		set_disable('id_rubro', false);
+		set_disable('submitEstablecimiento', false);
 		muestraListaCiudades();
 	}
 	document.getElementById("submitEstablecimiento").onclick = function () {
-		var ciud = document.getElementById("id_ciudad");
-		var rubr = document.getElementById("id_rubro");
-		agregarEstablecimientoController(document.getElementById("id_nombre").value, document.getElementById("id_direccion").value, document.getElementById("id_latitud").value, document.getElementById("id_longitud").value, ciud.options[ciud.selectedIndex].value, rubr.options[rubr.selectedIndex].value);
+		if (valid_alta_establecimiento()){
+			agregarEstablecimientoController(document.getElementById("id_nombre").value, 
+				document.getElementById("id_direccion").value, 
+				document.getElementById("id_latitud").value, 
+				document.getElementById("id_longitud").value, 
+				document.getElementById("id_ciudad").value, 
+				document.getElementById("id_rubro").value);
+		}
 	}
 	listaRubrosController();
 	listaProvinciasController();
@@ -51,10 +106,15 @@ function muestraListaCiudades(){
 	document.getElementById("campo_ciudad_elegir").style.display = "block";
 };
 
+function set_disable(id, bool){
+	document.getElementById(id).disabled = bool;
+};
+
 function muestraAgregarCiudades(){
-	document.getElementById('id_nombre').disabled = true;
-	document.getElementById('id_direccion').disabled = true;
-	document.getElementById('id_rubro').disabled = true;
+	set_disable('id_nombre', true);
+	set_disable('id_direccion', true);
+	set_disable('id_rubro', true);
+	set_disable('submitEstablecimiento', true);
 	document.getElementById("txt_ciudad").value = "";
 	document.getElementById("txt_codigo").value = "";
 	document.getElementById("campo_ciudad_elegir").style.display = "none";

@@ -23,18 +23,28 @@
 					</span>
 				</div>
 			</div>
-			<div id="campo_ciudad_agregar" class="form-group has-default">
-				<div id="campo_nombre" class="form-group has-default">
-					<label id="label_ciudad" for="txt_ciudad">Agregar una ciudad</label>
-					<input required id="txt_ciudad" name="nombre" class="form-control" placeholder="Nombre" type="text">
-				</div>
-				<div id="campo_codigo_postal" class="form-group has-default">
-					<label id="label_codigo">C.Postal: </label>
-					<input id="txt_codigo" name ="codigo" class="form-control" placeholder="Codigo" type="number">
-				</div>
-				<div class="btn-group" role="group">
-					<button id="agregar_ciudad" type="button" class="btn btn-info">Agregar</button>
-					<button id="cancelar_altaciudad" type="button" class="btn btn-default">Cancelar</button>
+			<div id="campo_ciudad_agregar">
+				<div class="row">
+					<div class="col-md-5">
+						<div class="form-group">
+							<label id="label_ciudad" for="txt_ciudad">Ciudad</label>
+							<input required id="txt_ciudad" name="nombre" class="form-control" placeholder="Nombre" type="text">
+						</div>
+					</div>
+					<div class="col-md-4">
+							<label id="label_codigo" for="txt_codigo">CP</label>
+							<input required id="txt_codigo" name ="codigo" class="form-control" placeholder="Codigo" type="number">
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label>&nbsp;</label>
+							<br>
+							<div class="btn-group pull-right" role="group" aria-label="...">
+								<button id="agregar_ciudad" type="button" class="btn btn-info">Agregar</button>
+								<button id="cancelar_altaciudad" type="button" class="btn btn-default">Cancelar</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div id="campo_direccion" class="form-group has-default">

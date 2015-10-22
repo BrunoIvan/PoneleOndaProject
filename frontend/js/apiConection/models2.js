@@ -42,6 +42,20 @@ function agregarObjetoModel(objeto, formData, funcion){
 	xmlhttp.send(formData);
 }
 
+function agregarObjetoModel2(objeto, formData, funcionOK, funcionBAD){
+	var xmlhttp = new XMLHttpRequest();
+	var resp = false;
+	xmlhttp.onreadystatechange = function(){
+		if (xmlhttp.readyState == 4 && xmlhttp.status==201){
+			funcionOK(resp);
+		} else if (xmlhttp.readyState == 4 && xmlhttp.status==400){
+			funcionBAD(resp);
+		}
+	}
+	xmlhttp.open("POST","http://localhost:8000/" + objeto + "/",true);
+	xmlhttp.send(formData);
+}
+
 function get_recurso_s(url, funcion){
 	var recurso = new XMLHttpRequest();
 	recurso.open('GET', url, false);
@@ -49,6 +63,7 @@ function get_recurso_s(url, funcion){
 	var respuesta = JSON.parse(recurso.responseText);
 	return respuesta;
 };
+
 /*
 function getCursosDiccModel(funcion){
 	var xmlhttp;

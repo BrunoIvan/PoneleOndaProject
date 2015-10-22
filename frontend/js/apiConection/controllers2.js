@@ -32,9 +32,9 @@ function EstablecimientosView(pag){
 				id 							= establecimiento.id;
 				ciudad 						= get_recurso_s(establecimiento.ciudad);
 				provincia 					= get_recurso_s(ciudad.provincia);
+				rubro 						= get_recurso_s(establecimiento.rubro);
 				establecimiento.ciudad 		= ciudad.nombre;
 				establecimiento.provincia 	= provincia.nombre;
-				rubro 						= get_recurso_s(establecimiento.rubro);
 				establecimiento.rubro 		= rubro.nombre;
 				estadisticas 				= get_recurso_s('http://127.0.0.1:8000/establecimientos/'+id+'/estadisticas/?format=json');
 				establecimiento.total 		= estadisticas.total;
@@ -93,8 +93,11 @@ function agregarEstablecimientoController(nombre, direccion, latitud, longitud, 
 	formData.append("ciudad", ciudad);
 	formData.append("rubro", rubro);
 	//var formElement = document.getElementById("formestablecimiento");
-	agregarObjetoModel("establecimientos", formData, function(){
+	agregarObjetoModel2("establecimientos", formData, function(){
 		altaEstablecimientoOKView();
+	},
+	function(){
+		alert('Este nombre de establecimiento ya existe');
 	});	
 };
 
@@ -103,14 +106,17 @@ function agregarCiudadController(ciudad, codigo, provincia_url, provincia_id){
 	formData.append("nombre", ciudad);
 	formData.append("codigo_postal", codigo);
 	formData.append("provincia", provincia_url);
-	agregarObjetoModel("ciudades", formData, function(){
+	agregarObjetoModel2("ciudades", formData, function(){
 		getCiudadesxProvinciaModel(provincia_id, function (ciudades){   
 			llenaListaCiudades(ciudades);
 			muestraPostAltaCiudad();
 		});
-		document.getElementById('id_nombre').disabled = false;
-		document.getElementById('id_direccion').disabled = false;
-		document.getElementById('id_rubro').disabled = false;
+		set_disable('id_nombre', false);
+		set_disable('id_direccion', false);
+		set_disable('id_rubro', false);
+		set_disable('submitEstablecimiento', false);
+	}, function(){
+		alert('Esta ciudad para esta provincia ya existe');
 	}); 
 };
 
