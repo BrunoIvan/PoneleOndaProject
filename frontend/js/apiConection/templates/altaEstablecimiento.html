@@ -5,22 +5,46 @@
 			<div id="campo_nombre" class="form-group has-default">
 				<label id="label_provincia" for="id_nombre">Nombre</label>
 				<input required id="id_nombre" name="nombre" class="form-control" placeholder="Nombre" type="text">
+				<input required id="id_latitud" name="nombre" class="form-control" placeholder="Nombre" type="hidden" value="0.0">
+				<input required id="id_longitud" name="nombre" class="form-control" placeholder="Nombre" type="hidden" value="0.0">
 			</div>
 			<div id="campo_provincia" class="form-group has-default">
 				<label id="label_provincia" for="id_provincia">Elija una provincia</label>
 				<select required id="id_provincia" name="provincia" class="form-control">
-					<option>Seleccionar provincia</option>
 				</select>
 			</div>
-			<div id="campo_ciudad" class="form-group has-default">
+			<div id="campo_ciudad_elegir" class="form-group has-default">
 				<label id="label_ciudad" for="id_ciudad">Elija una ciudad</label>
 				<div id="group_ciudad" class="input-group">
 					<select required id="id_ciudad" name="ciudad" class="form-control">
-						<option>Seleccionar ciudad</option>
 					</select>
 					<span id="span_ciudad" class="input-group-btn">
 						<button id="nueva_ciudad" onclick="altaCiudadView()" type="button" class="btn btn-default">Nueva</button>
 					</span>
+				</div>
+			</div>
+			<div id="campo_ciudad_agregar">
+				<div class="row">
+					<div class="col-md-5">
+						<div class="form-group">
+							<label id="label_ciudad" for="txt_ciudad">Ciudad</label>
+							<input required id="txt_ciudad" name="nombre" class="form-control" placeholder="Nombre" type="text">
+						</div>
+					</div>
+					<div class="col-md-4">
+							<label id="label_codigo" for="txt_codigo">CP</label>
+							<input required id="txt_codigo" name ="codigo" class="form-control" placeholder="Codigo" type="number">
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label>&nbsp;</label>
+							<br>
+							<div class="btn-group pull-right" role="group" aria-label="...">
+								<button id="agregar_ciudad" type="button" class="btn btn-info">Agregar</button>
+								<button id="cancelar_altaciudad" type="button" class="btn btn-default">Cancelar</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div id="campo_direccion" class="form-group has-default">
@@ -30,10 +54,9 @@
 			<div id="campo_rubro" class="form-group has-default">
 				<label id="label_rubro" for="id_rubro">Elija un rubro</label>
 				<select required id="id_rubro" name="rubro" class="form-control">
-					<option>Seleccionar rubro</option>
 				</select>
 			</div>
-			<input id="submitEstablecimiento" type="button" class="btn btn-info pull-right" onclick="altaEstablecimientoController()" value="Crear establecimiento">
+			<input id="submitEstablecimiento" type="button" class="btn btn-info pull-right" value="Crear establecimiento">
 		</form>
 	</div>
 </div>
