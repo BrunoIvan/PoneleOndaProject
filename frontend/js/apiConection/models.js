@@ -14,7 +14,28 @@ function getObjetoModel(objeto, funcion, pagina){
 	xmlhttp.open("GET", url, true);
 	xmlhttp.send();
 //	return resp;
-}
+};
+
+function getBusqObjetoModel(objeto, parametros, funcion, pagina){
+	var xmlhttp, resp;
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function(){
+		if (xmlhttp.readyState == 4 && xmlhttp.status==200){
+			resp = JSON.parse(xmlhttp.responseText);
+			funcion(resp)
+		}
+	}
+	var url = "http://localhost:8000/" + objeto + "?format=json";
+	for (var i = 0; i < parametros.length; i++) {
+		url += parametros[i]
+	};
+	if (typeof pagina !== 'undefined') {
+		url += "&page=" + pagina;
+	}
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+//	return resp;
+};
 
 function getCiudadesxProvinciaModel(provincia_pk, funcion){
 	var xmlhttp, resp;
@@ -28,7 +49,7 @@ function getCiudadesxProvinciaModel(provincia_pk, funcion){
 	xmlhttp.open("GET","http://localhost:8000/provincias/" + provincia_pk + "/ciudades?format=json",true);
 	xmlhttp.send();
 //	return resp;
-}
+};
 
 /* // Hay tiempo para volar funciones viejas que andaban bien
 function agregarObjetoModel(objeto, formData, funcion){
@@ -56,7 +77,7 @@ function agregarObjetoModel(objeto, formData, funcionOK, funcionBAD){
 	}
 	xmlhttp.open("POST","http://localhost:8000/" + objeto + "/",true);
 	xmlhttp.send(formData);
-}
+};
 
 function get_recurso_s(url, funcion){
 	var recurso = new XMLHttpRequest();

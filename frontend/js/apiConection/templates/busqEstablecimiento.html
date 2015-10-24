@@ -1,0 +1,19 @@
+<div class="panel panel-info">
+	<div class="text-center panel-heading">Búsqueda de esablecimientos</div>
+	<div class="panel-body" id="cuerpo-logueo">
+		<div class=" text-center alert alert-info">
+			Filtre los establecimientos indicando un <strong>nombre</strong>, <strong>dirección</strong>, o bien ambos.
+		</div>
+		<form method="POST" id="formEstablecimiento" name="formEstablecimiento">
+			<div id="campo_nombre" class="form-group has-default">
+				<label id="label_provincia" for="id_nombre">Nombre</label>
+				<input required id="id_nombre" name="nombre" class="form-control" placeholder="Nombre" type="text">
+			</div>
+			<div id="campo_direccion" class="form-group has-default">
+				<label id="label_direccion" for="id_direccion">Dirección</label>
+				<input required id="id_direccion" name="direccion" class="form-control" placeholder="Direccion" type="text">
+			</div>
+			<input id="submitBusqueda" type="button" class="btn btn-info pull-right" value="Buscar">
+		</form>
+	</div>
+</div>

@@ -14,12 +14,14 @@ function altaEstablecimientoOKView(){
 		document.getElementsByTagName('title')[0].text = "Metele Onda - Establecimiento creado";
 };
 
+/*
 function altaEstablecimientoBADView(){
 		printTemplate("content", getTemplate("js/apiConection/templates/altaEstablecimientoBad.html"));
 		document.getElementsByTagName('title')[0].text = "Metele Onda - Nombre duplicado";
 };
+*/
 
-function valid_form_simple(id, mensaje){
+function valid_form_alerta(id, mensaje){
 	if (document.getElementById(id).value === ''){
 		alert(mensaje);
 		return false;
@@ -28,20 +30,24 @@ function valid_form_simple(id, mensaje){
 	}
 };
 
-function valid_alta_establecimiento(id, mensaje){
-		if (valid_form_simple('id_nombre', 
+function valid_form_simple(id){
+	return (document.getElementById(id).value.length > 0);
+};
+
+function valid_alta_establecimiento(){
+		if (valid_form_alerta('id_nombre', 
 				'Ingrese un nombre') == false){
 			return false;
-		} else if (valid_form_simple('id_provincia', 
+		} else if (valid_form_alerta('id_provincia', 
 			'Ingrese una provincia') == false){
 			return false;
-		} else if (valid_form_simple('id_ciudad', 
+		} else if (valid_form_alerta('id_ciudad', 
 			'Ingrese una ciudad') == false){
 			return false;
-		} else if (valid_form_simple('id_direccion', 
+		} else if (valid_form_alerta('id_direccion', 
 			'Ingrese una dirección') == false){
 			return false;
-		} else if (valid_form_simple('id_rubro', 
+		} else if (valid_form_alerta('id_rubro', 
 			'Ingrese un rubro') == false){
 			return false;
 		} else {
@@ -49,15 +55,47 @@ function valid_alta_establecimiento(id, mensaje){
 		}
 };
 
-function valid_alta_ciudad(id, mensaje){
-	if (valid_form_simple('txt_ciudad', 
+function valid_alta_ciudad(){
+	if (valid_form_alerta('txt_ciudad', 
 			'Ingrese un nombre') == false){
 		return false;
-	} else if (valid_form_simple('txt_codigo', 
+	} else if (valid_form_alerta('txt_codigo', 
 		'Ingrese un código postal') == false){
 		return false;
 	} else {
 		return true;
+	}
+};
+
+function valid_busq_establecimiento(id, mensaje){
+	var nombre_result = valid_form_simple('id_nombre').toFixed();
+	var dirección_result = valid_form_simple('id_direccion').toFixed();
+	return nombre_result + dirección_result;
+
+};
+
+function BusqEstablecimientosView(){
+	printTemplate("content", getTemplate("js/apiConection/templates/busqEstablecimiento.html"));
+	document.getElementsByTagName('title')[0].text = "Metele Onda - Búsqueda";
+	document.getElementById('submitBusqueda').onclick = function () {
+		var parametros = [];
+		var nombre_is_valid = valid_form_simple('id_nombre');
+		var dirección_is_valid = valid_form_simple('id_direccion');
+		var form_is_valid = nombre_is_valid + dirección_is_valid;
+		if (form_is_valid){
+			if (nombre_is_valid){
+				var nombre = document.getElementById('id_nombre').value;
+				parametros.push('&nombre=' + nombre);
+				parametros.push('&ordering=nombre');
+			}
+			if (dirección_is_valid){
+				var direccion = document.getElementById('id_direccion').value;
+				parametros.push('&direccion=' + direccion);
+			}
+			BusqEstablecimientosController(parametros, 1);
+		} else {
+			alert('Debe especificar al menos un campo');
+		}
 	}
 };
 
@@ -275,11 +313,11 @@ function altaCiudadTemplate(resultado){
 function EstablecimientosTemplate(establecimientos){
 	document.getElementById('content').innerHTML = '';
 	for (var i = 0; i < establecimientos.results.length; i++) {
-		establecimiento = establecimientos.results[i];
+		var establecimiento = establecimientos.results[i];
 		var html = getTemplate("js/apiConection/templates/establecimiento.html");
 		document.getElementById('content').innerHTML += html;
-		nombre = establecimiento.nombre;
-		id = establecimiento.id;
+		var nombre = establecimiento.nombre;
+		var id = establecimiento.id;
 		document.getElementById('nombre').textContent = nombre;
 		document.getElementById('nombre').id = id;
 		var direccion = establecimiento.direccion;

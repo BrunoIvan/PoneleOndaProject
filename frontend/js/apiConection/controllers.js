@@ -24,10 +24,25 @@ function altaEstablecimientoController(){
 	)
 };
 */
+
 function EstablecimientosView(pag){
 	getObjetoModel("establecimientosdetalle", 
 	EstablecimientosTemplate, 
 	pag);
+};
+
+function BusqEstablecimientosController(parametros, pag){
+	getBusqObjetoModel("establecimientosdetalle",
+		parametros,
+		function (establecimientos){
+			if (establecimientos.count == 0){
+				alert('Al parecer el sistema no encuentra resultados, procure respetar mayúsculas y minusculas');
+			} else {
+				EstablecimientosTemplate(establecimientos);
+			}
+		},
+		pag
+		)
 };
 
 /*
