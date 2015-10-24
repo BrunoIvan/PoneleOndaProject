@@ -329,7 +329,10 @@ function EstablecimientosTemplate(establecimientos){
 		var next_n = parseInt(next[next.length-1]);
 		var count = establecimientos.count;
 		var pagsxpag = establecimientos.results.length;
-		var ultima = (count/pagsxpag);
+		var ultima = count/pagsxpag;
+		if(ultima - parseInt(ultima) > 0){
+			ultima = parseInt(ultima) + 1;
+		}
 		document.getElementById('paginaSiguiente').value = actual+1;
 		document.getElementById('paginaSiguiente').onclick = function () {
 			EstablecimientosView(actual+1);
