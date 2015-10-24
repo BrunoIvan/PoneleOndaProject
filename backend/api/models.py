@@ -6,13 +6,16 @@ from django.db.models import Count
 
 
 class Establecimiento(models.Model):
-	nombre		=	models.CharField(max_length = 200, unique = True)
+	nombre		=	models.CharField(max_length = 200)
 	direccion	=	models.CharField(max_length = 200)
 	ciudad		=	models.ForeignKey("Ciudad")
 	latitud		= 	models.FloatField()
 	longitud	= 	models.FloatField()
 	rubro		=	models.ForeignKey("Rubro")
 	
+	class Meta:
+		unique_together = 	("nombre", "ciudad")
+
 	def __unicode__(self):
 		return self.nombre
 
