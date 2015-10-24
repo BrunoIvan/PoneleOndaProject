@@ -9,7 +9,7 @@ from models import Usuario
 from rest_framework.serializers import HyperlinkedModelSerializer
 from rest_framework.serializers import ReadOnlyField
 
-class EstablecimientoSerializer(HyperlinkedModelSerializer):
+class Establecimiento_detSerializer(HyperlinkedModelSerializer):
 	ciudad 			= ReadOnlyField(source = 'ciudad.nombre')
 	provincia 		= ReadOnlyField(source = 'ciudad.provincia.nombre')
 	rubro 			= ReadOnlyField(source = 'rubro.nombre')
@@ -25,6 +25,17 @@ class EstablecimientoSerializer(HyperlinkedModelSerializer):
 			'rubro', 
 			'latitud',
 			'stats', 
+			'longitud')
+
+class EstablecimientoSerializer(HyperlinkedModelSerializer):
+	class Meta:
+		model  	= Establecimiento
+		fields 	= ('id', 
+			'nombre', 
+			'direccion', 
+			'ciudad', 
+			'rubro', 
+			'latitud',
 			'longitud')
 
 class CiudadSerializer(HyperlinkedModelSerializer):

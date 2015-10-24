@@ -25,7 +25,7 @@ function altaEstablecimientoController(){
 };
 */
 function EstablecimientosView(pag){
-	getObjetoModel("establecimientos", 
+	getObjetoModel("establecimientosdetalle", 
 	EstablecimientosTemplate, 
 	pag);
 };
@@ -81,7 +81,7 @@ function agregarEstablecimientoController(nombre, direccion, latitud, longitud, 
 		altaEstablecimientoOKView();
 	},
 	function(){
-		alert('Este nombre de establecimiento ya existe');
+		alert('Este establecimiento para esta ciudad ya existe');
 	});	
 };
 

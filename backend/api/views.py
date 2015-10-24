@@ -6,6 +6,7 @@ from api.models import Calificacion
 from api.models import Usuario
 
 from api.serializers import EstablecimientoSerializer
+from api.serializers import Establecimiento_detSerializer
 from api.serializers import CiudadSerializer
 from api.serializers import ProvinciaSerializer
 from api.serializers import RubroSerializer
@@ -26,6 +27,12 @@ from rest_framework.decorators import detail_route
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
 
+
+class Establecimiento_detViewSet(ModelViewSet):
+	queryset 			= 	Establecimiento.objects.all()
+	serializer_class 	= 	Establecimiento_detSerializer
+	pagination_class 	= 	EstablecimientosPagination
+	http_method_names 	= 	['get', 'head', 'options']
 
 class EstablecimientoViewSet(ModelViewSet):
 	queryset 			= 	Establecimiento.objects.all()
