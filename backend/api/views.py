@@ -35,7 +35,7 @@ class EstablecimientoViewSet(ModelViewSet):
 	@detail_route()
 	def calificaciones(self, request, pk):
 		establecimiento = 	Establecimiento.objects.get(pk = pk)
-		calificaciones 	= 	Cdalificacion.objects.filter(establecimiento = establecimiento)
+		calificaciones 	= 	Calificacion.objects.filter(establecimiento = establecimiento)
 		return Response([CalificacionJson(calificacion) for calificacion in calificaciones])
 
 	@detail_route()
