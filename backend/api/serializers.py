@@ -7,23 +7,30 @@ from models import Calificacion
 from models import Usuario
 
 from rest_framework.serializers import HyperlinkedModelSerializer
-
+from rest_framework.serializers import ReadOnlyField
 
 class EstablecimientoSerializer(HyperlinkedModelSerializer):
+	ciudad 			= ReadOnlyField(source = 'ciudad.nombre')
+	provincia 		= ReadOnlyField(source = 'ciudad.provincia.nombre')
+	rubro 			= ReadOnlyField(source = 'rubro.nombre')
+	stats 			= ReadOnlyField(source = 'estadisticas')
+
 	class Meta:
-		model = Establecimiento
-		fields = ('id', 
+		model  	= Establecimiento
+		fields 	= ('id', 
 			'nombre', 
 			'direccion', 
 			'ciudad', 
+			'provincia', 
 			'rubro', 
-			'latitud', 
+			'latitud',
+			'stats', 
 			'longitud')
 
 class CiudadSerializer(HyperlinkedModelSerializer):
 	class Meta:
-		model = Ciudad
-		fields = ('id', 
+		model 	= Ciudad
+		fields 	= ('id', 
 			'url', 
 			'nombre', 
 			'provincia', 
@@ -31,19 +38,19 @@ class CiudadSerializer(HyperlinkedModelSerializer):
 
 class ProvinciaSerializer(HyperlinkedModelSerializer):
 	class Meta:
-		model = Provincia
-		fields = ('id', 
+		model 	= Provincia
+		fields 	= ('id', 
 			'url', 
 			'nombre')
 
 class RubroSerializer(HyperlinkedModelSerializer):
 	class Meta:
-		model = Rubro
+		model 	= Rubro
 
 class CalificacionSerializer(HyperlinkedModelSerializer):
 	class Meta:
-		model = Calificacion
+		model 	= Calificacion
 
 class UsuarioSerializer(HyperlinkedModelSerializer):
 	class Meta:
-		model = Usuario
+		model 	= Usuario

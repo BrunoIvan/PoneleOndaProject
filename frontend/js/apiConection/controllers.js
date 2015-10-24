@@ -26,24 +26,8 @@ function altaEstablecimientoController(){
 */
 function EstablecimientosView(pag){
 	getObjetoModel("establecimientos", 
-		function (establecimientos){
-			for (var i = 0; i < establecimientos.results.length; i++) {
-				establecimiento 			= establecimientos.results[i];
-				id 							= establecimiento.id;
-				ciudad 						= get_recurso_s(establecimiento.ciudad);
-				provincia 					= get_recurso_s(ciudad.provincia);
-				rubro 						= get_recurso_s(establecimiento.rubro);
-				establecimiento.ciudad 		= ciudad.nombre;
-				establecimiento.provincia 	= provincia.nombre;
-				establecimiento.rubro 		= rubro.nombre;
-				estadisticas 				= get_recurso_s('http://127.0.0.1:8000/establecimientos/'+id+'/estadisticas/?format=json');
-				establecimiento.total 		= estadisticas.total;
-				establecimiento.promedio 	= estadisticas.promedio;
-			}
-			EstablecimientosTemplate(establecimientos);		
-		},
-		pag
-	)
+	EstablecimientosTemplate, 
+	pag);
 };
 
 /*

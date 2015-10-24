@@ -23,7 +23,9 @@ from api.paginations import CalificacionesPagination
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import detail_route
+from rest_framework.decorators import list_route
 from rest_framework.response import Response
+
 
 class EstablecimientoViewSet(ModelViewSet):
 	queryset 			= 	Establecimiento.objects.all()
@@ -33,7 +35,7 @@ class EstablecimientoViewSet(ModelViewSet):
 	@detail_route()
 	def calificaciones(self, request, pk):
 		establecimiento = 	Establecimiento.objects.get(pk = pk)
-		calificaciones 	= 	Calificacion.objects.filter(establecimiento = establecimiento)
+		calificaciones 	= 	Cdalificacion.objects.filter(establecimiento = establecimiento)
 		return Response([CalificacionJson(calificacion) for calificacion in calificaciones])
 
 	@detail_route()

@@ -292,9 +292,9 @@ function EstablecimientosTemplate(establecimientos){
 		document.getElementById('direccion').id = id;
 		document.getElementById('rubro').textContent = establecimiento.rubro;
 		document.getElementById('rubro').id = id;
-		document.getElementById('total').textContent = establecimiento.total;
+		document.getElementById('total').textContent = establecimiento.stats[0];
 		document.getElementById('total').id = id;
-		document.getElementById('promedio').textContent = establecimiento.promedio;
+		document.getElementById('promedio').textContent = establecimiento.stats[1];
 		document.getElementById('promedio').id = id;
 	}
 	// Paginación

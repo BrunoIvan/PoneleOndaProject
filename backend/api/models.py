@@ -79,4 +79,4 @@ class Usuario(models.Model):
 	google_id	=	models.CharField(max_length = 200, null = True, unique = True)
 
 	def __unicode__(self):
-		return " ID Usuaro %i" % self.id
+		return "ID Usuaro %i" % self.id
