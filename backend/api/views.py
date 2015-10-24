@@ -21,18 +21,22 @@ from api.asjson import StatsJson
 from api.paginations import EstablecimientosPagination
 from api.paginations import CalificacionesPagination
 
-from django.shortcuts import render
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.decorators import detail_route
-from rest_framework.decorators import list_route
-from rest_framework.response import Response
+from api.filters import EstablecimientoFilter
 
+from django.shortcuts 			import render
+from rest_framework.filters 	import DjangoFilterBackend
+from rest_framework.viewsets 	import ModelViewSet
+from rest_framework.viewsets 	import ReadOnlyModelViewSet
+from rest_framework.decorators 	import detail_route
+from rest_framework.decorators 	import list_route
+from rest_framework.response 	import Response
 
-class Establecimiento_detViewSet(ModelViewSet):
+class Establecimiento_detViewSet(ReadOnlyModelViewSet):
 	queryset 			= 	Establecimiento.objects.all()
 	serializer_class 	= 	Establecimiento_detSerializer
 	pagination_class 	= 	EstablecimientosPagination
-	http_method_names 	= 	['get', 'head', 'options']
+	filter_backends 	= 	(DjangoFilterBackend,)
+	filter_class 		= 	EstablecimientoFilter
 
 class EstablecimientoViewSet(ModelViewSet):
 	queryset 			= 	Establecimiento.objects.all()
