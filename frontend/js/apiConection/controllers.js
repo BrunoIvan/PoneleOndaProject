@@ -31,6 +31,11 @@ function EstablecimientosView(pag){
 	pag);
 };
 
+function EstablecimientoDetalleView(id){
+	getObjetoModel("establecimientosdetalle/" + id, 
+	EstablecimientoDetalleTemplate);
+};
+
 function BusqEstablecimientosController(parametros, pag){
 	getBusqObjetoModel("establecimientosdetalle",
 		parametros,
@@ -42,7 +47,7 @@ function BusqEstablecimientosController(parametros, pag){
 			}
 		},
 		pag
-		)
+	)
 };
 
 /*

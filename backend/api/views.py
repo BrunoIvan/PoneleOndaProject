@@ -22,6 +22,7 @@ from api.paginations import EstablecimientosPagination
 from api.paginations import CalificacionesPagination
 
 from api.filters import EstablecimientoFilter
+from api.filters import CalificacionFilter
 
 from django.shortcuts 			import render
 from rest_framework.filters 	import DjangoFilterBackend
@@ -42,18 +43,6 @@ class EstablecimientoViewSet(ModelViewSet):
 	queryset 			= 	Establecimiento.objects.all()
 	serializer_class 	= 	EstablecimientoSerializer
 	pagination_class 	= 	EstablecimientosPagination
-
-	@detail_route()
-	def calificaciones(self, request, pk):
-		establecimiento = 	Establecimiento.objects.get(pk = pk)
-		calificaciones 	= 	Calificacion.objects.filter(establecimiento = establecimiento)
-		return Response([CalificacionJson(calificacion) for calificacion in calificaciones])
-
-	@detail_route()
-	def estadisticas(self, request, pk):
-		establecimiento = 	Establecimiento.objects.get(pk = pk)
-		total, promedio = 	establecimiento.estadisticas()
-		return Response(StatsJson(total, promedio))
 
 
 class CiudadViewSet(ModelViewSet):
@@ -76,18 +65,12 @@ class RubroViewSet(ModelViewSet):
 	queryset 			= 	Rubro.objects.all()
 	serializer_class 	= 	RubroSerializer
 
-	@detail_route(pagination_class 	= 	EstablecimientosPagination)
-	def establecimientos(self, request, pk):
-		rubro 			= Rubro.objects.get(pk = pk)
-		establecimientos= Establecimiento.objects.filter(rubro = rubro)
-		return Response([EstablecimientoJson(establecimiento) for establecimiento in establecimientos])
-
-
 class CalificacionViewSet(ModelViewSet):
 	queryset 			= 	Calificacion.objects.all()
 	serializer_class 	=	CalificacionSerializer
 	pagination_class 	= 	CalificacionesPagination
-
+	filter_backends 	= 	(DjangoFilterBackend,)
+	filter_class 		= 	CalificacionFilter
 
 class UsuarioViewSet(ModelViewSet):
 	queryset 			= 	Usuario.objects.all()
