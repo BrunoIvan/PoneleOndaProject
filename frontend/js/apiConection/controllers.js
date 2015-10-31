@@ -36,11 +36,11 @@ function EstablecimientoDetalleView(id){
 	EstablecimientoDetalleTemplate);
 };
 
-function CalificacionesView(establecimiento_id){
+function CalificacionesView(establecimiento_id, pag){
 	getBusqObjetoModel("calificaciones/", 
 	['&establecimiento=' + establecimiento_id], 
 	CalificacionesTemplate, 
-	pagina = 1);
+	pag);
 };
 
 function BusqEstablecimientosController(parametros, pag){

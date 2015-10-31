@@ -311,6 +311,9 @@ function altaCiudadTemplate(resultado){
 */
 
 function CalificacionesTemplate(calificaciones){
+	document.getElementById('columna1').innerHTML 	= '';
+	document.getElementById('columna2').innerHTML 	= '';
+	document.getElementById('paginacion').innerHTML = '';
 	var html = getTemplate("js/apiConection/templates/calificacion.html");
 	for (var i = 0; i < calificaciones.results.length; i++) {
 		if (i % 2 == 0){
@@ -342,7 +345,52 @@ function CalificacionesTemplate(calificaciones){
 		document.getElementById('puntaje' + id).textContent 	= puntaje_vis;
 		document.getElementById('comentario' + id).textContent	= comentario;
 	}
-}
+	// Paginacion
+	var html = getTemplate("js/apiConection/templates/paginacion.html");
+	document.getElementById('paginacion').innerHTML += html;
+	var prev = calificaciones.previous;
+	if(prev == null){
+		var actual = 1;
+		document.getElementById('paginasAnteriores').remove();
+	} else {
+		if (prev[prev.length-1] > 1) {
+			var prev_n = parseInt(prev[prev.length-1]);
+		} else { var prev_n = 1 }
+		var actual = prev_n+1;
+		var primera = 1;
+		document.getElementById('paginaAnterior').value = actual-1;
+		document.getElementById('paginaAnterior').onclick = function () {
+			CalificacionesView(calificacion.establecimiento_id, actual-1);
+		}
+		document.getElementById('paginaPrimera').value = 1;
+		document.getElementById('paginaPrimera').onclick = function () {
+			CalificacionesView(calificacion.establecimiento_id, primera);
+		}
+	}
+	var next = calificaciones.next;
+	if (next == null){
+		var ultima = actual;
+		document.getElementById('paginasSiguientes').remove();
+	} else {
+		var next_n = parseInt(next[next.length-1]);
+		var count = calificaciones.count;
+		var pagsxpag = calificaciones.results.length;
+		var ultima = count/pagsxpag;
+		if(ultima - parseInt(ultima) > 0){
+			ultima = parseInt(ultima) + 1;
+		}
+		document.getElementById('paginaSiguiente').value = actual+1;
+		document.getElementById('paginaSiguiente').onclick = function () {
+			CalificacionesView(calificacion.establecimiento_id, actual+1);
+		}
+		document.getElementById('paginaUltima').value = ultima;
+		document.getElementById('paginaUltima').onclick = function () {
+			CalificacionesView(calificacion.establecimiento_id, ultima);
+		}
+	}
+	document.getElementById('paginaActual').innerHTML = 'Página '+actual+' de '+ultima;
+	document.getElementsByTagName('title')[0].text = "Metele Onda - Listado de establecimientos";
+};
 
 function EstablecimientoDetalleTemplate(establecimiento){
 	document.getElementById('content').innerHTML = '';
@@ -360,7 +408,7 @@ function EstablecimientoDetalleTemplate(establecimiento){
 	document.getElementById('rubro').textContent 	= establecimiento.rubro;
 	document.getElementById('total').textContent 	= establecimiento.stats[0];
 	document.getElementById('promedio').textContent = establecimiento.stats[1];
-	CalificacionesView(id);
+	CalificacionesView(id, 1);
 };
 
 function EstablecimientosTemplate(establecimientos){
