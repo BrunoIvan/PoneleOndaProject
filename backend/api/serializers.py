@@ -59,7 +59,8 @@ class RubroSerializer(HyperlinkedModelSerializer):
 		model 	= Rubro
 
 class CalificacionSerializer(HyperlinkedModelSerializer):
-	establecimiento_id = ReadOnlyField(source = 'establecimiento.id')
+	establecimiento_id 		= ReadOnlyField(source = 'establecimiento.id')
+	establecimiento_nombre 	= ReadOnlyField(source = 'establecimiento.nombre')
 
 	class Meta:
 		model 	= Calificacion
@@ -69,7 +70,8 @@ class CalificacionSerializer(HyperlinkedModelSerializer):
 			'comentario', 
 			'usuario', 
 			'establecimiento', 
-			'establecimiento_id')
+			'establecimiento_id', 
+			'establecimiento_nombre')
 
 class UsuarioSerializer(HyperlinkedModelSerializer):
 	class Meta:

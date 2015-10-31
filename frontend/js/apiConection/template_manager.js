@@ -311,10 +311,16 @@ function altaCiudadTemplate(resultado){
 */
 
 function CalificacionesTemplate(calificaciones){
-	document.getElementById('columna1').innerHTML 	= '';
-	document.getElementById('columna2').innerHTML 	= '';
-	document.getElementById('paginacion').innerHTML = '';
-	var html = getTemplate("js/apiConection/templates/calificacion.html");
+	document.getElementById('content').innerHTML = '';
+	var html = getTemplate("js/apiConection/templates/calificaciones.html");
+	document.getElementById('content').innerHTML += html;
+	html = getTemplate("js/apiConection/templates/calificacion.html");
+	if (calificaciones.results.length > 0){
+		nombre = calificaciones.results[0].establecimiento_nombre;
+		document.getElementById('nombre').textContent= 	'Calificaciones de ' + nombre;
+	} else {
+		document.getElementById('nombre').textContent= 	'Este establecimiento no tiene calificaciones aún';
+	}
 	for (var i = 0; i < calificaciones.results.length; i++) {
 		if (i % 2 == 0){
 			columna = 'columna1';
@@ -408,7 +414,10 @@ function EstablecimientoDetalleTemplate(establecimiento){
 	document.getElementById('rubro').textContent 	= establecimiento.rubro;
 	document.getElementById('total').textContent 	= establecimiento.stats[0];
 	document.getElementById('promedio').textContent = establecimiento.stats[1];
-	CalificacionesView(id, 1);
+	document.getElementById('ver_calif').textContent= 'Ver calificaciones para ' + nombre;
+	document.getElementById('ver_calif').onclick 	= function() {
+		CalificacionesView(id, 1);
+	}
 };
 
 function EstablecimientosTemplate(establecimientos){
@@ -433,6 +442,8 @@ function EstablecimientosTemplate(establecimientos){
 		var promedio_elem 	= panel_content[2].children[0].children[0].children[0].children[1];
 		var total_elem 		= panel_content[2].children[0].children[1].children[0].children[1];
 		var det_boton_elem 	= panel_content[3].children[0];
+		var calif_ver_elem 	= panel_content[2].children[0].children[0].children[1];
+		var calif_alta_elem = panel_content[2].children[0].children[1].children[1]
 		nombre_elem.textContent 	= nombre;
 		direccion_elem.textContent 	= direccion;
 		rubro_elem.textContent 		= establecimiento.rubro;
@@ -440,9 +451,14 @@ function EstablecimientosTemplate(establecimientos){
 		total_elem.textContent 		= establecimiento.stats[1];
 		det_boton_elem.addEventListener('click', 
 			function(e){
-				alert(det_boton_elem.parentElement.parentElement.parentElement.id)
+				EstablecimientoDetalleView(establecimiento.id);
 			}
-		)
+		);
+		calif_ver_elem.addEventListener('click', 
+			function(e){
+				CalificacionesView(establecimiento.id, 1);
+			}
+		);
 	}
 	// Paginación
 	var html = getTemplate("js/apiConection/templates/paginacion.html");

@@ -6,7 +6,7 @@ from django_filters import FilterSet
 class EstablecimientoFilter(FilterSet):
 	class Meta:
 		model = Establecimiento
-		fields = ['nombre', 'direccion']
+		fields = ['nombre', 'direccion', 'rubro']
 
 class CalificacionFilter(FilterSet):
 	class Meta:
