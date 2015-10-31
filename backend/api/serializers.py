@@ -61,6 +61,12 @@ class RubroSerializer(HyperlinkedModelSerializer):
 class CalificacionSerializer(HyperlinkedModelSerializer):
 	class Meta:
 		model 	= Calificacion
+		fields 	= ('id', 
+			'url', 
+			'puntaje', 
+			'comentario', 
+			'usuario', 
+			'establecimiento')
 
 class UsuarioSerializer(HyperlinkedModelSerializer):
 	class Meta:

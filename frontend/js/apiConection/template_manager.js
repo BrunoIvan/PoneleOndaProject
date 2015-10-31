@@ -6,7 +6,7 @@ function manageFormEstablecimientoTemplate(){
 */
 
 function menuView(){
-	printTemplate("navbar",getTemplate("js/apiConection/templates/menu.html"));
+	printTemplate("navbar", getTemplate("js/apiConection/templates/menu.html"));
 };
 
 function altaEstablecimientoOKView(){
@@ -310,6 +310,40 @@ function altaCiudadTemplate(resultado){
 };
 */
 
+function CalificacionesTemplate(calificaciones){
+	var html = getTemplate("js/apiConection/templates/calificacion.html");
+	for (var i = 0; i < calificaciones.results.length; i++) {
+		if (i % 2 == 0){
+			columna = 'columna1';
+		} else {
+			columna = 'columna2';
+		}
+		var calificacion= calificaciones.results[i];
+		var id 			= calificacion.id.toFixed();
+		var puntaje 	= calificacion.puntaje;
+		var puntaje_vis = '*';
+		for (var x = 1; x < puntaje; x++) {
+			puntaje_vis += '*';
+		}
+		var comentario 	= calificacion.comentario;
+		document.getElementById(columna).innerHTML 	+= html;
+		var calif = document.getElementById('calif');
+		if(puntaje < 3){
+			clase = 'alert alert-danger';
+		} else if(puntaje == 3){
+			clase = 'alert alert-warning';
+		} else {
+			clase = 'alert alert-success';
+		}
+		calif.className = clase;
+		document.getElementById('calif').id 		+= id;
+		document.getElementById('puntaje').id 		+= id;
+		document.getElementById('comentario').id 	+= id;
+		document.getElementById('puntaje' + id).textContent 	= puntaje_vis;
+		document.getElementById('comentario' + id).textContent	= comentario;
+	}
+}
+
 function EstablecimientoDetalleTemplate(establecimiento){
 	document.getElementById('content').innerHTML = '';
 	var html 		= getTemplate('js/apiConection/templates/establecimientoDetalle.html');
@@ -326,36 +360,41 @@ function EstablecimientoDetalleTemplate(establecimiento){
 	document.getElementById('rubro').textContent 	= establecimiento.rubro;
 	document.getElementById('total').textContent 	= establecimiento.stats[0];
 	document.getElementById('promedio').textContent = establecimiento.stats[1];
+	CalificacionesView(id);
 };
 
 function EstablecimientosTemplate(establecimientos){
 	document.getElementById('content').innerHTML = '';
+	var html = getTemplate("js/apiConection/templates/establecimiento.html");
 	for (var i = 0; i < establecimientos.results.length; i++) {
 		var establecimiento = establecimientos.results[i];
-		var html 			= getTemplate("js/apiConection/templates/establecimiento.html");
 		var nombre 			= establecimiento.nombre;
-		var id 				= establecimiento.id;
 		var direccion 		= establecimiento.direccion;
 		direccion += ', ';
 		direccion += establecimiento.ciudad;
 		direccion += ', ';
 		direccion += establecimiento.provincia;
 		direccion += '.';
-		document.getElementById('content').innerHTML += html;
-		document.getElementById('nombre').id 	+= id;
-		document.getElementById('direccion').id += id;
-		document.getElementById('rubro').id 	+= id;
-		document.getElementById('total').id 	+= id;
-		document.getElementById('promedio').id 	+= id;
-		document.getElementById('detalle').id 	+= id;
-		document.getElementById('nombre' + id).textContent 	= nombre;
-		document.getElementById('direccion' + id).textContent	= direccion;
-		document.getElementById('rubro' + id).textContent 	= establecimiento.rubro;
-		document.getElementById('total' + id).textContent 	= establecimiento.stats[0];
-		document.getElementById('promedio' + id).textContent 	= establecimiento.stats[1];
-		document.getElementById('detalle' + id).onclick 		= function () { 
-			EstablecimientoDetalleView(id);
-		}
+		document.getElementById('content').innerHTML+= html;
+		document.getElementById('panel').id = establecimiento.id;
+		var panel 			= document.getElementById(establecimiento.id);
+		var panel_content 	= panel.children[0].children;
+		var nombre_elem 	= panel_content[0].children[0].children[0];
+		var direccion_elem 	= panel_content[1].children[0].children[0].children[1];
+		var rubro_elem 		= panel_content[1].children[0].children[0].children[3];
+		var promedio_elem 	= panel_content[2].children[0].children[0].children[0].children[1];
+		var total_elem 		= panel_content[2].children[0].children[1].children[0].children[1];
+		var det_boton_elem 	= panel_content[3].children[0];
+		nombre_elem.textContent 	= nombre;
+		direccion_elem.textContent 	= direccion;
+		rubro_elem.textContent 		= establecimiento.rubro;
+		promedio_elem.textContent 	= establecimiento.stats[0];
+		total_elem.textContent 		= establecimiento.stats[1];
+		det_boton_elem.addEventListener('click', 
+			function(e){
+				alert(det_boton_elem.parentElement.parentElement.parentElement.id)
+			}
+		)
 	}
 	// Paginación
 	var html = getTemplate("js/apiConection/templates/paginacion.html");

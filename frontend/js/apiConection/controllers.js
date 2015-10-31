@@ -26,18 +26,25 @@ function altaEstablecimientoController(){
 */
 
 function EstablecimientosView(pag){
-	getObjetoModel("establecimientosdetalle", 
+	getObjetoModel("establecimientosdetalle/", 
 	EstablecimientosTemplate, 
 	pag);
 };
 
 function EstablecimientoDetalleView(id){
-	getObjetoModel("establecimientosdetalle/" + id, 
+	getObjetoModel("establecimientosdetalle/" + id + "/", 
 	EstablecimientoDetalleTemplate);
 };
 
+function CalificacionesView(establecimiento_id){
+	getBusqObjetoModel("calificaciones/", 
+	['&establecimiento=' + establecimiento_id], 
+	CalificacionesTemplate, 
+	pagina = 1);
+};
+
 function BusqEstablecimientosController(parametros, pag){
-	getBusqObjetoModel("establecimientosdetalle",
+	getBusqObjetoModel("establecimientosdetalle/",
 		parametros,
 		function (establecimientos){
 			if (establecimientos.count == 0){
@@ -125,7 +132,7 @@ function agregarCiudadController(ciudad, codigo, provincia_url, provincia_id){
 };
 
 function listaProvinciasController(){
-	getObjetoModel("provincias", function (provincias){
+	getObjetoModel("provincias/", function (provincias){
 		llenaListaProvincias(provincias);   
 	});	
 };
@@ -137,7 +144,7 @@ function listaCiudadesProvController(provincia){
 };
 
 function listaRubrosController(){
-	getObjetoModel("rubros", function (rubros){
+	getObjetoModel("rubros/", function (rubros){
 		llenaListaRubros(rubros);   
 	});	
 };
