@@ -67,6 +67,15 @@ function valid_alta_ciudad(){
 	}
 };
 
+function valid_alta_calificacion() {
+	if (valid_form_alerta('id_puntaje', 
+		'Debe elegir un puntaje') == false){
+		return false;
+	} else {
+		return true;
+	}
+}
+
 function valid_busq_establecimiento(id, mensaje){
 	var nombre_result 		= valid_form_simple('id_nombre').toFixed();
 	var dirección_result 	= valid_form_simple('id_direccion').toFixed();
@@ -97,6 +106,39 @@ function BusqEstablecimientosView(){
 			alert('Debe especificar al menos un campo');
 		}
 	}
+};
+
+function altaCalificacionView(establecimiento){
+	var puntaje, i, j, k, alta;
+	printTemplate("content", getTemplate("js/apiConection/templates/altaCalificacion.html"));
+	document.getElementById('est').textContent = 'Crear calificacion para ' + establecimiento.nombre;
+	puntaje = document.getElementById('puntaje');
+	puntaje.attributes.valueOf()[1].value;
+	for (i = 0; i < puntaje.children.length; i++) {
+		puntaje.children[i].addEventListener('click', 
+			function (e) {
+				puntaje = document.getElementById('puntaje');
+				k = parseInt(e.target.attributes[1].value) - 1;
+				document.getElementById('id_puntaje').value = puntaje.children[k].children[0].attributes[1].value;
+				for (j = 0; j < puntaje.children.length; j++) {
+					if(j != (k)){
+						puntaje.children[j].className = '';
+					} else {
+						puntaje.children[j].className = 'active';
+					}
+				}
+			}
+		);
+	}
+	alta = document.getElementById('submitCalificacion')
+	alta.addEventListener('click', 
+		function (){
+			if(valid_alta_calificacion() == true){
+				altaCalificacionController();
+			}
+		}
+	);
+	document.getElementsByTagName('title')[0].text = "Metele Onda - Calificar establecimiento";
 };
 
 function altaEstablecimientoView(){
@@ -418,15 +460,21 @@ function EstablecimientoDetalleTemplate(establecimiento){
 	document.getElementById('ver_calif').onclick 	= function() {
 		CalificacionesView(id, 1);
 	}
+	document.getElementById('alta_calif').onclick 	= function() {
+		CalificacionesAltaView(id);
+	}
 };
 
 function EstablecimientosTemplate(establecimientos){
+	var html, panel, panel_content, nombre_elem, direccion_elem, rubro_elem;
+	var promedio_elem, total_elem, det_boton_elem, calif_ver_elem, calif_alta_elem;
+	var nombre, direccion, i, j, ver_est;
 	document.getElementById('content').innerHTML = '';
 	var html = getTemplate("js/apiConection/templates/establecimiento.html");
-	for (var i = 0; i < establecimientos.results.length; i++) {
-		var establecimiento = establecimientos.results[i];
-		var nombre 			= establecimiento.nombre;
-		var direccion 		= establecimiento.direccion;
+	for (i = 0; i < establecimientos.results.length; i++) {
+		establecimiento = establecimientos.results[i];
+		nombre 			= establecimiento.nombre;
+		direccion 		= establecimiento.direccion;
 		direccion += ', ';
 		direccion += establecimiento.ciudad;
 		direccion += ', ';
@@ -434,32 +482,37 @@ function EstablecimientosTemplate(establecimientos){
 		direccion += '.';
 		document.getElementById('content').innerHTML+= html;
 		document.getElementById('panel').id = establecimiento.id;
-		var panel 			= document.getElementById(establecimiento.id);
-		var panel_content 	= panel.children[0].children;
-		var nombre_elem 	= panel_content[0].children[0].children[0];
-		var direccion_elem 	= panel_content[1].children[0].children[0].children[1];
-		var rubro_elem 		= panel_content[1].children[0].children[0].children[3];
-		var promedio_elem 	= panel_content[2].children[0].children[0].children[0].children[1];
-		var total_elem 		= panel_content[2].children[0].children[1].children[0].children[1];
-		var det_boton_elem 	= panel_content[3].children[0];
-		var calif_ver_elem 	= panel_content[2].children[0].children[0].children[1];
-		var calif_alta_elem = panel_content[2].children[0].children[1].children[1]
+		panel 			= document.getElementById(establecimiento.id);
+		panel_content 	= panel.children[0].children;
+		nombre_elem 	= panel_content[0].children[0].children[0];
+		direccion_elem 	= panel_content[1].children[0].children[0].children[1];
+		rubro_elem 		= panel_content[1].children[0].children[0].children[3];
+		promedio_elem 	= panel_content[2].children[0].children[0].children[0].children[1];
+		total_elem 		= panel_content[2].children[0].children[1].children[0].children[1];
 		nombre_elem.textContent 	= nombre;
 		direccion_elem.textContent 	= direccion;
 		rubro_elem.textContent 		= establecimiento.rubro;
 		promedio_elem.textContent 	= establecimiento.stats[0];
 		total_elem.textContent 		= establecimiento.stats[1];
-		det_boton_elem.addEventListener('click', 
-			function(e){
-				EstablecimientoDetalleView(establecimiento.id);
-			}
-		);
-		calif_ver_elem.addEventListener('click', 
-			function(e){
-				CalificacionesView(establecimiento.id, 1);
+	}
+	ver_ests = document.getElementsByName('ver_est');
+	for (j = 0; j < ver_ests.length; j++) {
+		ver_ests[j].addEventListener('click', 
+			function (e) {
+				alert(e.target)
 			}
 		);
 	}
+		//calif_ver_elem.addEventListener('click', 
+		//	function(e){
+		//		CalificacionesView(establecimiento.id, 1);
+		//	}
+		//);
+		//calif_alta_elem.addEventListener('click', 
+		//	function(e){
+		//		altaCalificacionView(establecimiento);
+		//	}
+		//);
 	// Paginación
 	var html = getTemplate("js/apiConection/templates/paginacion.html");
 	document.getElementById('content').innerHTML += html;

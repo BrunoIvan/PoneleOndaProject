@@ -46,7 +46,7 @@ function getCiudadesxProvinciaModel(provincia_pk, funcion){
 			funcion(resp)
 		}
 	}	
-	xmlhttp.open("GET","http://localhost:8000/provincias/" + provincia_pk + "/ciudades?format=json",true);
+	xmlhttp.open("GET","http://localhost:8000/provincias/" + provincia_pk + "/ciudades/?format=json",true);
 	xmlhttp.send();
 //	return resp;
 };
