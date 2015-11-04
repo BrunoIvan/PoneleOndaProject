@@ -108,10 +108,10 @@ function BusqEstablecimientosView(){
 	}
 };
 
-function altaCalificacionView(establecimiento){
+function altaCalificacionView(id, nombre){
 	var puntaje, i, j, k, alta;
 	printTemplate("content", getTemplate("js/apiConection/templates/altaCalificacion.html"));
-	document.getElementById('est').textContent = 'Crear calificacion para ' + establecimiento.nombre;
+	document.getElementById('est').textContent = 'Crear calificacion para ' + nombre;
 	puntaje = document.getElementById('puntaje');
 	puntaje.attributes.valueOf()[1].value;
 	for (i = 0; i < puntaje.children.length; i++) {
@@ -355,13 +355,14 @@ function altaCiudadTemplate(resultado){
 function CalificacionesTemplate(calificaciones){
 	document.getElementById('content').innerHTML = '';
 	var html = getTemplate("js/apiConection/templates/calificaciones.html");
+	var star = getTemplate('js/apiConection/templates/star_icon.html');
 	document.getElementById('content').innerHTML += html;
 	html = getTemplate("js/apiConection/templates/calificacion.html");
 	if (calificaciones.results.length > 0){
 		nombre = calificaciones.results[0].establecimiento_nombre;
-		document.getElementById('nombre').textContent= 	'Calificaciones de ' + nombre;
+		document.getElementById('nombre').textContent = 'Calificaciones de ' + nombre;
 	} else {
-		document.getElementById('nombre').textContent= 	'Este establecimiento no tiene calificaciones aún';
+		document.getElementById('nombre').textContent = 'Este establecimiento no tiene calificaciones aún';
 	}
 	for (var i = 0; i < calificaciones.results.length; i++) {
 		if (i % 2 == 0){
@@ -372,9 +373,9 @@ function CalificacionesTemplate(calificaciones){
 		var calificacion= calificaciones.results[i];
 		var id 			= calificacion.id.toFixed();
 		var puntaje 	= calificacion.puntaje;
-		var puntaje_vis = '*';
+		var puntaje_vis = star;
 		for (var x = 1; x < puntaje; x++) {
-			puntaje_vis += '*';
+			puntaje_vis += star;
 		}
 		var comentario 	= calificacion.comentario;
 		document.getElementById(columna).innerHTML 	+= html;
@@ -390,7 +391,7 @@ function CalificacionesTemplate(calificaciones){
 		document.getElementById('calif').id 		+= id;
 		document.getElementById('puntaje').id 		+= id;
 		document.getElementById('comentario').id 	+= id;
-		document.getElementById('puntaje' + id).textContent 	= puntaje_vis;
+		document.getElementById('puntaje' + id).innerHTML 		= puntaje_vis;
 		document.getElementById('comentario' + id).textContent	= comentario;
 	}
 	// Paginacion
@@ -461,7 +462,7 @@ function EstablecimientoDetalleTemplate(establecimiento){
 		CalificacionesView(id, 1);
 	}
 	document.getElementById('alta_calif').onclick 	= function() {
-		CalificacionesAltaView(id);
+		altaCalificacionView(establecimiento);
 	}
 };
 
@@ -492,27 +493,9 @@ function EstablecimientosTemplate(establecimientos){
 		nombre_elem.textContent 	= nombre;
 		direccion_elem.textContent 	= direccion;
 		rubro_elem.textContent 		= establecimiento.rubro;
-		promedio_elem.textContent 	= establecimiento.stats[0];
-		total_elem.textContent 		= establecimiento.stats[1];
+		promedio_elem.textContent 	= establecimiento.stats[1];
+		total_elem.textContent 		= establecimiento.stats[0];
 	}
-	ver_ests = document.getElementsByName('ver_est');
-	for (j = 0; j < ver_ests.length; j++) {
-		ver_ests[j].addEventListener('click', 
-			function (e) {
-				alert(e.target)
-			}
-		);
-	}
-		//calif_ver_elem.addEventListener('click', 
-		//	function(e){
-		//		CalificacionesView(establecimiento.id, 1);
-		//	}
-		//);
-		//calif_alta_elem.addEventListener('click', 
-		//	function(e){
-		//		altaCalificacionView(establecimiento);
-		//	}
-		//);
 	// Paginación
 	var html = getTemplate("js/apiConection/templates/paginacion.html");
 	document.getElementById('content').innerHTML += html;
@@ -560,5 +543,34 @@ function EstablecimientosTemplate(establecimientos){
 	}
 	document.getElementById('paginaActual').innerHTML = 'Página '+actual+' de '+ultima;
 	document.getElementsByTagName('title')[0].text = "Metele Onda - Listado de establecimientos";
+	var ver_ests 	= 	document.getElementsByName('ver_est');
+	for (var i = 0; i < ver_ests.length; i++) {
+		ver_ests[i].addEventListener('click', 
+			function (e) {
+				var id = e.target.parentElement.parentElement.parentElement.id;
+				EstablecimientoDetalleView(id);
+			}
+		);
+	}
+	var ver_califs 	= 	document.getElementsByName('ver_calif');
+	for (var i = 0; i < ver_califs.length; i++) {
+		ver_califs[i].addEventListener('click', 
+			function (e) {
+				var id = e.target.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+				CalificacionesView(id, 1);
+			}
+		);
+	}
+	var alta_califs 	= 	document.getElementsByName('alta_calif');
+	for (var i = 0; i < alta_califs.length; i++) {
+		alta_califs[i].addEventListener('click', 
+			function (e) {
+				panel 	= e.target.parentElement.parentElement.parentElement.parentElement.parentElement;
+				var id 	= panel.id;
+				nombre 	= panel.children[0].children[0].children[0].children[0].textContent;
+				altaCalificacionView(id, nombre);
+			}
+		);
+	}
 };
 

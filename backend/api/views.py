@@ -13,10 +13,7 @@ from api.serializers import RubroSerializer
 from api.serializers import CalificacionSerializer
 from api.serializers import UsuarioSerializer
 
-from api.asjson import EstablecimientoJson
 from api.asjson import CiudadJson
-from api.asjson import CalificacionJson
-from api.asjson import StatsJson
 
 from api.paginations import EstablecimientosPagination
 from api.paginations import CalificacionesPagination
@@ -56,8 +53,7 @@ class ProvinciaViewSet(ModelViewSet):
 
 	@detail_route()
 	def ciudades(self, request, pk):
-		provincia 		= Provincia.objects.get(pk = pk)
-		ciudades 		= Ciudad.objects.filter(provincia = provincia)
+		ciudades 		= Ciudad.objects.filter(provincia__pk = pk)
 		return Response([CiudadJson(ciudad) for ciudad in ciudades])
 
 
