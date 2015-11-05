@@ -118,6 +118,7 @@ function altaCalificacionView(id, nombre){
 		puntaje.children[i].addEventListener('click', 
 			function (e) {
 				puntaje = document.getElementById('puntaje');
+				alert(e.target);
 				k = parseInt(e.target.attributes[1].value) - 1;
 				document.getElementById('id_puntaje').value = puntaje.children[k].children[0].attributes[1].value;
 				for (j = 0; j < puntaje.children.length; j++) {

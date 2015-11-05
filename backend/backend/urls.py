@@ -20,6 +20,9 @@ from api.views import ProvinciaViewSet
 from api.views import RubroViewSet
 from api.views import CalificacionViewSet
 from api.views import UsuarioViewSet
+from api.views import autenticacionStatus
+from api.views import autenticarGoogle
+
 
 from django.conf.urls import include, url
 from django.contrib import admin
@@ -39,5 +42,8 @@ router.register(r'usuarios', 			UsuarioViewSet)
 urlpatterns = [
  	url(r'^admin/', include(admin.site.urls)),
     url(r'^',include(router.urls)),	
- #   url(r'^api-token-auth/', views.obtain_auth_token),
+ #  url(r'^api-token-auth/', views.obtain_auth_token),
+ #   url(r'^api-auth/', autenticacionStatus),
+    url(r'^api-auth/google/', autenticarGoogle),
+
  ]

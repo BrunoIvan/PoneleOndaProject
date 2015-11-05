@@ -29,6 +29,9 @@ from rest_framework.decorators 	import detail_route
 from rest_framework.decorators 	import list_route
 from rest_framework.response 	import Response
 
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import ensure_csrf_cookie
+
 class Establecimiento_detViewSet(ReadOnlyModelViewSet):
 	queryset 			= 	Establecimiento.objects.all()
 	serializer_class 	= 	Establecimiento_detSerializer
@@ -71,3 +74,40 @@ class CalificacionViewSet(ModelViewSet):
 class UsuarioViewSet(ModelViewSet):
 	queryset 			= 	Usuario.objects.all()
 	serializer_class 	=	UsuarioSerializer
+
+def getTipoSesion(request):
+	tipo_sesion = request.session.get('tipo_sesion', False)
+	return tipo_sesion
+
+def autenticacionStatus(request):
+	from django.http import HttpResponse
+	return HttpResponse(getTipoSesion(request))
+
+def autenticarGoogle(request):
+	import urllib2
+	print request.POST.getlist('gtoken')[0]
+	f =  urllib2.urlopen('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' +  request.POST.getlist('gtoken')[0])
+	print f.read() + 'la choza'
+
+
+#@csrf_exempt
+#def autenticarGoogle(request, token):	
+#	from oauth2client import client, crypt
+
+	# (Receive token by HTTPS POST)
+
+#	try:
+#		idinfo = client.verify_id_token(token, CLIENT_ID)
+#		# If multiple clients access the backend server:
+#		if idinfo['aud'] not in [ANDROID_CLIENT_ID, IOS_CLIENT_ID, WEB_CLIENT_ID]:
+#			raise crypt.AppIdentityError("Unrecognized client.")
+#		if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+#			raise crypt.AppIdentityError("Wrong issuer.")
+#		if idinfo['hd'] != APPS_DOMAIN_NAME:
+#			raise crypt.AppIdentityError("Wrong hosted domain.")
+#	except crypt.AppIdentityError:
+#		# Invalid token
+#		print 'invalid token'
+#	userid = idinfo['sub']
+#	print userid
+#	return userid
