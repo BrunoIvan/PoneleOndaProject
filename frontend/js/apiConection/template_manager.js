@@ -80,8 +80,41 @@ function valid_busq_establecimiento(id, mensaje){
 	var nombre_result 		= valid_form_simple('id_nombre').toFixed();
 	var dirección_result 	= valid_form_simple('id_direccion').toFixed();
 	return nombre_result + dirección_result;
-
 };
+
+function EstadisticasTemplate(){
+	printTemplate("content", getTemplate("js/apiConection/templates/estadisticas.html"));
+};
+
+function LlenaMejoresTemplate(mejores){
+	var tabla = document.getElementById('estadisticas');
+	for (var i = 0; i < 10; i++) {
+		tabla.children[i].children[0].textContent = mejores[i].nombre;
+	}
+};
+
+function LlenaPeoresTemplate(peores){
+	var tabla = document.getElementById('estadisticas');
+	for (var i = 0; i < 10; i++) {
+		tabla.children[i].children[1].textContent = peores[i].nombre;
+	}
+};
+
+/*
+function DescartaRepetidos(){
+	resultados = [];
+	tabla = document.getElementById('estadisticas');
+	for (var i = 0; i < 10; i++) {
+		for (var j = 0; j < 2; j++) {
+			if(tabla.children[i].children[j].textContent in resultados){
+				tabla.children[i].children[j].textContent = '';
+			} else {
+				resultados.push(tabla.children[i].children[j].textContent);
+			}
+		}
+	}
+};
+*/
 
 function BusqEstablecimientosView(){
 	printTemplate("content", getTemplate("js/apiConection/templates/busqEstablecimiento.html"));
@@ -118,8 +151,12 @@ function altaCalificacionView(id, nombre){
 		puntaje.children[i].addEventListener('click', 
 			function (e) {
 				puntaje = document.getElementById('puntaje');
-				alert(e.target);
-				k = parseInt(e.target.attributes[1].value) - 1;
+				if(e.target.tagName === 'A'){
+					k = parseInt(e.target.attributes[1].value);
+				} else if(e.target.tagName === 'SPAN'){
+					k = parseInt(e.target.parentElement.attributes[1].value);
+				}
+				k--;
 				document.getElementById('id_puntaje').value = puntaje.children[k].children[0].attributes[1].value;
 				for (j = 0; j < puntaje.children.length; j++) {
 					if(j != (k)){
@@ -137,6 +174,12 @@ function altaCalificacionView(id, nombre){
 			if(valid_alta_calificacion() == true){
 				altaCalificacionController();
 			}
+		}
+	);
+	volver = document.getElementById('volver')
+	volver.addEventListener('click', 
+		function (e){
+			EstablecimientoDetalleView(id);
 		}
 	);
 	document.getElementsByTagName('title')[0].text = "Metele Onda - Calificar establecimiento";
@@ -180,7 +223,7 @@ function altaEstablecimientoView(){
 		habilitaCiudad();
 		document.getElementById("nueva_ciudad").onclick = function () {
 			muestraAgregarCiudades();
-	 	}
+		}
 	}	
 };
 
@@ -221,11 +264,11 @@ function muestraPostAltaCiudad(){
 
 function marcaCiudad(ciudad){
 	var select = document.getElementById("id_ciudad");
-    for (var i = 0; i < select.options.length; ++i) {
-        if (select.options[i].text == ciudad){
-        	select.options[i].selected = true;
-        }
-    };
+	for (var i = 0; i < select.options.length; ++i) {
+		if (select.options[i].text == ciudad){
+			select.options[i].selected = true;
+		}
+	};
 };
 
 function llenaListaCiudades(ciudades){
@@ -233,16 +276,16 @@ function llenaListaCiudades(ciudades){
 	select.innerHTML = "";
 	var opt = document.createElement('option');
 	opt.value = "";
-    opt.innerHTML = "Elegir una ciudad ...";
-    opt.selected = true;
- 	opt.disabled = true;
-    select.appendChild(opt);
+	opt.innerHTML = "Elegir una ciudad ...";
+	opt.selected = true;
+	opt.disabled = true;
+	select.appendChild(opt);
 	for(i = 0; i < ciudades.length; i++) {
 		var opt = document.createElement('option');
 		opt.value = ciudades[i].url;
-    	opt.innerHTML = ciudades[i].nombre;
-    	select.appendChild(opt);
-    }	
+		opt.innerHTML = ciudades[i].nombre;
+		select.appendChild(opt);
+	}	
 };
 
 function llenaListaRubros(rubros){
@@ -250,32 +293,32 @@ function llenaListaRubros(rubros){
 	select.innerHTML = "";
 	var opt = document.createElement('option');
 	opt.value = "";
-    opt.innerHTML = "Elegir un rubro ...";
-    opt.selected = true;
- 	opt.disabled = true;
-    select.appendChild(opt);
+	opt.innerHTML = "Elegir un rubro ...";
+	opt.selected = true;
+	opt.disabled = true;
+	select.appendChild(opt);
 	for(i = 0; i < rubros.length; i++) {
 		var opt = document.createElement('option');
 		opt.value = rubros[i].url;
-    	opt.innerHTML = rubros[i].nombre;
-    	select.appendChild(opt);
-    }	
+		opt.innerHTML = rubros[i].nombre;
+		select.appendChild(opt);
+	}	
 };
 
 function llenaListaProvincias(provincias){
 	var select = document.getElementById("id_provincia");
 	var opt = document.createElement('option');
 	opt.value = "";
-    opt.innerHTML = "Elegir una provincia ...";
-    opt.selected = true;
- 	opt.disabled = true;
-    select.appendChild(opt);
+	opt.innerHTML = "Elegir una provincia ...";
+	opt.selected = true;
+	opt.disabled = true;
+	select.appendChild(opt);
 	for(i = 0; i < provincias.length; i++) {
 		var opt = document.createElement('option');
 		opt.id = provincias[i].url;
-    	opt.value = provincias[i].id;
-    	opt.innerHTML = provincias[i].nombre;
-    	select.appendChild(opt);
+		opt.value = provincias[i].id;
+		opt.innerHTML = provincias[i].nombre;
+		select.appendChild(opt);
 	}
 };
 
@@ -440,6 +483,12 @@ function CalificacionesTemplate(calificaciones){
 	}
 	document.getElementById('paginaActual').innerHTML = 'Página '+actual+' de '+ultima;
 	document.getElementsByTagName('title')[0].text = "Metele Onda - Listado de establecimientos";
+	var volver = document.getElementById('volver');
+	volver.addEventListener('click', 
+		function (e) {
+			EstablecimientoDetalleView(calificacion.establecimiento_id);
+		}
+	);
 };
 
 function EstablecimientoDetalleTemplate(establecimiento){
@@ -463,7 +512,7 @@ function EstablecimientoDetalleTemplate(establecimiento){
 		CalificacionesView(id, 1);
 	}
 	document.getElementById('alta_calif').onclick 	= function() {
-		altaCalificacionView(establecimiento);
+		altaCalificacionView(id, nombre);
 	}
 };
 
@@ -473,8 +522,22 @@ function EstablecimientosTemplate(establecimientos){
 	var nombre, direccion, i, j, ver_est;
 	document.getElementById('content').innerHTML = '';
 	var html = getTemplate("js/apiConection/templates/establecimiento.html");
-	for (i = 0; i < establecimientos.results.length; i++) {
-		establecimiento = establecimientos.results[i];
+	if(establecimientos.results == undefined){
+		resultados 	= establecimientos;
+		paginado = false;
+		if(resultados.length > 0){
+			printTemplate('content', 
+				getTemplate('js/apiConection/templates/recoAlertOk.html'));
+		} else {
+			printTemplate('content', 
+				getTemplate('js/apiConection/templates/recoAlertBad.html'));
+		}
+	} else {
+		resultados 	= establecimientos.results;
+		paginado = true;
+	}
+	for (i = 0; i < resultados.length; i++) {
+		establecimiento = resultados[i];
 		nombre 			= establecimiento.nombre;
 		direccion 		= establecimiento.direccion;
 		direccion += ', ';
@@ -497,54 +560,60 @@ function EstablecimientosTemplate(establecimientos){
 		promedio_elem.textContent 	= establecimiento.stats[1];
 		total_elem.textContent 		= establecimiento.stats[0];
 	}
-	// Paginación
-	var html = getTemplate("js/apiConection/templates/paginacion.html");
-	document.getElementById('content').innerHTML += html;
-	var prev = establecimientos.previous;
-	if (prev == null) {
-		var actual = 1;
-		document.getElementById('paginasAnteriores').remove();
+	if(paginado == false){
+		return undefined;
 	} else {
-		if (prev[prev.length-1] > 1) {
-			var prev_n = parseInt(prev[prev.length-1]);
+		// Paginación
+		var html = getTemplate("js/apiConection/templates/paginacion.html");
+		document.getElementById('content').innerHTML += html;
+		var prev = establecimientos.previous;
+		if (prev == null) {
+			var actual = 1;
+			document.getElementById('paginasAnteriores').remove();
 		} else {
-			var prev_n = 1;
+			if (prev[prev.length-1] > 1) {
+				var prev_n = parseInt(prev[prev.length-1]);
+			} else {
+				var prev_n = 1;
+			}
+			var actual = prev_n+1;
+			var primera = 1;
+			document.getElementById('paginaAnterior').value = actual-1;
+			document.getElementById('paginaAnterior').onclick = function () {
+				EstablecimientosView(actual-1);
+			}
+			document.getElementById('paginaPrimera').value = 1;
+			document.getElementById('paginaPrimera').onclick = function () {
+				EstablecimientosView(primera);
+			} 
 		}
-		var actual = prev_n+1;
-		var primera = 1;
-		document.getElementById('paginaAnterior').value = actual-1;
-		document.getElementById('paginaAnterior').onclick = function () {
-			EstablecimientosView(actual-1);
+		var next = establecimientos.next;
+		if (next == null){
+			var ultima = actual;
+			document.getElementById('paginasSiguientes').remove();
+		} else {
+			var next_n = parseInt(next[next.length-1]);
+			var count = establecimientos.count;
+			var pagsxpag = establecimientos.results.length;
+			var ultima = count/pagsxpag;
+			if(ultima - parseInt(ultima) > 0){
+				ultima = parseInt(ultima) + 1;
+			}
+			document.getElementById('paginaSiguiente').value = actual+1;
+			document.getElementById('paginaSiguiente').onclick = function () {
+				EstablecimientosView(actual+1);
+			}
+			document.getElementById('paginaUltima').value = ultima;
+			document.getElementById('paginaUltima').onclick = function () {
+				EstablecimientosView(ultima);
+			}
 		}
-		document.getElementById('paginaPrimera').value = 1;
-		document.getElementById('paginaPrimera').onclick = function () {
-			EstablecimientosView(primera);
-		} 
+		document.getElementById('paginaActual').innerHTML = 'Página '+actual+' de '+ultima;
+		document.getElementsByTagName('title')[0].text = "Metele Onda - Listado de establecimientos";
 	}
-	var next = establecimientos.next;
-	if (next == null){
-		var ultima = actual;
-		document.getElementById('paginasSiguientes').remove();
-	} else {
-		var next_n = parseInt(next[next.length-1]);
-		var count = establecimientos.count;
-		var pagsxpag = establecimientos.results.length;
-		var ultima = count/pagsxpag;
-		if(ultima - parseInt(ultima) > 0){
-			ultima = parseInt(ultima) + 1;
-		}
-		document.getElementById('paginaSiguiente').value = actual+1;
-		document.getElementById('paginaSiguiente').onclick = function () {
-			EstablecimientosView(actual+1);
-		}
-		document.getElementById('paginaUltima').value = ultima;
-		document.getElementById('paginaUltima').onclick = function () {
-			EstablecimientosView(ultima);
-		}
-	}
-	document.getElementById('paginaActual').innerHTML = 'Página '+actual+' de '+ultima;
-	document.getElementsByTagName('title')[0].text = "Metele Onda - Listado de establecimientos";
 	var ver_ests 	= 	document.getElementsByName('ver_est');
+	var ver_califs 	= 	document.getElementsByName('ver_calif');
+	var alta_califs 	= 	document.getElementsByName('alta_calif');
 	for (var i = 0; i < ver_ests.length; i++) {
 		ver_ests[i].addEventListener('click', 
 			function (e) {
@@ -552,18 +621,12 @@ function EstablecimientosTemplate(establecimientos){
 				EstablecimientoDetalleView(id);
 			}
 		);
-	}
-	var ver_califs 	= 	document.getElementsByName('ver_calif');
-	for (var i = 0; i < ver_califs.length; i++) {
 		ver_califs[i].addEventListener('click', 
 			function (e) {
 				var id = e.target.parentElement.parentElement.parentElement.parentElement.parentElement.id;
 				CalificacionesView(id, 1);
 			}
 		);
-	}
-	var alta_califs 	= 	document.getElementsByName('alta_calif');
-	for (var i = 0; i < alta_califs.length; i++) {
 		alta_califs[i].addEventListener('click', 
 			function (e) {
 				panel 	= e.target.parentElement.parentElement.parentElement.parentElement.parentElement;

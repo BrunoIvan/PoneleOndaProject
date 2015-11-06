@@ -66,6 +66,7 @@ class Rubro(models.Model):
 class Calificacion(models.Model):
 	puntaje 			= 	models.IntegerField()
 	comentario 			= 	models.CharField(max_length = 200)
+	fecha 				= 	models.DateTimeField(auto_now = True)
 	establecimiento 	= 	models.ForeignKey("Establecimiento", related_name = "calificaciones")
 	usuario 			= 	models.ForeignKey("Usuario")
 

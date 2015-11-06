@@ -14,6 +14,7 @@ from api.serializers import CalificacionSerializer
 from api.serializers import UsuarioSerializer
 
 from api.asjson import CiudadJson
+from api.asjson import EstablecimientoJson
 
 from api.paginations import EstablecimientosPagination
 from api.paginations import CalificacionesPagination
@@ -21,16 +22,15 @@ from api.paginations import CalificacionesPagination
 from api.filters import EstablecimientoFilter
 from api.filters import CalificacionFilter
 
-from django.shortcuts 			import render
-from rest_framework.filters 	import DjangoFilterBackend
-from rest_framework.viewsets 	import ModelViewSet
-from rest_framework.viewsets 	import ReadOnlyModelViewSet
-from rest_framework.decorators 	import detail_route
-from rest_framework.decorators 	import list_route
-from rest_framework.response 	import Response
-
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.shortcuts 				import render
+from rest_framework.filters 		import DjangoFilterBackend
+from rest_framework.viewsets 		import ModelViewSet
+from rest_framework.viewsets 		import ReadOnlyModelViewSet
+from rest_framework.decorators 		import detail_route
+from rest_framework.decorators 		import list_route
+from rest_framework.response 		import Response
+from django.views.decorators.csrf 	import csrf_exempt
+from django.views.decorators.csrf 	import ensure_csrf_cookie
 
 class Establecimiento_detViewSet(ReadOnlyModelViewSet):
 	queryset 			= 	Establecimiento.objects.all()
@@ -38,6 +38,18 @@ class Establecimiento_detViewSet(ReadOnlyModelViewSet):
 	pagination_class 	= 	EstablecimientosPagination
 	filter_backends 	= 	(DjangoFilterBackend,)
 	filter_class 		= 	EstablecimientoFilter
+
+	@list_route()
+	def mejores(self, request):
+		establecimientos= 	Establecimiento.objects.all()
+		establecimientos= 	sorted(establecimientos, key=lambda a: -a.estadisticas()[1])[:10]
+		return Response([EstablecimientoJson(establecimiento) for establecimiento in establecimientos])
+
+	@list_route()
+	def peores(self, request):
+		establecimientos= 	Establecimiento.objects.all()
+		establecimientos= 	sorted(establecimientos, key=lambda a: a.estadisticas()[1])[:10]
+		return Response([EstablecimientoJson(establecimiento) for establecimiento in establecimientos])
 
 class EstablecimientoViewSet(ModelViewSet):
 	queryset 			= 	Establecimiento.objects.all()
@@ -59,10 +71,15 @@ class ProvinciaViewSet(ModelViewSet):
 		ciudades 		= Ciudad.objects.filter(provincia__pk = pk)
 		return Response([CiudadJson(ciudad) for ciudad in ciudades])
 
-
 class RubroViewSet(ModelViewSet):
 	queryset 			= 	Rubro.objects.all()
 	serializer_class 	= 	RubroSerializer
+
+	@detail_route()
+	def recomendaciones(self, request, pk):
+		establecimientos= 	Establecimiento.objects.filter(rubro_id = pk)
+		establecimientos= 	sorted(establecimientos, key=lambda a: -a.estadisticas()[1])[:5]
+		return Response([EstablecimientoJson(establecimiento) for establecimiento in establecimientos])
 
 class CalificacionViewSet(ModelViewSet):
 	queryset 			= 	Calificacion.objects.all()

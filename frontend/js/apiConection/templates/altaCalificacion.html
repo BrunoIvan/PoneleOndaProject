@@ -7,27 +7,27 @@
 				<input hidden id="id_puntaje" name ="puntaje" type="number">
 				<ul id="puntaje" class="nav nav-pills nav-justified">
 					<li role="presentation">
-						<a value="1">
+						<a value="1" href="#">
 							<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
 						</a>
 					</li>
 					<li role="presentation">
-						<a value="2">
+						<a value="2" href="#">
 							<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
 						</a>
 					</li>
 					<li role="presentation">
-						<a value="3">
+						<a value="3" href="#">
 							<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
 						</a>
 					</li>
 					<li role="presentation">
-						<a value="4">
+						<a value="4" href="#">
 							<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
 						</a>
 					</li>
 					<li role="presentation">
-						<a value="5">
+						<a value="5" href="#">
 							<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
 						</a>
 					</li>
@@ -37,7 +37,10 @@
 				<label id="label_comentario" for="id_comentario">Comentario opcional</label>
 				<textarea class="form-control" placeholder="Comentario opcional" name="comentario" id="id_comentario" rows="4"></textarea>
 			</div>
-			<input id="submitCalificacion" type="button" class="btn btn-info pull-right" value="Crear Calificacion">
+			<div class="btn-group pull-right" role="group" aria-label="...">
+				<button id="volver" type="button" class="btn btn-default">Ir al detalle</button>
+				<input id="submitCalificacion" type="button" class="btn btn-info" value="Crear Calificacion">
+			</div>
 		</form>
 	</div>
 </div>

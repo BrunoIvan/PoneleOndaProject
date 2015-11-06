@@ -1,6 +1,6 @@
 function mainController(){
 	menuView();
-	altaEstablecimientoView();
+	EstadisticasView();
 };
 
 
@@ -24,6 +24,19 @@ function altaEstablecimientoController(){
 	)
 };
 */
+
+function RecomendacionesView(rubro){
+	getObjetoModel('rubros/' + rubro + '/recomendaciones/', 
+		EstablecimientosTemplate);
+};
+
+function EstadisticasView(){
+	EstadisticasTemplate();
+	getObjetoModel('establecimientosdetalle/mejores/', 
+		LlenaMejoresTemplate);
+	getObjetoModel('establecimientosdetalle/peores/', 
+		LlenaPeoresTemplate);
+};
 
 function EstablecimientosView(pag){
 	getObjetoModel("establecimientosdetalle/", 

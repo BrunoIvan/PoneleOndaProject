@@ -67,6 +67,7 @@ class CalificacionSerializer(HyperlinkedModelSerializer):
 		fields 	= ('id', 
 			'url', 
 			'puntaje', 
+			'fecha', 
 			'comentario', 
 			'usuario', 
 			'establecimiento', 
