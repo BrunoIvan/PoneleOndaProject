@@ -74,6 +74,24 @@ function valid_alta_calificacion() {
 	} else {
 		return true;
 	}
+};
+
+function valid_llena_fecha() {
+	if (valid_form_alerta('id_anno', 
+		'Debe elegir un año') == false){
+		return false;
+	} else if (valid_form_alerta('id_mes', 
+		'Debe elegir un mes') == false){
+		return false;
+	} else if (valid_form_alerta('id_dia', 
+		'Debe elegir un dia') == false){
+		return false;
+	} else if (document.getElementById('id_dia').value < 1){
+		alert('Debe elegir un dia válido');
+		return false;
+	} else {
+		return true;
+	}
 }
 
 function valid_busq_establecimiento(id, mensaje){
@@ -97,6 +115,70 @@ function LlenaPeoresTemplate(peores){
 	var tabla = document.getElementById('estadisticas');
 	for (var i = 0; i < 10; i++) {
 		tabla.children[i].children[1].textContent = peores[i].nombre;
+	}
+};
+
+function atrasAnno(){
+	var annos = document.getElementsByName('anno');
+	for (var i = 0; i < annos.length; i++) {
+		annos[i].value--;
+		annos[i].textContent--;
+		annos[i].className = 'btn btn-default';
+	}
+	document.getElementById('id_anno').value = '';
+};
+
+function sigAnno(){
+	var annos = document.getElementsByName('anno');
+	for (var i = 0; i < annos.length; i++) {
+		annos[i].value++;
+		annos[i].textContent++;
+		annos[i].className = 'btn btn-default';
+	}
+	document.getElementById('id_anno').value = '';
+};
+
+function elijeAnno(ind) {
+	var annos = document.getElementsByName('anno');
+	for (var i = 0; i < annos.length; i++) {
+		if(i == ind){
+			annos[i].className = 'btn btn-success';
+			document.getElementById('id_anno').value = annos[i].value;
+		} else {
+			annos[i].className = 'btn btn-default';
+		}
+	}
+};
+
+function elijeMes(ind) {
+	var meses = document.getElementsByName('mes');
+	for (var i = 0; i < meses.length; i++) {
+		if(i == ind){
+			meses[i].className = 'btn btn-success';
+			document.getElementById('id_mes').value = meses[i].value;
+		} else {
+			meses[i].className = 'btn btn-default';
+		}
+	}
+};
+
+function llenaFecha(param){
+	if (valid_llena_fecha()){
+		if(param == 1){
+			fecha = document.getElementById('id_desde');
+		} else {
+			fecha = document.getElementById('id_hasta');
+		}
+		dia = document.getElementById('id_dia').value;
+		if (dia > 31){
+			dia = 31;
+		} else if (dia < 10){
+			dia = '0' + dia;
+		}
+		mes = document.getElementById('id_mes').value;
+		anno = document.getElementById('id_anno').value;
+		concat = dia + '/' + mes + '/' + anno;
+		fecha.value = concat;
 	}
 };
 
@@ -159,10 +241,10 @@ function altaCalificacionView(id, nombre){
 				k--;
 				document.getElementById('id_puntaje').value = puntaje.children[k].children[0].attributes[1].value;
 				for (j = 0; j < puntaje.children.length; j++) {
-					if(j != (k)){
-						puntaje.children[j].className = '';
-					} else {
+					if(j <= (k)){
 						puntaje.children[j].className = 'active';
+					} else {
+						puntaje.children[j].className = '';
 					}
 				}
 			}
@@ -560,9 +642,7 @@ function EstablecimientosTemplate(establecimientos){
 		promedio_elem.textContent 	= establecimiento.stats[1];
 		total_elem.textContent 		= establecimiento.stats[0];
 	}
-	if(paginado == false){
-		return undefined;
-	} else {
+	if(paginado == true){
 		// Paginación
 		var html = getTemplate("js/apiConection/templates/paginacion.html");
 		document.getElementById('content').innerHTML += html;
