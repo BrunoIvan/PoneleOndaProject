@@ -91,7 +91,8 @@ function autenticarModel(sitio, formData, funcionOK, funcionBAD){
 	var xmlhttp = new XMLHttpRequest();
 	var resp = false;
 	xmlhttp.onreadystatechange = function(){
-		if (xmlhttp.readyState == 4 && xmlhttp.status==201){
+		if (xmlhttp.readyState == 4 && xmlhttp.status==200){
+			resp = JSON.parse(xmlhttp.responseText);
 			funcionOK(resp);
 		} else if (xmlhttp.readyState == 4 && xmlhttp.status==400){
 			funcionBAD(resp);
@@ -99,6 +100,22 @@ function autenticarModel(sitio, formData, funcionOK, funcionBAD){
 	}
 	xmlhttp.open("POST","http://localhost:8000/api-auth/" + sitio + "/",true);
 	xmlhttp.send(formData);
+
+}
+
+function buscarUsuarioModel(sitio, id, funcionOK, funcionBAD){
+	var xmlhttp = new XMLHttpRequest();
+	var resp = false;
+	xmlhttp.onreadystatechange = function(){
+		if (xmlhttp.readyState == 4 && xmlhttp.status==200){
+			resp = JSON.parse(xmlhttp.responseText);
+			funcionOK(resp);
+		} else if (xmlhttp.readyState == 4 && xmlhttp.status==400){
+			funcionBAD(resp);
+		}
+	}
+	xmlhttp.open("GET","http://localhost:8000/usuario/" + sitio + "/?format=json&" + sitio + "_id=" + id, true);
+	xmlhttp.send();
 
 }
 

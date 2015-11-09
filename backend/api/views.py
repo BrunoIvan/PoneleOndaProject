@@ -21,6 +21,7 @@ from api.paginations import CalificacionesPagination
 
 from api.filters import EstablecimientoFilter
 from api.filters import CalificacionFilter
+from api.filters import UsuarioGoogleFilter
 
 from django.shortcuts 				import render
 from rest_framework.filters 		import DjangoFilterBackend
@@ -31,6 +32,7 @@ from rest_framework.decorators 		import list_route
 from rest_framework.response 		import Response
 from django.views.decorators.csrf 	import csrf_exempt
 from django.views.decorators.csrf 	import ensure_csrf_cookie
+from django.http 					import HttpResponse
 
 class Establecimiento_detViewSet(ReadOnlyModelViewSet):
 	queryset 			= 	Establecimiento.objects.all()
@@ -92,20 +94,29 @@ class UsuarioViewSet(ModelViewSet):
 	queryset 			= 	Usuario.objects.all()
 	serializer_class 	=	UsuarioSerializer
 
+class UsuarioGoogleViewSet(ModelViewSet):
+	queryset 			= 	Usuario.objects.all()
+	serializer_class 	= 	UsuarioSerializer
+	filter_backends 	= 	(DjangoFilterBackend,)
+	filter_class 		= 	UsuarioGoogleFilter
+
 def getTipoSesion(request):
 	tipo_sesion = request.session.get('tipo_sesion', False)
 	return tipo_sesion
 
 def autenticacionStatus(request):
-	from django.http import HttpResponse
 	return HttpResponse(getTipoSesion(request))
 
 def autenticarGoogle(request):
 	import urllib2
-	print request.POST.getlist('gtoken')[0]
+#	print request.POST.getlist('gtoken')[0]
 	f =  urllib2.urlopen('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' +  request.POST.getlist('gtoken')[0])
-	print f.read() + 'la choza'
+#	print f.read()
+	return HttpResponse(f.read())
 
+def setSesionGoogle(request):
+	request.session["id_google"] = id_google
+	request.session["nombre"] = nombre
 
 #@csrf_exempt
 #def autenticarGoogle(request, token):	

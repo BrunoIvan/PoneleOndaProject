@@ -20,6 +20,7 @@ from api.views import ProvinciaViewSet
 from api.views import RubroViewSet
 from api.views import CalificacionViewSet
 from api.views import UsuarioViewSet
+from api.views import UsuarioGoogleViewSet
 from api.views import autenticacionStatus
 from api.views import autenticarGoogle
 
@@ -37,6 +38,7 @@ router.register(r'provincias', 				ProvinciaViewSet)
 router.register(r'rubros', 					RubroViewSet)
 router.register(r'calificaciones', 			CalificacionViewSet)
 router.register(r'usuarios', 				UsuarioViewSet)
+router.register(r'usuario/google', 			UsuarioGoogleViewSet)
 
 urlpatterns = [
 	url(r'^admin/', 			include(admin.site.urls)),
