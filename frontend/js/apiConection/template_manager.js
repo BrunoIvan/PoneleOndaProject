@@ -86,7 +86,10 @@ function valid_llena_fecha() {
 	} else if (valid_form_alerta('id_dia', 
 		'Debe elegir un dia') == false){
 		return false;
-	} else if (document.getElementById('id_dia').value < 1){
+	} else if (0 >= document.getElementById('id_dia').value){
+		alert('Debe elegir un dia válido');
+		return false;
+	} else if (31 < document.getElementById('id_dia').value){
 		alert('Debe elegir un dia válido');
 		return false;
 	} else {
