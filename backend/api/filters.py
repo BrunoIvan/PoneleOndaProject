@@ -14,7 +14,7 @@ class CalificacionFilter(FilterSet):
 		model = Calificacion
 		fields = ['establecimiento']
 
-class UsuarioGoogleFilter(FilterSet):
+class UsuarioFilter(FilterSet):
 	class Meta:
 		model = Usuario
-		fields = ['google_id']
+		fields = ['fb_id', 'tw_id', 'google_id']

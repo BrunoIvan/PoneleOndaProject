@@ -77,3 +77,9 @@ class CalificacionSerializer(HyperlinkedModelSerializer):
 class UsuarioSerializer(HyperlinkedModelSerializer):
 	class Meta:
 		model 	= Usuario
+		fields 	= ('id', 
+			'url', 
+			'fb_id', 
+			'tw_id', 
+			'google_id')
+

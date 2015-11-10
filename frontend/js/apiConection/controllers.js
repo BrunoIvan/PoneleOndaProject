@@ -165,12 +165,8 @@ function listaRubrosController(){
 function autenticarGoogleController(token){
 	var formData = new FormData();
 	formData.append("gtoken", token);
-	autenticarModel("google", formData, function(google_data){
-		buscarUsuarioModel("google", google_data.sub, function(){
-		alert('Usuario encontrado');
-	}, function(){
-		alert('Usuario nuevo');
-	});
+	autenticarModel("google", formData, function(nombre){
+		alert(nombre["nombre"]);
 	}, function(){
 		alert('Problema autenticando');
 	});

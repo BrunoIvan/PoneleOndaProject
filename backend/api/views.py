@@ -21,7 +21,7 @@ from api.paginations import CalificacionesPagination
 
 from api.filters import EstablecimientoFilter
 from api.filters import CalificacionFilter
-from api.filters import UsuarioGoogleFilter
+from api.filters import UsuarioFilter
 
 from django.shortcuts 				import render
 from rest_framework.filters 		import DjangoFilterBackend
@@ -93,30 +93,47 @@ class CalificacionViewSet(ModelViewSet):
 class UsuarioViewSet(ModelViewSet):
 	queryset 			= 	Usuario.objects.all()
 	serializer_class 	=	UsuarioSerializer
-
-class UsuarioGoogleViewSet(ModelViewSet):
-	queryset 			= 	Usuario.objects.all()
-	serializer_class 	= 	UsuarioSerializer
 	filter_backends 	= 	(DjangoFilterBackend,)
-	filter_class 		= 	UsuarioGoogleFilter
+	filter_class 		= 	UsuarioFilter
 
 def getTipoSesion(request):
-	tipo_sesion = request.session.get('tipo_sesion', False)
-	return tipo_sesion
+	tipo_sesion = request.session.get('tipo', False)
+	return tipo
 
 def autenticacionStatus(request):
 	return HttpResponse(getTipoSesion(request))
 
 def autenticarGoogle(request):
 	import urllib2
-#	print request.POST.getlist('gtoken')[0]
-	f =  urllib2.urlopen('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' +  request.POST.getlist('gtoken')[0])
-#	print f.read()
-	return HttpResponse(f.read())
+	import json
+#	urlopen trae un objeto tipo file, por eso lo paso a json, que funciona como diccionario
+	usu_google =  urllib2.urlopen('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' +  request.POST.getlist('gtoken')[0])
+	google_datos = json.load(usu_google)
+	usu_metele =  urllib2.urlopen('http://localhost:8000/usuarios/?format=json&google_id=' + google_datos["sub"]);	
+	metele_datos = json.load(usu_metele)
+	if len(metele_datos) == 1:
+		setSesion(request, metele_datos[0]["id"], google_datos["name"], "google")
+	elif not len(metele_datos):
+		usu_metele = crearUsuario(request, google_datos["sub"])
+		metele_datos = json.load(usu_metele)
+		setSesionGoogle(request, metele_datos["id"], google_datos["name"])
+	else:
+		print "usuarioduplicado"	
+	print request.session["nombre"] + " " + str(request.session["id"])
+	resp = '{"nombre" : "' + request.session['nombre'] + '"}'
+	return HttpResponse(resp)
 
-def setSesionGoogle(request):
-	request.session["id_google"] = id_google
+def setSesion(request, id, nombre, tipo):
+	request.session["id"] = id
 	request.session["nombre"] = nombre
+	request.session["tipo"] = tipo
+
+def crearUsuario(request, id_google):
+	import urllib2, urllib
+	values = urllib.urlencode({'google_id' : id_google})
+	usu_metele =  urllib2.urlopen('http://localhost:8000/usuarios/', data=values);
+	return usu_metele
+
 
 #@csrf_exempt
 #def autenticarGoogle(request, token):	
