@@ -141,7 +141,7 @@ function sigAnno(){
 	document.getElementById('id_anno').value = '';
 };
 
-function elijeAnno(ind) {
+function eligeAnno(ind) {
 	var annos = document.getElementsByName('anno');
 	for (var i = 0; i < annos.length; i++) {
 		if(i == ind){
@@ -153,7 +153,7 @@ function elijeAnno(ind) {
 	}
 };
 
-function elijeMes(ind) {
+function eligeMes(ind) {
 	var meses = document.getElementsByName('mes');
 	for (var i = 0; i < meses.length; i++) {
 		if(i == ind){
