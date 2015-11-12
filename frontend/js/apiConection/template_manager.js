@@ -721,3 +721,10 @@ function EstablecimientosTemplate(establecimientos){
 	}
 };
 
+function poneBotonesTemplate(){
+	printTemplate("botonera", getTemplate("botones_signin.html"));
+};
+
+function poneSignOut(tipo){
+	document.getElementById('botonera').innerHTML = '<a href="#" onclick="signOut();">Sign out</a>';
+};

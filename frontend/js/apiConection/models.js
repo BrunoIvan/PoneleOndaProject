@@ -103,7 +103,7 @@ function autenticarModel(sitio, formData, funcionOK, funcionBAD){
 
 }
 
-function buscarUsuarioModel(sitio, id, funcionOK, funcionBAD){
+/*function buscarUsuarioModel(sitio, id, funcionOK, funcionBAD){
 	var xmlhttp = new XMLHttpRequest();
 	var resp = false;
 	xmlhttp.onreadystatechange = function(){
@@ -117,8 +117,23 @@ function buscarUsuarioModel(sitio, id, funcionOK, funcionBAD){
 	xmlhttp.open("GET","http://localhost:8000/usuario/" + sitio + "/?format=json&" + sitio + "_id=" + id, true);
 	xmlhttp.send();
 
-}
+}*/
 
+function estadoSesionModel(){
+	var xmlhttp = new XMLHttpRequest();
+	var resp = false;
+	xmlhttp.onreadystatechange = function(){
+		if (xmlhttp.readyState == 4 && xmlhttp.status==200){
+			resp = JSON.parse(xmlhttp.responseText);
+			funcionOK(resp);
+		} else if (xmlhttp.readyState == 4 && xmlhttp.status==400){
+			funcionBAD(resp);
+		}
+	}
+	xmlhttp.open("GET","http://localhost:8000/sesion/", true);
+	xmlhttp.send();
+
+}
 /*
 function getCursosDiccModel(funcion){
 	var xmlhttp;

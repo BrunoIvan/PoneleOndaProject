@@ -165,10 +165,62 @@ function listaRubrosController(){
 function autenticarGoogleController(token){
 	var formData = new FormData();
 	formData.append("gtoken", token);
-	autenticarModel("google", formData, function(nombre){
-		alert(nombre["nombre"]);
+	autenticarModel("google", formData, function(datos_sesion){
+		setCookies(datos_sesion["nombre"],  datos_sesion["tipo"], datos_sesion["token"]);
+		alert (getCookie("nombre"));
 	}, function(){
 		alert('Problema autenticando');
 	});
 }
 
+function autenticarFBController(token){
+	var formData = new FormData();
+	formData.append("gtoken", token);
+	autenticarModel("google", formData, function(datos_sesion){
+		setCookies(datos_sesion["nombre"],  datos_sesion["tipo"], datos_sesion["token"]);
+		alert (getCookie("nombre"));
+	}, function(){
+		alert('Problema autenticando');
+	});
+}
+
+function poneBotonesController(){
+	var token = getCookie("token");
+	alert(token);
+	if (token == ""){
+		poneBotonesTemplate();
+	}else{
+		getObjetoModel("sesion/"+ token + "/", function (datos_sesion){
+			if (datos_sesion["tipo"] == "{}"){
+				poneBotonesTemplate();
+			}else{
+				alert(datos_sesion["tipo"]);
+				poneSignOut(datos_sesion["tipo"]);
+			}
+		})
+	}
+}
+
+function setCookies(nombre, tipo, token, exp_minutos){
+    var d = new Date();
+    d.setTime(d.getTime() + (exp_minutos*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = "nombre=" + nombre + "; " + expires;
+    document.cookie = "tipo=" + tipo + "; " + expires;
+    document.cookie = "token=" + token + "; " + expires;
+}
+
+function getCookie(nombre) {
+    var name = nombre + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+    }
+    return "";
+}
+
+function cerrarSesionController(){
+	setCookies("", "", "", 1);
+}

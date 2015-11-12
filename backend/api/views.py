@@ -33,6 +33,7 @@ from rest_framework.response 		import Response
 from django.views.decorators.csrf 	import csrf_exempt
 from django.views.decorators.csrf 	import ensure_csrf_cookie
 from django.http 					import HttpResponse
+from django.contrib.sessions.models import Session
 
 class Establecimiento_detViewSet(ReadOnlyModelViewSet):
 	queryset 			= 	Establecimiento.objects.all()
@@ -116,17 +117,30 @@ def autenticarGoogle(request):
 	elif not len(metele_datos):
 		usu_metele = crearUsuario(request, google_datos["sub"])
 		metele_datos = json.load(usu_metele)
-		setSesionGoogle(request, metele_datos["id"], google_datos["name"])
+		setSesion(request, metele_datos["id"], google_datos["name"])
 	else:
-		print "usuarioduplicado"	
-	print request.session["nombre"] + " " + str(request.session["id"])
-	resp = '{"nombre" : "' + request.session['nombre'] + '"}'
+		print "usuarioduplicado"
+	if not request.session.exists(request.session.session_key):
+		request.session.create()
+	print request.session.get("nombre", False) + " " + str(request.session.get("id", False)) + " " + str(request.session.session_key)
+	resp = '{"nombre" : "' + request.session['nombre'] + '", "tipo" : "' + request.session['tipo'] + '", "token" : "' + str(request.session.session_key) + '"}'
+	return HttpResponse(resp)
+
+def getSesion(request, session_key):
+	session = Session.objects.get(session_key=session_key)
+#	uid = session.get_decoded().get('_auth_user_id')
+#	user = User.objects.get(pk=uid)
+#	print user.username, user.get_full_name(), user.email
+	
+	print str(session.get_decoded().get('nombre'))
+	resp = '{"nombre" : "' + str(session.get_decoded().get('nombre')) + '", "id" : "' + str(session.get_decoded().get('id')) + '", "tipo" : "' + str(session.get_decoded().get('tipo')) + '"}'
 	return HttpResponse(resp)
 
 def setSesion(request, id, nombre, tipo):
 	request.session["id"] = id
 	request.session["nombre"] = nombre
 	request.session["tipo"] = tipo
+
 
 def crearUsuario(request, id_google):
 	import urllib2, urllib
