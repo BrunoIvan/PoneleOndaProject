@@ -15,9 +15,11 @@ from api.serializers import UsuarioSerializer
 
 from api.asjson import CiudadJson
 from api.asjson import EstablecimientoJson
+from api.asjson import PaginationCustomEstJson
 
 from api.paginations import EstablecimientosPagination
 from api.paginations import CalificacionesPagination
+from api.paginations import PaginationCustom
 
 from api.filters import EstablecimientoFilter
 from api.filters import CalificacionFilter
@@ -34,6 +36,8 @@ from django.views.decorators.csrf 	import csrf_exempt
 from django.views.decorators.csrf 	import ensure_csrf_cookie
 from django.http 					import HttpResponse
 from django.contrib.sessions.models import Session
+
+from json import dumps
 
 class Establecimiento_detViewSet(ReadOnlyModelViewSet):
 	queryset 			= 	Establecimiento.objects.all()
@@ -96,6 +100,32 @@ class UsuarioViewSet(ModelViewSet):
 	serializer_class 	=	UsuarioSerializer
 	filter_backends 	= 	(DjangoFilterBackend,)
 	filter_class 		= 	UsuarioFilter
+
+def Establecimiento_detBusqNombre(request, dato, pag):
+	establecimientos= 	Establecimiento.objects.filter(nombre__icontains = dato)
+	establecimientos= 	sorted(establecimientos, key=lambda a: a.estadisticas()[1])
+	count, next, previous, results = PaginationCustom(establecimientos, 
+		pag, 
+		'establecimientosdetalle/nombre/%s/%i' % (str(dato), int(pag)), 
+		10)
+	return HttpResponse(dumps(PaginationCustomEstJson(
+		count, 
+		next, 
+		previous, 
+		results)))
+
+def Establecimiento_detBusqDirec(request, dato, pag):
+	establecimientos= 	Establecimiento.objects.filter(direccion__icontains = dato)
+	establecimientos= 	sorted(establecimientos, key=lambda a: a.estadisticas()[1])
+	count, next, previous, results = PaginationCustom(establecimientos, 
+		pag, 
+		'establecimientosdetalle/nombre/%s/%i' % (str(dato), int(pag)), 
+		10)
+	return HttpResponse(dumps(PaginationCustomEstJson(
+		count, 
+		next, 
+		previous, 
+		results)))
 
 def getTipoSesion(request):
 	tipo_sesion = request.session.get('tipo', False)

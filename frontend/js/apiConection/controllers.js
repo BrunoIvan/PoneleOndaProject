@@ -56,17 +56,15 @@ function CalificacionesView(establecimiento_id, pag){
 	pag);
 };
 
-function BusqEstablecimientosController(parametros, pag){
-	getBusqObjetoModel("establecimientosdetalle/",
-		parametros,
+function BusqEstablecimientosController(param, pag){
+	getObjetoModel("establecimientosdetalle/" + param + pag + '/',
 		function (establecimientos){
 			if (establecimientos.count == 0){
-				alert('Al parecer el sistema no encuentra resultados, procure respetar mayúsculas y minusculas');
+				alert('Al parecer el sistema no encuentra resultados');
 			} else {
 				EstablecimientosTemplate(establecimientos);
 			}
-		},
-		pag
+		}
 	)
 };
 

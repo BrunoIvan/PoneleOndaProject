@@ -205,21 +205,19 @@ function BusqEstablecimientosView(){
 	printTemplate("content", getTemplate("js/apiConection/templates/busqEstablecimiento.html"));
 	document.getElementsByTagName('title')[0].text = "Metele Onda - Búsqueda";
 	document.getElementById('submitBusqueda').onclick = function () {
-		var parametros = [];
 		var nombre_is_valid = valid_form_simple('id_nombre');
 		var dirección_is_valid = valid_form_simple('id_direccion');
 		var form_is_valid = nombre_is_valid + dirección_is_valid;
 		if (form_is_valid){
 			if (nombre_is_valid){
 				var nombre = document.getElementById('id_nombre').value;
-				parametros.push('&nombre=' + nombre);
-				parametros.push('&ordering=nombre');
+				var param = 'nombre/' + nombre + '/';
 			}
 			if (dirección_is_valid){
 				var direccion = document.getElementById('id_direccion').value;
-				parametros.push('&direccion=' + direccion);
+				var param = 'direccion/' + direccion + '/';
 			}
-			BusqEstablecimientosController(parametros, 1);
+			BusqEstablecimientosController(param, 1);
 		} else {
 			alert('Debe especificar al menos un campo');
 		}
@@ -650,7 +648,7 @@ function EstablecimientosTemplate(establecimientos){
 		var html = getTemplate("js/apiConection/templates/paginacion.html");
 		document.getElementById('content').innerHTML += html;
 		var prev = establecimientos.previous;
-		if (prev == null) {
+		if (prev in [null, 'null']) {
 			var actual = 1;
 			document.getElementById('paginasAnteriores').remove();
 		} else {
@@ -671,7 +669,7 @@ function EstablecimientosTemplate(establecimientos){
 			} 
 		}
 		var next = establecimientos.next;
-		if (next == null){
+		if (next in [null, 'null']){
 			var ultima = actual;
 			document.getElementById('paginasSiguientes').remove();
 		} else {

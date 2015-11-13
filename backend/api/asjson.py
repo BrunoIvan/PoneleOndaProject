@@ -18,3 +18,11 @@ def EstablecimientoJson(establecimiento):
 	json['longitud'] 		= establecimiento.longitud
 	json['stats'] 			= establecimiento.estadisticas()
 	return json
+
+def PaginationCustomEstJson(count, next, previous, results):
+	json = {}
+	json['count'] = count
+	json['previous'] = previous
+	json['next'] = next
+	json['results'] = [EstablecimientoJson(result) for result in results]
+	return json
