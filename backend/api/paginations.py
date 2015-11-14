@@ -15,7 +15,8 @@ def PaginationCustom(results, pag, url, resxpag):
 	ni = (int(pag) - 1) * int(resxpag)
 	ne = int(pag) * int(resxpag)
 	results = results[ni:ne]
-	if count > int(resxpag):
+	pags = count / (int(resxpag))
+	if int(pag) < pags:
 		id_next = int(url[-1]) + 1
 		next = url[:-1] + str(id_next) 
 	else:

@@ -127,6 +127,16 @@ def Establecimiento_detBusqDirec(request, dato, pag):
 		previous, 
 		results)))
 
+def Establecimiento_detBusqDual(request, nombre, direccion, pag):
+	establecimientos= 	Establecimiento.objects.filter(nombre__icontains = nombre, 
+		direccion__icontains = direccion)
+	establecimientos= 	sorted(establecimientos, key=lambda a: a.estadisticas()[1])
+	count, next, previous, results = PaginationCustom(establecimientos, 
+		pag, 
+		'establecimientosdetalle/dualbusq/%s/%s/%i' % (str(nombre), str(direccion), int(pag)), 
+		1)
+	return HttpResponse(dumps(PaginationCustomEstJson(count, next, previous, results)))
+
 def getTipoSesion(request):
 	tipo_sesion = request.session.get('tipo', False)
 	return tipo

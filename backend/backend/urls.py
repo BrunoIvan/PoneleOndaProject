@@ -24,6 +24,7 @@ from api.views import autenticacionStatus
 from api.views import autenticarGoogle
 from api.views import Establecimiento_detBusqNombre
 from api.views import Establecimiento_detBusqDirec
+from api.views import Establecimiento_detBusqDual
 from api.views import getSesion
 
 from django.conf.urls 			import include
@@ -46,7 +47,9 @@ urlpatterns = [
 	url(r'^',												include(router.urls)),
 	url(r'^establecimientosdetalle/nombre/(?P<dato>\w+)/(?P<pag>[0-9]+)/$',	Establecimiento_detBusqNombre), 
 	url(r'^establecimientosdetalle/direccion/(?P<dato>\w+)/(?P<pag>[0-9]+)/$', Establecimiento_detBusqDirec), 
+	url(r'^establecimientosdetalle/dualbusq/(?P<nombre>\w+)/(?P<direccion>\w+)/(?P<pag>[0-9]+)/$', Establecimiento_detBusqDual), 
 #	url(r'^api-token-auth/', 								views.obtain_auth_token),
 #	url(r'^api-auth/', 										autenticacionStatus),
 	url(r'^sesion/(.+)/$',									getSesion),
 	url(r'^api-auth/google/', 								autenticarGoogle),
+]

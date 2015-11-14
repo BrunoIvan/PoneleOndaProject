@@ -141,7 +141,7 @@ function sigAnno(){
 	document.getElementById('id_anno').value = '';
 };
 
-function eligeAnno(ind) {
+function elijeAnno(ind) {
 	var annos = document.getElementsByName('anno');
 	for (var i = 0; i < annos.length; i++) {
 		if(i == ind){
@@ -153,7 +153,7 @@ function eligeAnno(ind) {
 	}
 };
 
-function eligeMes(ind) {
+function elijeMes(ind) {
 	var meses = document.getElementsByName('mes');
 	for (var i = 0; i < meses.length; i++) {
 		if(i == ind){
@@ -209,13 +209,16 @@ function BusqEstablecimientosView(){
 		var dirección_is_valid = valid_form_simple('id_direccion');
 		var form_is_valid = nombre_is_valid + dirección_is_valid;
 		if (form_is_valid){
-			if (nombre_is_valid){
+			if (nombre_is_valid && dirección_is_valid){
 				var nombre = document.getElementById('id_nombre').value;
-				var param = 'nombre/' + nombre + '/';
-			}
-			if (dirección_is_valid){
 				var direccion = document.getElementById('id_direccion').value;
-				var param = 'direccion/' + direccion + '/';
+				param = 'dualbusq/' + nombre + '/' + direccion + '/';
+			} else if (nombre_is_valid){
+				var nombre = document.getElementById('id_nombre').value;
+				param = 'nombre/' + nombre + '/';
+			} else if (dirección_is_valid){
+				var direccion = document.getElementById('id_direccion').value;
+				param = 'direccion/' + direccion + '/';
 			}
 			BusqEstablecimientosController(param, 1);
 		} else {
@@ -648,7 +651,7 @@ function EstablecimientosTemplate(establecimientos){
 		var html = getTemplate("js/apiConection/templates/paginacion.html");
 		document.getElementById('content').innerHTML += html;
 		var prev = establecimientos.previous;
-		if (prev in [null, 'null']) {
+		if (prev == null || prev === 'null') {
 			var actual = 1;
 			document.getElementById('paginasAnteriores').remove();
 		} else {
@@ -661,15 +664,23 @@ function EstablecimientosTemplate(establecimientos){
 			var primera = 1;
 			document.getElementById('paginaAnterior').value = actual-1;
 			document.getElementById('paginaAnterior').onclick = function () {
-				EstablecimientosView(actual-1);
+				if (prev.contains('format')) {
+					EstablecimientosView(actual-1);
+				} else {
+					BusqEstablecimientosController(param, actual-1);
+				}
 			}
 			document.getElementById('paginaPrimera').value = 1;
 			document.getElementById('paginaPrimera').onclick = function () {
-				EstablecimientosView(primera);
+				if (prev.contains('format')) {
+					EstablecimientosView(primera);
+				} else {
+					BusqEstablecimientosController(param, primera);
+				}
 			} 
 		}
 		var next = establecimientos.next;
-		if (next in [null, 'null']){
+		if (next == null || next === 'null'){
 			var ultima = actual;
 			document.getElementById('paginasSiguientes').remove();
 		} else {
@@ -682,11 +693,19 @@ function EstablecimientosTemplate(establecimientos){
 			}
 			document.getElementById('paginaSiguiente').value = actual+1;
 			document.getElementById('paginaSiguiente').onclick = function () {
-				EstablecimientosView(actual+1);
+				if (next.contains('format')) {
+					EstablecimientosView(actual+1);
+				} else {
+					BusqEstablecimientosController(param, actual+1);
+				}
 			}
 			document.getElementById('paginaUltima').value = ultima;
 			document.getElementById('paginaUltima').onclick = function () {
-				EstablecimientosView(ultima);
+				if (next.contains('format')) {
+					EstablecimientosView(ultima);
+				} else {
+					BusqEstablecimientosController(param, ultima);
+				}
 			}
 		}
 		document.getElementById('paginaActual').innerHTML = 'Página '+actual+' de '+ultima;
@@ -719,10 +738,3 @@ function EstablecimientosTemplate(establecimientos){
 	}
 };
 
-function poneBotonesTemplate(){
-	printTemplate("botonera", getTemplate("botones_signin.html"));
-};
-
-function poneSignOut(tipo){
-	document.getElementById('botonera').innerHTML = '<a href="#" onclick="signOut();">Sign out</a>';
-};
