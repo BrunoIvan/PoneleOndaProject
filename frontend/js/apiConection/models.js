@@ -171,3 +171,27 @@ function getPersonasDiccModel(persona){
 	return dicc_personas;
 }
 */
+
+function getMapIdModel (direccion, ciudad, provincia, funcion) {
+	var url;
+	url = 'https://www.google.com/maps/embed/v1/place?q=' +
+	direccion + ciudad + provincia + 
+	'&key=AIzaSyCF5P_MlEWVxa5k3O6hyHOn8rNPkNVUokw';
+	var xmlhttp, resp;
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function(){
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
+			resp = JSON.parse(xmlhttp.responseText);
+			funcion(resp);
+		}
+	}
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+};
+
+provincia = 'Buenos Aires';
+ciudad = 'monte grande';
+direccion = 'Alfonsina Storni 22';
+getMapIdModel(direccion, ciudad, provincia, function (obj) {
+	console.log(obj.results);
+});
