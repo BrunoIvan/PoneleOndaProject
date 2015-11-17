@@ -585,6 +585,9 @@ function EstablecimientoDetalleTemplate(establecimiento){
 	var direccion 	= establecimiento.direccion;
 	var ciudad 		= establecimiento.ciudad;
 	var provincia 	= establecimiento.provincia;
+	html.replace('DirMap', direccion);
+	html.replace('CiudMap', ciudad);
+	html.replace('ProvMap', provincia);
 	document.getElementById('content').innerHTML 	+= html;
 	document.getElementById('nombre').textContent 	= nombre;
 	document.getElementById('direccion').textContent= direccion;
