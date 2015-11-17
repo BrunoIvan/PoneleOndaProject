@@ -40,8 +40,6 @@ INSTALLED_APPS = (
     'rest_framework',
     'api',
     'corsheaders',
-    'social.apps.django_app.default',
-
 )
 
 MIDDLEWARE_CLASSES = (
@@ -61,25 +59,14 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'templates'),
-        ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                #'django.template.context_processors.debug',
-                ##'django.template.context_processors.request',
-                #'django.contrib.auth.context_processors.auth',
-                #'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.core.context_processors.debug',
-                'django.core.context_processors.i18n',
-                'django.core.context_processors.media',
-                'django.core.context_processors.static',
-                'django.core.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
-                'social.apps.django_app.context_processors.backends',
-                'social.apps.django_app.context_processors.login_redirect',
             ],
         },
     },
@@ -97,24 +84,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-AUTHENTICATION_BACKENDS = (
-   'social.backends.facebook.FacebookOAuth2',
-   'social.backends.google.GoogleOAuth2',
-   'social.backends.twitter.TwitterOAuth',
-   'django.contrib.auth.backends.ModelBackend',
-)
-
-SOCIAL_AUTH_FACEBOOK_KEY = '889193464505890'
-SOCIAL_AUTH_FACEBOOK_SECRET = '746c14864a98329f2bcb7eb1196c5975'
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '591640878951-71fdjqpskgq64f00lb6omqgs9j3gmato.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '2zpw7LmDHnIbg3AIWEID4ZQK'
-
-SOCIAL_AUTH_TWITTER_KEY = 'mi8Cn50JkJyCpA8xdzBjxGVQw'
-SOCIAL_AUTH_TWITTER_SECRET = 'z55ziQXMT6wWoyTI9dt8ZmepFeiUApeIoa6VUGxORV36IXlUpH'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/home/'
-SOCIAL_AUTH_LOGIN_URL = '/'
 
 # Rest framework
 REST_FRAMEWORK = {

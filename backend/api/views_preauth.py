@@ -36,9 +36,6 @@ from django.views.decorators.csrf 	import csrf_exempt
 from django.views.decorators.csrf 	import ensure_csrf_cookie
 from django.http 					import HttpResponse
 from django.contrib.sessions.models import Session
-from django.shortcuts 				import render_to_response
-from django.template.context 		import RequestContext
-
 
 from json import dumps
 
@@ -191,12 +188,6 @@ def crearUsuario(request, id_google):
 	usu_metele =  urllib2.urlopen('http://localhost:8000/usuarios/', data=values);
 	return usu_metele
 
-def home(request):
-	context = RequestContext(request,
-		{'request': request,
-		'user': request.user})
-	print context
-	return render_to_response('home.html', context_instance=context)
 
 #@csrf_exempt
 #def autenticarGoogle(request, token):	

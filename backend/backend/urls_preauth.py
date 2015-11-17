@@ -52,8 +52,4 @@ urlpatterns = [
 #	url(r'^api-auth/', 										autenticacionStatus),
 	url(r'^sesion/(.+)/$',									getSesion),
 	url(r'^api-auth/google/', 								autenticarGoogle),
-    url(r'^home/$', 										'api.views.home', name='home'),
-    url('', 												include('social.apps.django_app.urls', namespace='social')),
-    url('',													include('django.contrib.auth.urls', namespace='auth')),
-
 ]
