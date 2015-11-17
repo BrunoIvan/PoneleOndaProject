@@ -80,6 +80,9 @@ function valid_llena_fecha() {
 	if (valid_form_alerta('id_anno', 
 		'Debe elegir un año') == false){
 		return false;
+	} else if (10000 <= document.getElementById('id_anno').value){
+		alert('Debe elegir un año válido');
+		return false;
 	} else if (valid_form_alerta('id_mes', 
 		'Debe elegir un mes') == false){
 		return false;
@@ -601,14 +604,12 @@ function CalificacionesTemplate(calificaciones){
 function EstablecimientoDetalleTemplate(establecimiento){
 	document.getElementById('content').innerHTML = '';
 	var html 		= getTemplate('js/apiConection/templates/establecimientoDetalle.html');
+	html 			= html.replace('mapsrc', establecimiento.map);
 	var nombre 		= establecimiento.nombre;
 	var id 			= establecimiento.id;
 	var direccion 	= establecimiento.direccion;
 	var ciudad 		= establecimiento.ciudad;
 	var provincia 	= establecimiento.provincia;
-	html.replace('DirMap', direccion);
-	html.replace('CiudMap', ciudad);
-	html.replace('ProvMap', provincia);
 	document.getElementById('content').innerHTML 	+= html;
 	document.getElementById('nombre').textContent 	= nombre;
 	document.getElementById('direccion').textContent= direccion;
@@ -688,7 +689,7 @@ function EstablecimientosTemplate(establecimientos){
 			var primera = 1;
 			document.getElementById('paginaAnterior').value = actual-1;
 			document.getElementById('paginaAnterior').onclick = function () {
-				if (prev.contains('format')) {
+				if (prev.includes('format')) {
 					EstablecimientosView(actual-1);
 				} else {
 					BusqEstablecimientosController(param, actual-1);
@@ -696,7 +697,7 @@ function EstablecimientosTemplate(establecimientos){
 			}
 			document.getElementById('paginaPrimera').value = 1;
 			document.getElementById('paginaPrimera').onclick = function () {
-				if (prev.contains('format')) {
+				if (prev.includes('format')) {
 					EstablecimientosView(primera);
 				} else {
 					BusqEstablecimientosController(param, primera);
@@ -717,7 +718,7 @@ function EstablecimientosTemplate(establecimientos){
 			}
 			document.getElementById('paginaSiguiente').value = actual+1;
 			document.getElementById('paginaSiguiente').onclick = function () {
-				if (next.contains('format')) {
+				if (next.includes('format')) {
 					EstablecimientosView(actual+1);
 				} else {
 					BusqEstablecimientosController(param, actual+1);
@@ -725,7 +726,7 @@ function EstablecimientosTemplate(establecimientos){
 			}
 			document.getElementById('paginaUltima').value = ultima;
 			document.getElementById('paginaUltima').onclick = function () {
-				if (next.contains('format')) {
+				if (next.includes('format')) {
 					EstablecimientosView(ultima);
 				} else {
 					BusqEstablecimientosController(param, ultima);

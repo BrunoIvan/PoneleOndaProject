@@ -3,6 +3,35 @@ function mainController(){
 	EstadisticasView();
 };
 
+function EstadisticasController () {
+	desde 		= document.getElementById('id_desde').value;
+	hasta 		= document.getElementById('id_hasta').value;
+	dia_desde 	= desde.slice(0, 2);
+	mes_desde 	= desde.slice(3, 5);
+	anno_desde 	= desde.slice(6, desde.length);
+	dia_hasta 	= hasta.slice(0, 2);
+	mes_hasta 	= hasta.slice(3, 5);
+	anno_hasta 	= hasta.slice(6, hasta.length);
+	if (anno_desde != anno_hasta) {
+		selector = "anno";
+	} else if (mes_desde != mes_hasta) {
+		selector = "mes";
+	} else if (dia_desde < dia_hasta) {
+		selector = "dia";
+	} else if(dia_desde == dia_hasta) {
+		mensaje = 'Debe elejir fechas distintas';
+		selector = undefined;
+	} else if(dia_desde > dia_hasta ||
+		mes_desde > mes_hasta ||
+		anno_desde > anno_hasta) {
+		mensaje = 'La fecha "desde" debe ser menor a la fecha "hasta"';
+		selector = undefined;
+	}
+	if (selector == undefined) {
+		alert('Debe elegir fechas distintas')
+	};
+	
+}
 
 /*
 function altaEstablecimientoController(){

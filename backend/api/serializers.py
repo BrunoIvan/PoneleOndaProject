@@ -7,6 +7,7 @@ from models import Calificacion
 from models import Usuario
 
 from rest_framework.serializers import HyperlinkedModelSerializer
+from rest_framework.serializers import SerializerMethodField
 from rest_framework.serializers import ReadOnlyField
 
 class Establecimiento_detSerializer(HyperlinkedModelSerializer):
@@ -14,6 +15,7 @@ class Establecimiento_detSerializer(HyperlinkedModelSerializer):
 	provincia 		= ReadOnlyField(source = 'ciudad.provincia.nombre')
 	rubro 			= ReadOnlyField(source = 'rubro.nombre')
 	stats 			= ReadOnlyField(source = 'estadisticas')
+	map 			= SerializerMethodField()
 
 	class Meta:
 		model  	= Establecimiento
@@ -25,7 +27,13 @@ class Establecimiento_detSerializer(HyperlinkedModelSerializer):
 			'rubro', 
 			'latitud',
 			'stats', 
-			'longitud')
+			'longitud', 
+			'map'
+		)
+
+	def get_map(self, obj):
+		return	'https://www.google.com/maps/embed/v1/place?q=%s,%s,%s&key=AIzaSyCF5P_MlEWVxa5k3O6hyHOn8rNPkNVUokw' % (obj.direccion, obj.ciudad, obj.ciudad.provincia)
+
 
 class EstablecimientoSerializer(HyperlinkedModelSerializer):
 	class Meta:
