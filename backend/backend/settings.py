@@ -40,7 +40,9 @@ INSTALLED_APPS = (
     'rest_framework',
     'api',
     'corsheaders',
-    'social.apps.django_app.default',
+    'social.apps.django_app.default',  # python social auth
+    'rest_social_auth',  # this package
+
 
 )
 

@@ -5,6 +5,14 @@ function manageFormEstablecimientoTemplate(){
 	printTemplate(html);
 };
 */
+function menuLogueoView(autenticado){
+	if (autenticado == 1){
+		printTemplate("navbar-content-login", getTemplate("js/apiConection/templates/menu_logout.html"));
+	}
+	else{
+		printTemplate("navbar-content-login", getTemplate("js/apiConection/templates/menu_login.html"));
+	}
+};
 
 function menuView(){
 	printTemplate("navbar", getTemplate("js/apiConection/templates/menu.html"));

@@ -134,6 +134,39 @@ function estadoSesionModel(){
 	xmlhttp.send();
 
 }
+
+function loginModel(sitio, funcionOK, funcionBAD){
+	var xmlhttp = new XMLHttpRequest();
+	var resp = false;
+	xmlhttp.onreadystatechange = function(){
+		if (xmlhttp.readyState == 4 && xmlhttp.status==200){
+			resp = JSON.parse(xmlhttp.responseText);
+			funcionOK(resp);
+		} else if (xmlhttp.readyState == 4 && xmlhttp.status==400){
+			funcionBAD(resp);
+		}
+	}
+	xmlhttp.open("GET","http://meteleonda.com:8000/login/" + sitio + "/?next=/home/", true);
+	xmlhttp.send();
+
+}
+
+function loginModelFB(sitio, formData, funcionOK, funcionBAD){
+	var xmlhttp = new XMLHttpRequest();
+	var resp = false;
+	xmlhttp.onreadystatechange = function(){
+		if (xmlhttp.readyState == 4 && xmlhttp.status==200){
+			resp = JSON.parse(xmlhttp.responseText);
+			funcionOK(resp);
+		} else if (xmlhttp.readyState == 4 && xmlhttp.status==400){
+			funcionBAD(resp);
+		}
+	}
+	xmlhttp.open("POST","http://meteleonda.com:8000/api/login/social/session/",true);
+	xmlhttp.send(formData);
+
+}
+
 /*
 function getCursosDiccModel(funcion){
 	var xmlhttp;
