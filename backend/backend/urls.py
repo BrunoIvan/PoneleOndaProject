@@ -61,5 +61,5 @@ urlpatterns = [
     url('', 												include('social.apps.django_app.urls', namespace='social')),
     url('',													include('django.contrib.auth.urls', namespace='auth')),
     url(r'^logueado/', 										datosLogueo),
-    
+    url(r'^api/login/', 									include('rest_social_auth.urls_session')), 
 ]

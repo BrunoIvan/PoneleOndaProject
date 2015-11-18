@@ -1,6 +1,33 @@
 function mainController(){
 	menuView();
+	datosLogueoController(); 
 	EstadisticasView();
+};
+
+function datosLogueoController(){
+	getObjetoModel("logueado/", function(datos_logueo){
+		alert(datos_logueo.autenticado);
+		menuLogueoView(datos_logueo.autenticado);
+	})
+};
+
+function loginController(sitio){
+	loginModel(sitio, function(){
+		alert('logueo OK');
+	}, function(){
+		alert('logueo mal');
+	});
+};
+
+function loginControllerFB(sitio){
+	var formData = new FormData();
+	formData.append("provider", sitio);
+	formData.append("code", "AQBPBBTjbdnehj51");
+	loginModelFB(sitio, formData,  function(){
+		alert('logueo OK');
+	}, function(){
+		alert('logueo mal');
+	});
 };
 
 function EstadisticasController () {
@@ -19,7 +46,7 @@ function EstadisticasController () {
 	} else if (dia_desde < dia_hasta) {
 		selector = "dia";
 	} else if(dia_desde == dia_hasta) {
-		mensaje = 'Debe elejir fechas distintas';
+		mensaje = 'Debe elegir fechas distintas';
 		selector = undefined;
 	} else if(dia_desde > dia_hasta ||
 		mes_desde > mes_hasta ||
