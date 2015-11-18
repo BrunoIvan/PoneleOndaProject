@@ -4,34 +4,32 @@ function mainController(){
 };
 
 function EstadisticasController () {
-	desde 		= document.getElementById('id_desde').value;
-	hasta 		= document.getElementById('id_hasta').value;
-	dia_desde 	= desde.slice(0, 2);
-	mes_desde 	= desde.slice(3, 5);
-	anno_desde 	= desde.slice(6, desde.length);
-	dia_hasta 	= hasta.slice(0, 2);
-	mes_hasta 	= hasta.slice(3, 5);
-	anno_hasta 	= hasta.slice(6, hasta.length);
-	if (anno_desde != anno_hasta) {
-		selector = "anno";
-	} else if (mes_desde != mes_hasta) {
-		selector = "mes";
-	} else if (dia_desde < dia_hasta) {
-		selector = "dia";
-	} else if(dia_desde == dia_hasta) {
-		mensaje = 'Debe elejir fechas distintas';
-		selector = undefined;
-	} else if(dia_desde > dia_hasta ||
-		mes_desde > mes_hasta ||
-		anno_desde > anno_hasta) {
-		mensaje = 'La fecha "desde" debe ser menor a la fecha "hasta"';
-		selector = undefined;
+	if (valid_form_estadisticas() == true) {
+		desde 		= document.getElementById('id_desde').value;
+		hasta 		= document.getElementById('id_hasta').value;
+		nombreEst 	= document.getElementById('id_nombre').selectedOptions[0].textContent;
+		desde 		= {
+			dia 	: parseInt(desde.slice(0, 2)), 
+			mes 	: parseInt(desde.slice(3, 5)), 
+			anno 	: parseInt(desde.slice(6, desde.length))
+		}
+		hasta 		= {
+			dia 	: parseInt(hasta.slice(0, 2)), 
+			mes 	: parseInt(hasta.slice(3, 5)), 
+			anno 	: parseInt(hasta.slice(6, hasta.length))
+		}
+		if (desde.anno == hasta.anno) {
+			if (desde.mes == hasta.mes) {
+				pointInterval =  3600 * 1000 * 24
+			} else {
+				pointInterval =  3600 * 1000 * 24 * 7 * 4
+			}
+		} else {
+			pointInterval =  3600 * 1000 * 24 * 7 * 4 * 12
+		}
+		GraficoTemplate(nombreEst, desde, pointInterval);
 	}
-	if (selector == undefined) {
-		alert('Debe elegir fechas distintas')
-	};
-	
-}
+};
 
 /*
 function altaEstablecimientoController(){
@@ -95,6 +93,21 @@ function BusqEstablecimientosController(param, pag){
 			}
 		}
 	)
+};
+
+function BuscaEstController () {
+	if (valid_form_alerta('id_nombre', 
+		'Debe ingresar un nombre') == true) {;
+		var param = document.getElementById('id_nombre').value;
+		getObjetoModel("establecimientosdetalle/nombre/" + param + "/1/", 
+		function (establecimientos) {
+			if (establecimientos.results.length < 1) {
+				alert('No hay resultados para ' + param);
+			} else {
+				llenaListaEstablecimientos(establecimientos);
+			}
+		});
+	}
 };
 
 /*
