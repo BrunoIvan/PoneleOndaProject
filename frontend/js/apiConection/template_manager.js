@@ -136,7 +136,16 @@ function valid_busq_establecimiento(id, mensaje){
 	return nombre_result + dirección_result;
 };
 
-function GraficoTemplate(nombreEst, desde, pointInterval) {
+function GraficoTemplate(nombreEst, desde, puntajes) {
+	Highcharts.setOptions({
+		lang: {
+			months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',  'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+			weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'], 
+			shortMonths: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'], 
+			resetZoom: 'Volver', 
+			resetZoomTitle: 'Volver'
+		}
+	});
     var chart1 = new Highcharts.Chart({
         chart: {
             renderTo: 'container',
@@ -157,10 +166,8 @@ function GraficoTemplate(nombreEst, desde, pointInterval) {
         },
 
         series: [{
-            data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4, 
-            29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
-            pointStart: Date.UTC(desde.anno, desde.mes-1, desde.dia),
-            pointInterval: pointInterval // one day
+            data: puntajes,
+            pointStart: Date.UTC(desde.anno, 0, desde.dia)
         }]
     });
 };
