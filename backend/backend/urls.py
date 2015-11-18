@@ -26,12 +26,17 @@ from api.views import Establecimiento_detBusqNombre
 from api.views import Establecimiento_detBusqDirec
 from api.views import Establecimiento_detBusqDual
 from api.views import getSesion
+from api.views import datosLogueo
+
 
 from django.conf.urls 			import include
 from django.conf.urls 			import url
 from django.contrib 			import admin
 from rest_framework.routers 	import SimpleRouter
 from rest_framework.authtoken 	import views
+
+from django.contrib import admin
+admin.autodiscover()
 
 router = SimpleRouter()
 router.register(r'establecimientos', 		EstablecimientoViewSet)
@@ -55,5 +60,6 @@ urlpatterns = [
     url(r'^home/$', 										'api.views.home', name='home'),
     url('', 												include('social.apps.django_app.urls', namespace='social')),
     url('',													include('django.contrib.auth.urls', namespace='auth')),
-
+    url(r'^logueado/', 										datosLogueo),
+    
 ]

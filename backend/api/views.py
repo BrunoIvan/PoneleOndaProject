@@ -184,6 +184,35 @@ def setSesion(request, id, nombre, tipo):
 	request.session["nombre"] = nombre
 	request.session["tipo"] = tipo
 
+def datosLogueo (request):
+	#context = RequestContext(request,
+	#	{'request': request,
+	#	'user': request.user})
+	ctx = {
+		'user' : request.user
+	}
+	if request.user.is_authenticated():
+		ctx.update({
+			'autenticado': '1',
+			'first_name': request.user.first_name,
+			'user_id' : request.user.social_auth.get().id,
+			'last_name': request.user.last_name,
+			'email' : request.user.email
+		})
+	else:
+		ctx.update({
+			'autenticado': '0',
+		})
+	
+			
+	print ctx	
+	return HttpResponse(ctx.values)
+
+    #if user.is_authenticated:
+	#	if user.social_auth.filter(provider='google-oauth2'):
+	#		print 'user is using Google Account!'
+	#	else:
+	#		print 'user is using Django default authentication or another social provider'
 
 def crearUsuario(request, id_google):
 	import urllib2, urllib
