@@ -15,7 +15,7 @@ function menuLogueoView(autenticado){
 };
 
 function menuView(){
-	printTemplate("navbar", getTemplate("js/apiConection/templates/menu.html"));
+	printTemplate("navbar-logout", getTemplate("js/apiConection/templates/menu.html"));
 };
 
 function altaEstablecimientoOKView(){
@@ -166,6 +166,7 @@ function GraficoTemplate(nombreEst, desde, puntajes) {
         },
 
         series: [{
+            name: nombreEst, 
             data: puntajes,
             pointStart: Date.UTC(desde.anno, 0, desde.dia)
         }]
@@ -305,12 +306,13 @@ function altaCalificacionView(id, nombre){
 	var puntaje, i, j, k, alta;
 	printTemplate("content", getTemplate("js/apiConection/templates/altaCalificacion.html"));
 	document.getElementById('est').textContent = 'Crear calificacion para ' + nombre;
-	puntaje = document.getElementById('puntaje');
+	puntaje = document.getElementById('id_puntaje');
 	puntaje.attributes.valueOf()[1].value;
 	for (i = 0; i < puntaje.children.length; i++) {
 		puntaje.children[i].addEventListener('click', 
 			function (e) {
-				puntaje = document.getElementById('puntaje');
+				console.log(puntaje);
+				puntaje = document.getElementById('id_puntaje');
 				if(e.target.tagName === 'A'){
 					k = parseInt(e.target.attributes[1].value);
 				} else if(e.target.tagName === 'SPAN'){
