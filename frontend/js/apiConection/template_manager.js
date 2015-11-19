@@ -311,7 +311,6 @@ function altaCalificacionView(id, nombre){
 	for (i = 0; i < puntaje.children.length; i++) {
 		puntaje.children[i].addEventListener('click', 
 			function (e) {
-				console.log(puntaje);
 				puntaje = document.getElementById('id_puntaje');
 				if(e.target.tagName === 'A'){
 					k = parseInt(e.target.attributes[1].value);
@@ -667,6 +666,7 @@ function CalificacionesTemplate(calificaciones){
 };
 
 function EstablecimientoDetalleTemplate(establecimiento){
+	corroboraSesion();
 	document.getElementById('content').innerHTML = '';
 	var html 		= getTemplate('js/apiConection/templates/establecimientoDetalle.html');
 	html 			= html.replace('mapsrc', establecimiento.map);
@@ -676,6 +676,9 @@ function EstablecimientoDetalleTemplate(establecimiento){
 	var ciudad 		= establecimiento.ciudad;
 	var provincia 	= establecimiento.provincia;
 	document.getElementById('content').innerHTML 	+= html;
+	if (estado_sesion == false) {
+		document.getElementById('alta_calif').style.display = 'none';
+	}
 	document.getElementById('nombre').textContent 	= nombre;
 	document.getElementById('direccion').textContent= direccion;
 	document.getElementById('ciudad').textContent 	= ciudad;
@@ -693,6 +696,7 @@ function EstablecimientoDetalleTemplate(establecimiento){
 };
 
 function EstablecimientosTemplate(establecimientos){
+	corroboraSesion();
 	var html, panel, panel_content, nombre_elem, direccion_elem, rubro_elem;
 	var promedio_elem, total_elem, det_boton_elem, calif_ver_elem, calif_alta_elem;
 	var nombre, direccion, i, j, ver_est;
@@ -817,23 +821,45 @@ function EstablecimientosTemplate(establecimientos){
 				CalificacionesView(id, 1);
 			}
 		);
-		alta_califs[i].addEventListener('click', 
-			function (e) {
-				panel 	= e.target.parentElement.parentElement.parentElement.parentElement.parentElement;
-				var id 	= panel.id;
-				nombre 	= panel.children[0].children[0].children[0].children[0].textContent;
-				altaCalificacionView(id, nombre);
-			}
-		);
+		if (estado_sesion == false) {
+			alta_califs[i].style.display = "none";
+		} else {
+			alta_califs[i].addEventListener('click', 
+				function (e) {
+					panel 	= e.target.parentElement.parentElement.parentElement.parentElement.parentElement;
+					var id 	= panel.id;
+					nombre 	= panel.children[0].children[0].children[0].children[0].textContent;
+					altaCalificacionView(id, nombre);
+				}
+			);
+		}
 	}
 };
 
 function poneBotonesTemplate(){
+	document.getElementById('navbar-content-login').style.display = 'block';
 	document.getElementById('navbar-logout').style.display = 'none';
-	document.getElementById('navbar').style.display = 'block';
-}
+	document.getElementById('alta-est-boton').style.display = 'none';
+	var alta_califs = document.getElementsByName('alta_calif');
+	if (alta_califs.length > 1) {
+		for (var i = 0; i < alta_califs.length; i++) {
+			alta_califs[i].style.display = 'none';
+		}
+	} else if (document.getElementById('alta_calif') != null) {
+		document.getElementById('alta_calif').style.display = 'none';
+	}
+};
 
 function poneSignOutTemplate(){
-	document.getElementById('navbar').style.display = 'none';
+	document.getElementById('navbar-content-login').style.display = 'none';
 	document.getElementById('navbar-logout').style.display = 'block';
-}
+	document.getElementById('alta-est-boton').style.display = 'block';
+	var alta_califs = document.getElementsByName('alta_calif');
+	if (alta_califs.length > 1) {
+		for (var i = 0; i < alta_califs.length; i++) {
+			alta_califs[i].style.display = 'block';
+		}
+	} else if (document.getElementById('alta_calif') != null) {
+		document.getElementById('alta_calif').style.display = 'block';
+	}
+};

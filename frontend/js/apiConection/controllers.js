@@ -179,39 +179,45 @@ function refrescaCiudades(){
 */
 
 function agregarEstablecimientoController(nombre, direccion, latitud, longitud, ciudad, rubro){
-	var formData = new FormData();
-	formData.append("nombre", nombre);
-	formData.append("direccion", direccion);
-	formData.append("latitud", latitud);
-	formData.append("longitud", longitud);
-	formData.append("ciudad", ciudad);
-	formData.append("rubro", rubro);
-	//var formElement = document.getElementById("formestablecimiento");
-	agregarObjetoModel("establecimientos", formData, function(){
-		altaEstablecimientoOKView();
-	},
-	function(){
-		alert('Este establecimiento para esta ciudad ya existe');
-	});	
+	corroboraSesion();
+	if (estado_sesion == true){	
+		var formData = new FormData();
+		formData.append("nombre", nombre);
+		formData.append("direccion", direccion);
+		formData.append("latitud", latitud);
+		formData.append("longitud", longitud);
+		formData.append("ciudad", ciudad);
+		formData.append("rubro", rubro);
+		//var formElement = document.getElementById("formestablecimiento");
+		agregarObjetoModel("establecimientos", formData, function(){
+			altaEstablecimientoOKView();
+		},
+		function(){
+			alert('Este establecimiento para esta ciudad ya existe');
+		});	
+	}
 };
 
 function agregarCiudadController(ciudad, codigo, provincia_url, provincia_id){
-	var formData = new FormData();
-	formData.append("nombre", ciudad);
-	formData.append("codigo_postal", codigo);
-	formData.append("provincia", provincia_url);
-	agregarObjetoModel("ciudades", formData, function(){
-		getCiudadesxProvinciaModel(provincia_id, function (ciudades){   
-			llenaListaCiudades(ciudades);
-			muestraPostAltaCiudad();
-		});
-		set_disable('id_nombre', false);
-		set_disable('id_direccion', false);
-		set_disable('id_rubro', false);
-		set_disable('submitEstablecimiento', false);
-	}, function(){
-		alert('Esta ciudad para esta provincia ya existe');
-	}); 
+	corroboraSesion();
+	if (estado_sesion == false){
+		var formData = new FormData();
+		formData.append("nombre", ciudad);
+		formData.append("codigo_postal", codigo);
+		formData.append("provincia", provincia_url);
+		agregarObjetoModel("ciudades", formData, function(){
+			getCiudadesxProvinciaModel(provincia_id, function (ciudades){   
+				llenaListaCiudades(ciudades);
+				muestraPostAltaCiudad();
+			});
+			set_disable('id_nombre', false);
+			set_disable('id_direccion', false);
+			set_disable('id_rubro', false);
+			set_disable('submitEstablecimiento', false);
+		}, function(){
+			alert('Esta ciudad para esta provincia ya existe');
+		}); 
+	}
 };
 
 function listaProvinciasController(){
@@ -237,7 +243,6 @@ function autenticarGoogleController(token){
 	formData.append("gtoken", token);
 	autenticarModel("google", formData, function(datos_sesion){
 		setCookies(datos_sesion["nombre"],  datos_sesion["tipo"], datos_sesion["token"]);
-		alert (getCookie("nombre"))
 		poneBotonesController();
 	}, function(){
 		alert('Problema autenticando');
@@ -249,7 +254,7 @@ function autenticarFBController(token){
 	formData.append("gtoken", token);
 	autenticarModel("google", formData, function(datos_sesion){
 		setCookies(datos_sesion["nombre"],  datos_sesion["tipo"], datos_sesion["token"]);
-		alert (getCookie("nombre"));
+		//alert (getCookie("nombre"));
 	}, function(){
 		alert('Problema autenticando');
 	});
@@ -275,7 +280,7 @@ function poneBotonesController(){
 
 function setCookies(nombre, tipo, token, exp_minutos){
     var d = new Date();
-    d.setTime(d.getTime() + (exp_minutos*60*1000));
+    d.setTime(d.getTime() + (exp_minutos * 60 * 1000));
     var expires = "expires="+d.toUTCString();
     document.cookie = "nombre=" + nombre + "; " + expires;
     document.cookie = "tipo=" + tipo + "; " + expires;

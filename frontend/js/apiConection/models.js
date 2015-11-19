@@ -119,6 +119,27 @@ function autenticarModel(sitio, formData, funcionOK, funcionBAD){
 
 }*/
 
+function corroboraSesion () {
+	var token = getCookie('token');
+	if (token === ''){
+		estado_sesion = false;
+		return undefined;
+	}
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function(){
+		if (xmlhttp.readyState == 4 && xmlhttp.status==200){
+			resp = JSON.parse(xmlhttp.responseText);
+			if(resp.tipo === 'anonymous'){
+				estado_sesion = false;
+			} else {
+				estado_sesion = true;
+			}
+		}
+	}
+	xmlhttp.open("GET","http://localhost:8000/sesion/" + token, true);
+	xmlhttp.send();
+}
+
 function estadoSesionModel(){
 	var xmlhttp = new XMLHttpRequest();
 	var resp = false;
@@ -132,7 +153,6 @@ function estadoSesionModel(){
 	}
 	xmlhttp.open("GET","http://localhost:8000/sesion/", true);
 	xmlhttp.send();
-
 }
 
 function loginModel(sitio, funcionOK, funcionBAD){

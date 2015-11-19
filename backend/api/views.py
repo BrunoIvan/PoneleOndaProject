@@ -39,7 +39,7 @@ from django.contrib.sessions.models import Session
 from django.shortcuts 				import render_to_response
 from django.shortcuts 				import redirect
 from django.template.context 		import RequestContext
-
+from django.core.exceptions 		import ObjectDoesNotExist
 
 from json import dumps
 
@@ -171,13 +171,16 @@ def autenticarGoogle(request):
 	return HttpResponse(resp)
 
 def getSesion(request, session_key):
-	session = Session.objects.get(session_key=session_key)
-#	uid = session.get_decoded().get('_auth_user_id')
-#	user = User.objects.get(pk=uid)
-#	print user.username, user.get_full_name(), user.email
+	try:
+		session = Session.objects.get(session_key=session_key)
+#		uid = session.get_decoded().get('_auth_user_id')
+#		user = User.objects.get(pk=uid)
+#		print user.username, user.get_full_name(), user.email
 	
-	print str(session.get_decoded().get('nombre'))
-	resp = '{"nombre" : "' + str(session.get_decoded().get('nombre')) + '", "id" : "' + str(session.get_decoded().get('id')) + '", "tipo" : "' + str(session.get_decoded().get('tipo')) + '"}'
+		#print str(session.get_decoded().get('nombre'))
+		resp = '{"nombre" : "' + str(session.get_decoded().get('nombre')) + '", "id" : "' + str(session.get_decoded().get('id')) + '", "tipo" : "' + str(session.get_decoded().get('tipo')) + '"}'
+	except ObjectDoesNotExist:
+		resp = '{"nombre" : "anonymous", "id" : "", "tipo" : "anonymous"}'
 	return HttpResponse(resp)
 
 def setSesion(request, id, nombre, tipo):
