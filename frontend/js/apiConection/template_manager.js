@@ -15,7 +15,7 @@ function menuLogueoView(autenticado){
 };
 
 function menuView(){
-	printTemplate("navbar", getTemplate("js/apiConection/templates/menu.html"));
+	printTemplate("navbar-logout", getTemplate("js/apiConection/templates/menu.html"));
 };
 
 function altaEstablecimientoOKView(){
