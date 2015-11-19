@@ -1,3 +1,4 @@
+
 /*
 function manageFormEstablecimientoTemplate(){
 	html = getTemplate("templates/altaEstablecimiento.html");
@@ -108,36 +109,77 @@ function valid_llena_fecha() {
 	}
 }
 
+function valid_form_estadisticas () {
+	if (valid_form_alerta('id_nombre', 
+		'Debe ingresar un establecimiento') == false) {
+		return false;
+	} else if (document.getElementById('id_nombre').tagName === 'INPUT'){ 
+		alert('Debe ingresar un establecimiento');
+		return false;
+	} else if (valid_form_alerta('id_desde', 
+		'Debe elegir una fecha "Desde"') == false) {
+		return false;
+	} else if (valid_form_alerta('id_hasta', 
+		'Debe elegir una fecha "Hasta"') == false) {
+		return false;
+	} else if (document.getElementById('id_desde') === document.getElementById('id_hasta')){ 
+		alert('Las fechas deben ser diferentes');
+		return false;
+	} else {
+		return true;
+	}
+};
+
 function valid_busq_establecimiento(id, mensaje){
 	var nombre_result 		= valid_form_simple('id_nombre').toFixed();
 	var dirección_result 	= valid_form_simple('id_direccion').toFixed();
 	return nombre_result + dirección_result;
 };
 
+function GraficoTemplate(nombreEst, desde, puntajes) {
+	Highcharts.setOptions({
+		lang: {
+			months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',  'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+			weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'], 
+			shortMonths: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'], 
+			resetZoom: 'Volver', 
+			resetZoomTitle: 'Volver'
+		}
+	});
+    var chart1 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'container',
+            type: 'line',
+            zoomType: 'x'
+        }, 
+        title: {
+        	text: 'Calificaciones de ' + nombreEst
+        }, 
+
+        xAxis: {
+            type: 'datetime', 
+        },
+        yAxis: { 
+            title: {
+                text: 'Calificaciones'
+            }
+        },
+
+        series: [{
+            data: puntajes,
+            pointStart: Date.UTC(desde.anno, 0, desde.dia)
+        }]
+    });
+};
+
 function EstadisticasTemplate(){
 	printTemplate("content", getTemplate("js/apiConection/templates/estadisticas.html"));
-	var data = {
-		labels: ["January", "February", "March", "April", "May", "June", "July"],
-		datasets: [
-			{
-				label: "My First dataset",
-				fillColor: "rgba(220,220,220,0.2)",
-				strokeColor: "rgba(220,220,220,1)",
-				pointColor: "rgba(220,220,220,1)",
-				pointStrokeColor: "#fff",
-				pointHighlightFill: "#fff",
-				pointHighlightStroke: "rgba(220,220,220,1)",
-					data: [65, 59, 80, 81, 56, 0, 40]
-			}
-		]
-	};
-		
-	// Get the context of the canvas element we want to select
-	var LineCtx 	= document.getElementById("LineChart").getContext("2d");
-	var myLineChart = new Chart(LineCtx).Line(data);
-	var BarCtx 		= document.getElementById("BarChart").getContext("2d");
-	var myBarChart 	= new Chart(BarCtx).Bar(data);
+	printTemplate("form_est", getTemplate("js/apiConection/templates/buscar_est.html"));
 };
+
+function CancelEstController () {
+	printTemplate("form_est", getTemplate("js/apiConection/templates/buscar_est.html"));
+}
 
 function LlenaMejoresTemplate(mejores){
 	var tabla = document.getElementById('estadisticas');
@@ -421,6 +463,19 @@ function llenaListaRubros(rubros){
 		opt.innerHTML = rubros[i].nombre;
 		select.appendChild(opt);
 	}	
+};
+
+function llenaListaEstablecimientos (establecimientos) {
+	printTemplate("form_est", getTemplate("js/apiConection/templates/lista_est.html"));
+	var select = document.getElementById('id_nombre');
+	for (var i = 0; i < establecimientos.results.length; i++) {
+		var establecimiento = establecimientos.results[i];
+		var option = document.createElement('option');
+		option.value = establecimiento.id;
+		var nombre = establecimiento.nombre + ', ' + establecimiento.ciudad + ', ' + establecimiento.provincia
+		option.textContent = nombre;
+		select.appendChild(option);
+	}
 };
 
 function llenaListaProvincias(provincias){

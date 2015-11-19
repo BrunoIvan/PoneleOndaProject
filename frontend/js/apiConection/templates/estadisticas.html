@@ -4,9 +4,7 @@
 			<div class="text-center panel-heading">Filtrado de calificaciones</div>
 			<div class="panel-body">
 				<form method="POST" id="formFiltrado" name="formFiltrado">
-					<div class="form-group">
-						<label for="id_nombre">Nombre</label>
-						<input required id="id_nombre" name="nombre" class="form-control" placeholder="Nombre del establecimiento" type="text">
+					<div id="form_est" class="form-group">
 					</div>
 					<label>Elija un año</label>
 					<input hidden id="id_anno" type="number">
@@ -51,29 +49,18 @@
 					</div>
 					<div class="form-group">
 						<label for="id_desde">Desde <a onclick="llenaFecha(1)">Llenar fecha 'Desde'</a></label>
-						<input required id="id_desde" class="form-control" type="text">
+						<input required placeholder="dd/mm/aaaa" id="id_desde" class="form-control" type="text">
 					</div>
 					<div class="form-group">
 						<label for="id_hasta">Hasta <a onclick="llenaFecha(2)">Llenar fecha 'Hasta'</a></label>
-						<input required id="id_hasta" class="form-control" type="text">
+						<input required placeholder="dd/mm/aaaa" id="id_hasta" class="form-control" type="text">
 					</div>
 					<input onclick="EstadisticasController()" id="submitEstadistica" type="button" class="btn btn-info pull-right" value="Filtrar">
 				</form>
 			</div>
 			<ul class="list-group">
 				<li class="list-group-item">
-					<div class="row">
-						<div class="col-md-6">
-							<div class="embed-responsive embed-responsive-4by3">
-								<canvas id="LineChart" class="embed-responsive-item"></canvas>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="embed-responsive embed-responsive-4by3">
-								<canvas id="BarChart" class="embed-responsive-item"></canvas>
-							</div>
-						</div>
-					</div>
+					<div id="container"></div>
 				</li>
 			</ul>
 		</div>
