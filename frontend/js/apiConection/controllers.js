@@ -2,7 +2,7 @@ function mainController(){
 	//menuView();
 	//datosLogueoController(); 
 	poneBotonesController();
-	EstadisticasView();
+	//EstadisticasView();
 };
 
 function datosLogueoController(){
@@ -179,8 +179,7 @@ function refrescaCiudades(){
 */
 
 function agregarEstablecimientoController(nombre, direccion, latitud, longitud, ciudad, rubro){
-	corroboraSesion();
-	if (estado_sesion == true){	
+	corroboraSesion(function () {
 		var formData = new FormData();
 		formData.append("nombre", nombre);
 		formData.append("direccion", direccion);
@@ -190,17 +189,16 @@ function agregarEstablecimientoController(nombre, direccion, latitud, longitud, 
 		formData.append("rubro", rubro);
 		//var formElement = document.getElementById("formestablecimiento");
 		agregarObjetoModel("establecimientos", formData, function(){
-			altaEstablecimientoOKView();
+			altaEstablecimientoOKView;
 		},
 		function(){
 			alert('Este establecimiento para esta ciudad ya existe');
 		});	
-	}
+	});
 };
 
 function agregarCiudadController(ciudad, codigo, provincia_url, provincia_id){
-	corroboraSesion();
-	if (estado_sesion == false){
+	corroboraSesion( function () {
 		var formData = new FormData();
 		formData.append("nombre", ciudad);
 		formData.append("codigo_postal", codigo);
@@ -217,7 +215,7 @@ function agregarCiudadController(ciudad, codigo, provincia_url, provincia_id){
 		}, function(){
 			alert('Esta ciudad para esta provincia ya existe');
 		}); 
-	}
+	});
 };
 
 function listaProvinciasController(){

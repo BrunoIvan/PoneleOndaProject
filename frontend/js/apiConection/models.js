@@ -119,24 +119,24 @@ function autenticarModel(sitio, formData, funcionOK, funcionBAD){
 
 }*/
 
-function corroboraSesion () {
+function corroboraSesion (funcion) {
 	var token = getCookie('token');
 	if (token === ''){
-		estado_sesion = false;
 		return undefined;
 	}
-	var xmlhttp = new XMLHttpRequest();
+	xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function(){
 		if (xmlhttp.readyState == 4 && xmlhttp.status==200){
 			resp = JSON.parse(xmlhttp.responseText);
 			if(resp.tipo === 'anonymous'){
-				estado_sesion = false;
+				return undefined;
 			} else {
 				estado_sesion = true;
+				funcion();
 			}
 		}
 	}
-	xmlhttp.open("GET","http://localhost:8000/sesion/" + token, true);
+	xmlhttp.open("GET","http://localhost:8000/sesion/" + token + '/', true);
 	xmlhttp.send();
 }
 

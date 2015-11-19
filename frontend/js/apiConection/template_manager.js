@@ -185,14 +185,14 @@ function CancelEstController () {
 function LlenaMejoresTemplate(mejores){
 	var tabla = document.getElementById('estadisticas');
 	for (var i = 0; i < 10; i++) {
-		tabla.children[i].children[0].textContent = mejores[i].nombre;
+		tabla.children[i].children[0].textContent = (i+1) + ' - ' + mejores[i].nombre;
 	}
 };
 
 function LlenaPeoresTemplate(peores){
 	var tabla = document.getElementById('estadisticas');
 	for (var i = 0; i < 10; i++) {
-		tabla.children[i].children[1].textContent = peores[i].nombre;
+		tabla.children[i].children[1].textContent = (i+1) + ' - ' + peores[i].nombre;
 	}
 };
 
@@ -311,11 +311,13 @@ function altaCalificacionView(id, nombre){
 	for (i = 0; i < puntaje.children.length; i++) {
 		puntaje.children[i].addEventListener('click', 
 			function (e) {
-				puntaje = document.getElementById('id_puntaje');
+				console.log(e.target);
+				console.log(e.target.parentElement);
+				var puntaje = document.getElementById('id_puntaje');
 				if(e.target.tagName === 'A'){
-					k = parseInt(e.target.attributes[1].value);
+					k = parseInt(e.target.attributes[0].value);
 				} else if(e.target.tagName === 'SPAN'){
-					k = parseInt(e.target.parentElement.attributes[1].value);
+					k = parseInt(e.target.parentElement.attributes[0].value);
 				}
 				k--;
 				document.getElementById('id_puntaje').value = puntaje.children[k].children[0].attributes[1].value;
@@ -666,7 +668,6 @@ function CalificacionesTemplate(calificaciones){
 };
 
 function EstablecimientoDetalleTemplate(establecimiento){
-	corroboraSesion();
 	document.getElementById('content').innerHTML = '';
 	var html 		= getTemplate('js/apiConection/templates/establecimientoDetalle.html');
 	html 			= html.replace('mapsrc', establecimiento.map);
@@ -676,7 +677,7 @@ function EstablecimientoDetalleTemplate(establecimiento){
 	var ciudad 		= establecimiento.ciudad;
 	var provincia 	= establecimiento.provincia;
 	document.getElementById('content').innerHTML 	+= html;
-	if (estado_sesion == false) {
+	if (getCookie('nombre') === '') {
 		document.getElementById('alta_calif').style.display = 'none';
 	}
 	document.getElementById('nombre').textContent 	= nombre;
@@ -696,7 +697,6 @@ function EstablecimientoDetalleTemplate(establecimiento){
 };
 
 function EstablecimientosTemplate(establecimientos){
-	corroboraSesion();
 	var html, panel, panel_content, nombre_elem, direccion_elem, rubro_elem;
 	var promedio_elem, total_elem, det_boton_elem, calif_ver_elem, calif_alta_elem;
 	var nombre, direccion, i, j, ver_est;
@@ -821,17 +821,16 @@ function EstablecimientosTemplate(establecimientos){
 				CalificacionesView(id, 1);
 			}
 		);
-		if (estado_sesion == false) {
+		alta_califs[i].addEventListener('click', 
+			function (e) {
+				panel 	= e.target.parentElement.parentElement.parentElement.parentElement.parentElement;
+				var id 	= panel.id;
+				nombre 	= panel.children[0].children[0].children[0].children[0].textContent;
+				altaCalificacionView(id, nombre);
+			}
+		);
+		if (getCookie('nombre') === '') {
 			alta_califs[i].style.display = "none";
-		} else {
-			alta_califs[i].addEventListener('click', 
-				function (e) {
-					panel 	= e.target.parentElement.parentElement.parentElement.parentElement.parentElement;
-					var id 	= panel.id;
-					nombre 	= panel.children[0].children[0].children[0].children[0].textContent;
-					altaCalificacionView(id, nombre);
-				}
-			);
 		}
 	}
 };
@@ -840,26 +839,12 @@ function poneBotonesTemplate(){
 	document.getElementById('navbar-content-login').style.display = 'block';
 	document.getElementById('navbar-logout').style.display = 'none';
 	document.getElementById('alta-est-boton').style.display = 'none';
-	var alta_califs = document.getElementsByName('alta_calif');
-	if (alta_califs.length > 1) {
-		for (var i = 0; i < alta_califs.length; i++) {
-			alta_califs[i].style.display = 'none';
-		}
-	} else if (document.getElementById('alta_calif') != null) {
-		document.getElementById('alta_calif').style.display = 'none';
-	}
+	EstadisticasView();
 };
 
 function poneSignOutTemplate(){
 	document.getElementById('navbar-content-login').style.display = 'none';
 	document.getElementById('navbar-logout').style.display = 'block';
 	document.getElementById('alta-est-boton').style.display = 'block';
-	var alta_califs = document.getElementsByName('alta_calif');
-	if (alta_califs.length > 1) {
-		for (var i = 0; i < alta_califs.length; i++) {
-			alta_califs[i].style.display = 'block';
-		}
-	} else if (document.getElementById('alta_calif') != null) {
-		document.getElementById('alta_calif').style.display = 'block';
-	}
+	EstadisticasView();
 };
