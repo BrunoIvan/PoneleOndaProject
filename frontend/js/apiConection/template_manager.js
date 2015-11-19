@@ -771,3 +771,12 @@ function EstablecimientosTemplate(establecimientos){
 	}
 };
 
+function poneBotonesTemplate(){
+	document.getElementById('navbar-logout').style.display = 'none';
+	document.getElementById('navbar').style.display = 'block';
+}
+
+function poneSignOutTemplate(){
+	document.getElementById('navbar').style.display = 'none';
+	document.getElementById('navbar-logout').style.display = 'block';
+}

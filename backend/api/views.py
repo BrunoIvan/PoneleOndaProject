@@ -37,6 +37,7 @@ from django.views.decorators.csrf 	import ensure_csrf_cookie
 from django.http 					import HttpResponse
 from django.contrib.sessions.models import Session
 from django.shortcuts 				import render_to_response
+from django.shortcuts 				import redirect
 from django.template.context 		import RequestContext
 
 
@@ -223,7 +224,8 @@ def home(request):
 		{'request': request,
 		'user': request.user})
 	print context
-	return render_to_response('home.html', context_instance=context)
+	return redirect('http://meteleonda.com/')
+#return render_to_response('home.html', context_instance=context)
 
 #@csrf_exempt
 #def autenticarGoogle(request, token):	

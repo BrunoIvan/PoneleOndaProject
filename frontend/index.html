@@ -35,15 +35,40 @@
     <!--   <script src="js/apiConection/http_methods.js"></script> -->
 
     <!-- Social Login JavaScript -->
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script src="js/apiConection/fb-login.js"></script>
+    <script src="https://apis.google.com/js/platform.js"></script>
     <script src="js/apiConection/google-login.js"></script>
+    <script src="js/apiConection/fb-login.js"></script>
+
 
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top"  onload="mainController()">
     <nav class="navbar navbar-info">
         <div id="navbar" class="container">
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ingresar<span class="caret"></span></a>
+    <ul class="dropdown-menu">
+        <li>
+            <a href="#" onclick="loginControllerFB('facebook')">Facebook</a>
+        </li>
+        <li role="separator" class="divider"></li>
+        <li>
+            <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"> </div>
+        </li>
+        <li role="separator" class="divider"></li>
+        <li>
+            <a href="#" onclick="loginController('twitter')">Twitter</a>
+        </li>
+    </ul>
+</li>
+        </div>
+        <div id="navbar-logout" class="container">
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="signOut()";>Sign out<span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      
+    </ul>
+</li>
         </div>
     </nav>
     <div>

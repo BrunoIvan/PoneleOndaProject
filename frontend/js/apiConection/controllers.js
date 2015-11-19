@@ -1,6 +1,7 @@
 function mainController(){
-	menuView();
-	datosLogueoController(); 
+	//menuView();
+	//datosLogueoController(); 
+	poneBotonesController();
 	EstadisticasView();
 };
 
@@ -23,6 +24,7 @@ function loginControllerFB(sitio){
 	var formData = new FormData();
 	formData.append("provider", sitio);
 	formData.append("code", "AQBPBBTjbdnehj51");
+//	formData.append("crsf_token", crsf_token);
 	loginModelFB(sitio, formData,  function(){
 		alert('logueo OK');
 	}, function(){
@@ -221,7 +223,8 @@ function autenticarGoogleController(token){
 	formData.append("gtoken", token);
 	autenticarModel("google", formData, function(datos_sesion){
 		setCookies(datos_sesion["nombre"],  datos_sesion["tipo"], datos_sesion["token"]);
-		alert (getCookie("nombre"));
+		alert (getCookie("nombre"))
+		poneBotonesController();
 	}, function(){
 		alert('Problema autenticando');
 	});
@@ -240,16 +243,18 @@ function autenticarFBController(token){
 
 function poneBotonesController(){
 	var token = getCookie("token");
-	alert(token);
+//	alert(token);
 	if (token == ""){
+		alert('token vacio 1');
 		poneBotonesTemplate();
 	}else{
 		getObjetoModel("sesion/"+ token + "/", function (datos_sesion){
 			if (datos_sesion["tipo"] == "{}"){
+				alert('token vacio serv');
 				poneBotonesTemplate();
 			}else{
-				alert(datos_sesion["tipo"]);
-				poneSignOut(datos_sesion["tipo"]);
+//				alert(datos_sesion["tipo"]);
+				poneSignOutTemplate();
 			}
 		})
 	}
