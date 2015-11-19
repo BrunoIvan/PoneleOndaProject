@@ -259,7 +259,6 @@ function poneBotonesController(){
 	var token = getCookie("token");
 //	alert(token);
 	if (token == ""){
-		//alert('token vacio 1');
 		poneBotonesTemplate();
 	}else{
 		getObjetoModel("sesion/"+ token + "/", function (datos_sesion){
